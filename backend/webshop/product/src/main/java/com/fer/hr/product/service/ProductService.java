@@ -15,6 +15,8 @@ public class ProductService implements  IProductService {
     @Override
     public Product getProductById(Integer productId) {
         return productRepository.findById(productId).get();
+
+        // TODO: Get Product Reviews from the Review Microservice
     }
 
     @Override
@@ -26,6 +28,8 @@ public class ProductService implements  IProductService {
     public Product addProduct(Product product) {
 
         productRepository.saveAndFlush(product);
+
+        // TODO: Update the Inventory ammount of the product in Inventory Microservice
 
         return product;
     }
@@ -49,5 +53,8 @@ public class ProductService implements  IProductService {
     @Override
     public void deleteProduct(Integer productId) {
         productRepository.deleteById(productId);
+
+        // TODO: Update the Inventory ammount of the product in Inventory Microservice
+
     }
 }
