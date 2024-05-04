@@ -1,5 +1,7 @@
 package com.fer.hr.product.service.impl;
 
+import com.fer.hr.clients.inventory.InventoryClient;
+import com.fer.hr.clients.inventory.dto.InventoryItemRequest;
 import com.fer.hr.product.dto.ProductRequest;
 import com.fer.hr.product.dto.ProductResponse;
 import com.fer.hr.product.mapper.ProductMapper;
@@ -18,6 +20,8 @@ import java.util.Optional;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
+    private final InventoryClient inventoryClient;
+
     @Override
     public ProductResponse getProductById(Integer productId) {
         Optional<Product> product =  productRepository.findById(productId);
@@ -53,6 +57,12 @@ public class ProductServiceImpl implements ProductService {
 
         ProductResponse productResponse = ProductMapper.mapProductToProductResponse(product);
         // TODO: Update the Inventory ammount of the product in Inventory Microservice
+
+        InventoryItemRequest inventoryItemRequest = InventoryItemRequest
+                .builder()
+                .productId(product.getId())
+                .amount(productRequest.getAmount()).build();
+        inventoryClient.updateInventoryProductAmount(inventoryItemRequest);
 
         return productResponse;
     }

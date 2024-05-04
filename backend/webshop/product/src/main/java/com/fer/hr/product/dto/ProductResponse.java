@@ -19,4 +19,6 @@ public class ProductResponse {
     private Integer categoryId;
     private String categoryName;
     private LocalDateTime createdAt;
+
+    private Integer amount;
 }

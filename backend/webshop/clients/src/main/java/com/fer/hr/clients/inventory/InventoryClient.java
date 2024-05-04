@@ -1,5 +1,6 @@
 package com.fer.hr.clients.inventory;
 
+import com.fer.hr.clients.inventory.dto.InventoryItemRequest;
 import com.fer.hr.clients.inventory.model.InventoryItem;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
@@ -12,13 +13,13 @@ import java.util.List;
 
 @FeignClient("inventory")
 public interface InventoryClient {
-    @GetMapping(path = "api/inventory/inventory-check/{productId}")
-    ResponseEntity<Boolean> isProductInStock(@PathVariable("productId") Integer productId);
+    @GetMapping(path = "api/inventory/check")
+    ResponseEntity<Boolean> isProductInStock(@RequestBody InventoryItemRequest inventoryItemRequest);
 
-    @PostMapping(path = "api/inventory/product-amount/update")
-    void updateInventoryProductAmount(@RequestBody InventoryItem inventoryItem);
+    @PostMapping(path = "api/inventory/product-update")
+    void updateInventoryProductAmount(@RequestBody InventoryItemRequest inventoryItemRequest);
 
     @PostMapping(path = "api/inventory/products-order")
-    void updateProductsAmountOnOrder(@RequestBody List<InventoryItem> inventoryOrderList);
+    void updateProductsAmountOnOrder(@RequestBody List<InventoryItemRequest> inventoryItemRequestList);
 
 }
