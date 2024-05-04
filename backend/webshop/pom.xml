@@ -9,6 +9,8 @@
   <name>webshop</name>
   <modules>
     <module>product</module>
+    <module>inventory</module>
+      <module>clients</module>
   </modules>
 
   <properties>

@@ -9,7 +9,7 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class ProductService implements  IProductService {
+public class ProductService implements IProductService {
 
     private final ProductRepository productRepository;
     @Override
@@ -54,7 +54,7 @@ public class ProductService implements  IProductService {
     public void deleteProduct(Integer productId) {
         productRepository.deleteById(productId);
 
-        // TODO: Update the Inventory ammount of the product in Inventory Microservice
+        // TODO: Check if > 0 & Update the Inventory ammount of the product in Inventory Microservice
 
     }
 }
