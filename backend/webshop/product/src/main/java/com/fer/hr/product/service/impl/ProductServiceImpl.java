@@ -1,0 +1,86 @@
+package com.fer.hr.product.service.impl;
+
+import com.fer.hr.product.dto.ProductRequest;
+import com.fer.hr.product.dto.ProductResponse;
+import com.fer.hr.product.mapper.ProductMapper;
+import com.fer.hr.product.model.Product;
+import com.fer.hr.product.repository.ProductRepository;
+import com.fer.hr.product.service.ProductService;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+@Service
+@AllArgsConstructor
+public class ProductServiceImpl implements ProductService {
+
+    private final ProductRepository productRepository;
+    @Override
+    public ProductResponse getProductById(Integer productId) {
+        Optional<Product> product =  productRepository.findById(productId);
+
+        if(product.isEmpty()) {
+            return null;
+        }
+        ProductResponse productResponse = ProductMapper.mapProductToProductResponse(product.get());
+
+        return productResponse;
+
+        // TODO: Get Product Reviews from the Review Microservice
+    }
+
+    @Override
+    public List<ProductResponse> getProducts() {
+        List<Product> productList = productRepository.findAll();
+
+        List<ProductResponse> productResponseList = new ArrayList<>();
+        productList.forEach(product -> {
+            ProductResponse productResponse = ProductMapper.mapProductToProductResponse(product);
+
+            productResponseList.add(productResponse);
+        });
+
+        return productResponseList;
+    }
+
+    @Override
+    public ProductResponse addProduct(ProductRequest productRequest) {
+        Product product = ProductMapper.mapProductRequestToProduct(productRequest);
+        productRepository.saveAndFlush(product);
+
+        ProductResponse productResponse = ProductMapper.mapProductToProductResponse(product);
+        // TODO: Update the Inventory ammount of the product in Inventory Microservice
+
+        return productResponse;
+    }
+
+    @Override
+    public ProductResponse updateProduct(Integer productId, ProductRequest updatedProduct) {
+        Optional<Product> product = productRepository.findById(productId);
+
+        if (product.isPresent()) {
+            product.get().setName(updatedProduct.getName());
+            product.get().setCategoryId(updatedProduct.getCategoryId());
+            product.get().setCategoryName(updatedProduct.getCategoryName());
+            product.get().setCreatedAt(updatedProduct.getCreatedAt());
+            product.get().setDescription(updatedProduct.getDescription());
+            product.get().setPrice(updatedProduct.getPrice());
+        }
+
+        productRepository.save(product.get());
+
+        ProductResponse productResponse = ProductMapper.mapProductToProductResponse(product.get());
+        return productResponse;
+    }
+
+    @Override
+    public Void deleteProduct(Integer productId) {
+        productRepository.deleteById(productId);
+
+        // TODO: Check if > 0 & Update the Inventory ammount of the product in Inventory Microservice
+        return null;
+    }
+}

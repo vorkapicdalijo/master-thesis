@@ -1,7 +1,8 @@
 package com.fer.hr.inventory.controller;
 
+import com.fer.hr.inventory.dto.InventoryItemRequest;
 import com.fer.hr.inventory.model.InventoryItem;
-import com.fer.hr.inventory.service.InventoryService;
+import com.fer.hr.inventory.service.impl.InventoryServiceImpl;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -16,22 +17,22 @@ import java.util.List;
 @AllArgsConstructor
 public class InventoryController {
 
-    private final InventoryService inventoryService;
+    private final InventoryServiceImpl inventoryServiceImpl;
 
-    @GetMapping("/inventory-check")
-    public ResponseEntity<Boolean> isProductInStock(@RequestBody InventoryItem inventoryItem) {
-        boolean isProductAvailable = inventoryService.isProductInStock(inventoryItem);
+    @GetMapping("/check")
+    public ResponseEntity<Boolean> isProductInStock(@RequestBody InventoryItemRequest inventoryItemRequest) {
+        boolean isProductAvailable = inventoryServiceImpl.isProductInStock(inventoryItemRequest);
 
         return new ResponseEntity<>(isProductAvailable, HttpStatus.OK);
     }
 
-    @PostMapping("/product-amount/update")
-    public void updateInventoryProductAmount(@RequestBody InventoryItem inventoryItem) {
-        inventoryService.updateSingleProductAmount(inventoryItem);
+    @PostMapping("/product-update")
+    public void updateInventoryProductAmount(@RequestBody InventoryItemRequest inventoryItemRequest) {
+        inventoryServiceImpl.updateSingleProductAmount(inventoryItemRequest);
     }
 
     @PostMapping("/products-order")
-    public void updateProductsAmountOnOrder(@RequestBody List<InventoryItem> inventoryOrderList) {
-        inventoryService.updateProductsAmountOnOrder(inventoryOrderList);
+    public void updateProductsAmountOnOrder(@RequestBody List<InventoryItemRequest> inventoryItemRequestList) {
+        inventoryServiceImpl.updateProductsAmountOnOrder(inventoryItemRequestList);
     }
 }
