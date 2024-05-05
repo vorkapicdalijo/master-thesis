@@ -56,6 +56,7 @@ public class ProductServiceImpl implements ProductService {
         productRepository.saveAndFlush(product);
 
         ProductResponse productResponse = ProductMapper.mapProductToProductResponse(product);
+        productResponse.setAmount(productRequest.getAmount());
         // TODO: Update the Inventory ammount of the product in Inventory Microservice
 
         InventoryItemRequest inventoryItemRequest = InventoryItemRequest

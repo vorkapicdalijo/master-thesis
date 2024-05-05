@@ -15,14 +15,6 @@ import javax.persistence.*;
 public class InventoryItem {
 
     @Id
-    @SequenceGenerator(
-            name = "inventory_id_sequence",
-            sequenceName = "inventory_id_sequence"
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "inventory_id_sequence"
-    )
     private Integer productId;
     private Integer amount;
 }

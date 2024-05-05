@@ -11,6 +11,8 @@
     <module>product</module>
     <module>inventory</module>
       <module>clients</module>
+    <module>eureka-server</module>
+      <module>api-gateway</module>
   </modules>
 
   <properties>
