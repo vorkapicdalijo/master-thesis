@@ -6,13 +6,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Table(name = "product")
 public class Product {
 
     @Id
@@ -21,14 +21,16 @@ public class Product {
             sequenceName = "product_id_sequence"
     )
     @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
+            strategy = GenerationType.IDENTITY,
             generator = "product_id_sequence"
     )
-    private Integer id;
+    private Long id;
     private String name;
     private String description;
     private Float price;
-    private Integer categoryId;
-    private String categoryName;
-    private LocalDateTime createdAt;
+    private Float size;
+
+    private Long categoryId;
+    private Long typeId;
+    private Long brandId;
 }

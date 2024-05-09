@@ -34,7 +34,7 @@ public class ProductController {
     }
 
     @GetMapping("/{productId}")
-    public ResponseEntity<ProductResponse> getProductById(@PathVariable Integer productId) {
+    public ResponseEntity<ProductResponse> getProductById(@PathVariable Long productId) {
         log.info("Getting product by id={}", productId);
         ProductResponse productResponse = productServiceImpl.getProductById(productId);
 
@@ -53,7 +53,7 @@ public class ProductController {
 
     @PostMapping("/update/{productId}")
     public ResponseEntity<ProductResponse> updateProduct(
-            @PathVariable Integer productId,
+            @PathVariable Long productId,
             @RequestBody ProductRequest updatedProduct
     ) {
         log.info("Updating product of id={}, Product={}", productId, updatedProduct);
@@ -65,7 +65,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/delete/{productId}")
-    public ResponseEntity<Void> deleteProductById(@PathVariable Integer productId) {
+    public ResponseEntity<Void> deleteProductById(@PathVariable Long productId) {
         log.info("Deleting product by id={}", productId);
         productServiceImpl.deleteProduct(productId);
 

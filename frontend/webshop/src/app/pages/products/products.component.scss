@@ -1,0 +1,10 @@
+.product {
+    max-width: 200px;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  }
+
+  .product:hover {
+    cursor: pointer;
+    transform: translateY(-10px);
+  }
+  

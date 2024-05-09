@@ -1,3 +1,46 @@
-<app-header></app-header>
-<router-outlet></router-outlet>
-<app-footer></app-footer>
+<div class="example-container" [class.example-is-mobile]="mobileQuery.matches">
+  <mat-toolbar class="example-toolbar">
+    <button class="d-md-none me-2" mat-icon-button (click)="snav.toggle()">
+        <mat-icon>menu</mat-icon>
+    </button>
+    <h1 class="header-title">PARFEMI.HR</h1>
+    <mat-icon class="ms-1">air_purifier</mat-icon>
+    <span class="spacer"></span>
+    <nav mat-tab-nav-bar [tabPanel]="tabPanel">
+        @for (link of links; track link) {
+          <a mat-tab-link
+            (click)="activeLink = link.url"
+            [active]="activeLink == link.url"
+            [routerLink]="[link.url]" routerLinkActive="router-link-active" > {{link.title}} </a>
+        }
+      </nav>
+      <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>
+        <span class="spacer"></span>
+    <button mat-icon-button aria-label="Example icon-button with heart icon">
+      <mat-icon>favorite</mat-icon>
+    </button>
+    <button mat-icon-button aria-label="Example icon-button with share icon">
+      <mat-icon>share</mat-icon>
+    </button>
+  </mat-toolbar>
+  <mat-sidenav-container
+    class="example-sidenav-container"
+    [style.marginTop.px]="mobileQuery.matches ? 56 : 0"
+  >
+    <mat-sidenav
+      #snav
+      [mode]="mobileQuery.matches ? 'over' : 'side'"
+      [fixedInViewport]="mobileQuery.matches"
+      fixedTopGap="56"
+    >
+      <mat-nav-list>
+        @for (link of links; track link) {
+        <a mat-list-item routerLink=".">{{ link.title }}</a>
+        }
+      </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

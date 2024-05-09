@@ -13,8 +13,9 @@ public class ProductMapper {
                 .price(productRequest.getPrice())
                 .description(productRequest.getDescription())
                 .categoryId(productRequest.getCategoryId())
-                .categoryName(productRequest.getCategoryName())
-                .createdAt(productRequest.getCreatedAt())
+                .typeId(productRequest.getTypeId())
+                .brandId(productRequest.getBrandId())
+                .size(productRequest.getSize())
                 .build();
 
         return product;
@@ -28,8 +29,9 @@ public class ProductMapper {
                 .price(product.getPrice())
                 .description(product.getDescription())
                 .categoryId(product.getCategoryId())
-                .categoryName(product.getCategoryName())
-                .createdAt(product.getCreatedAt())
+                .typeId(product.getTypeId())
+                .brandId(product.getBrandId())
+                .size(product.getSize())
                 .build();
 
         return productResponse;

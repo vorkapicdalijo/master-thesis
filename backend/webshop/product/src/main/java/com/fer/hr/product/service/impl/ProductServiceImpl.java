@@ -23,7 +23,7 @@ public class ProductServiceImpl implements ProductService {
     private final InventoryClient inventoryClient;
 
     @Override
-    public ProductResponse getProductById(Integer productId) {
+    public ProductResponse getProductById(Long productId) {
         Optional<Product> product =  productRepository.findById(productId);
 
         if(product.isEmpty()) {
@@ -69,14 +69,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductResponse updateProduct(Integer productId, ProductRequest updatedProduct) {
+    public ProductResponse updateProduct(Long productId, ProductRequest updatedProduct) {
         Optional<Product> product = productRepository.findById(productId);
 
         if (product.isPresent()) {
             product.get().setName(updatedProduct.getName());
             product.get().setCategoryId(updatedProduct.getCategoryId());
-            product.get().setCategoryName(updatedProduct.getCategoryName());
-            product.get().setCreatedAt(updatedProduct.getCreatedAt());
+            product.get().setTypeId(updatedProduct.getTypeId());
+            product.get().setBrandId(updatedProduct.getBrandId());
             product.get().setDescription(updatedProduct.getDescription());
             product.get().setPrice(updatedProduct.getPrice());
         }
@@ -88,7 +88,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Void deleteProduct(Integer productId) {
+    public Void deleteProduct(Long productId) {
         productRepository.deleteById(productId);
 
         // TODO: Check if > 0 & Update the Inventory ammount of the product in Inventory Microservice
