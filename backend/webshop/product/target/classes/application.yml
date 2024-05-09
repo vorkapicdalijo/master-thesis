@@ -7,11 +7,6 @@ spring:
     password: password
     url: jdbc:postgresql://localhost:5432/product
     username: admin
-  #security:
-    #oauth2:
-      #resourceserver:
-        #jwt:
-          #jwk-set-uri: http://localhost:8181/realms/webshop/protocol/openid-connect/certs
   jpa:
     hibernate:
       ddl-auto: update
