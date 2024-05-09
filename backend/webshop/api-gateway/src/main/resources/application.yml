@@ -8,12 +8,33 @@ spring:
     base-url: http://localhost:9411
   cloud:
     gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
       routes:
         - id: product
           uri: lb://product
           predicates:
-            - Path=/api/products/**
-
+            - Path=/api/products
+        - id: eureka
+          uri: http://localhost:8761
+          predicates:
+            - Path=/eureka/web
+          filters:
+            - SetPath=/
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "http://localhost:4200"
+            allowedHeaders: "*"
+            allowCredentials: true
+            allowedMethods:
+              - GET
+              - POST
+              - DELETE
+              - PUT
+              - OPTIONS
 eureka:
   client:
     service-url:
