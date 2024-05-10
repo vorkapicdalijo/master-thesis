@@ -1,0 +1,50 @@
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { ProductService } from '../../services/product.service';
+import { Product } from '../../models/product';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+
+@Component({
+  selector: 'app-product-details',
+  standalone: true,
+  imports: [
+    MatFormFieldModule,
+    FormsModule,
+    MatSelectModule,
+    ReactiveFormsModule,
+    MatButtonModule,
+    MatIconModule,
+  ],
+  templateUrl: './product-details.component.html',
+  styleUrl: './product-details.component.scss',
+})
+export class ProductDetailsComponent implements OnInit {
+  productId!: number;
+  product!: Product;
+  isLoaded: boolean = false;
+
+  amounts: number[] = Array.from({ length: 10 }, (_, i) => i + 1);
+  selectedAmount: number = 1;
+
+  constructor(
+    private productService: ProductService,
+    private route: ActivatedRoute
+  ) {}
+
+  ngOnInit(): void {
+    this.route.params.subscribe((params) => {
+      this.productId = params['id'];
+
+      this.productService
+        .getProductById(this.productId)
+        .subscribe((product) => {
+          this.product = product;
+          this.isLoaded = true;
+        });
+    });
+  }
+}

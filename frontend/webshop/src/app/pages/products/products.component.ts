@@ -4,6 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 import { Product } from '../../models/product';
 import { MatRippleModule } from '@angular/material/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-products',
@@ -16,7 +17,7 @@ export class ProductsComponent implements OnInit {
 
   products: Product[] = [];
 
-  constructor(private productService: ProductService){}
+  constructor(private productService: ProductService, private router: Router){}
   
   ngOnInit(): void {
     this.productService.getProducts()
@@ -25,5 +26,8 @@ export class ProductsComponent implements OnInit {
       })
   }
 
+  public openProductDetails(productId: number) {
+    this.router.navigateByUrl(`product-details/${productId}`);
+  }
 
 }

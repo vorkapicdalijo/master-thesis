@@ -1,7 +1,9 @@
 <div class="mt-5 container-sm">
     <div class="row justify-content-center">
         @for (product of products; track product) {
-            <mat-card class="product col m-2">
+            <mat-card 
+                class="product col m-2"
+                (click)="openProductDetails(product.id)">
                 <img mat-card-image src="../../../assets/images/eros.jpg" alt="Photo of a Shiba Inu">
                 <mat-card-header>
                     <mat-card-title>Versace Eros</mat-card-title>

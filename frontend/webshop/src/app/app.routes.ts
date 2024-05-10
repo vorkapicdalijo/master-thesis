@@ -3,9 +3,11 @@ import { HomeComponent } from './pages/home/home.component';
 import { LoginComponent } from './pages/login/login.component';
 import { ProductsComponent } from './pages/products/products.component';
 import { AboutUsComponent } from './pages/about-us/about-us.component';
+import { ProductDetailsComponent } from './pages/product-details/product-details.component';
 
 export const routes: Routes = [
     { path: 'products', component: ProductsComponent },
+    { path: 'product-details/:id', component: ProductDetailsComponent },
     { path: 'home', component: HomeComponent },
     { path: 'login', component: LoginComponent },
     { path: 'about-us', component: AboutUsComponent },
