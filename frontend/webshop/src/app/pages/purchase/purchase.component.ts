@@ -38,8 +38,11 @@ export class PurchaseComponent implements OnInit {
     email: ['', [Validators.required, Validators.email]],
     phoneNumber: ['', [Validators.required, Validators.minLength(7), Validators.maxLength(12), Validators.pattern('[- +()0-9]+')]],
   });
-  secondFormGroup = this.fb.group({
-    secondCtrl: ['', Validators.required],
+  addressFormGroup = this.fb.group({
+    address: ['', Validators.required],
+    city: ['', Validators.required],
+    zipCode: ['', Validators.required],
+    country: ['', Validators.required],
   });
   thirdFormGroup = this.fb.group({
     thirdCtrl: ['', Validators.required],
