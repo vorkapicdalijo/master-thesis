@@ -7,6 +7,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { CartItem } from '../../models/cart-item';
+import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'app-product-details',
@@ -32,7 +34,8 @@ export class ProductDetailsComponent implements OnInit {
 
   constructor(
     private productService: ProductService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private cartService: CartService
   ) {}
 
   ngOnInit(): void {
@@ -46,5 +49,16 @@ export class ProductDetailsComponent implements OnInit {
           this.isLoaded = true;
         });
     });
+  }
+
+  public addProductToCart() {
+    const cartItem = new CartItem(
+      this.product.id,
+      this.product.name,
+      this.product.price,
+      this.selectedAmount
+    );
+
+    this.cartService.addToCart(cartItem);
   }
 }

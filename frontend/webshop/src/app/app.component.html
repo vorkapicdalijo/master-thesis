@@ -17,7 +17,7 @@
       <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>
         <span class="spacer"></span>
     <button mat-icon-button>
-      <mat-icon>shopping_basket</mat-icon>
+      <mat-icon aria-hidden="false" [matBadge]="getCartItemsCount()">shopping_basket</mat-icon>
     </button>
     <button mat-icon-button>
       <mat-icon>person_outline</mat-icon>
