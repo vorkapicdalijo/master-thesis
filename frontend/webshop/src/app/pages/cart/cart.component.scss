@@ -23,17 +23,27 @@
 }
 
 .cart-item-amount {
-  font-size: 14px;
+  font-size: 18px;
 }
 
 .cart-item-price {
-  font-size: 14px;
+  font-size: 18px;
   font-weight: 600;
 }
 
-.total-container {
+.cart-item-title {
   font-size: 18px;
+}
+
+.total-container {
+  font-size: 20px;
   span {
-    font-size: 18px;
+    font-size: 20px;
+  }
+}
+
+div.cart-actions-container {
+  button {
+    font-size: 20px;
   }
 }

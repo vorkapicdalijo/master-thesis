@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cart',
@@ -29,7 +30,7 @@ export class CartComponent implements OnInit {
   amounts: number[] = Array.from({ length: 10 }, (_, i) => i + 1);
   selectedAmount: number = 1;
 
-  constructor(private cartService: CartService) {}
+  constructor(private cartService: CartService, private router: Router) {}
 
   ngOnInit(): void {
     this.cartItems = this.cartService.getCartItems();
@@ -59,5 +60,13 @@ export class CartComponent implements OnInit {
     });
 
     return total;
+  }
+
+  public navigateToProductsPage() {
+    this.router.navigateByUrl('/products');
+  }
+
+  public navigateToPurchasePage() {
+    this.router.navigateByUrl('/purchase');
   }
 }

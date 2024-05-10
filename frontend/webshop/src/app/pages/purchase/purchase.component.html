@@ -1,0 +1,95 @@
+<div class="container rounded-pill mt-5">
+    <mat-stepper
+    class="stepper"
+    [orientation]="(stepperOrientation | async)!"
+    [linear]="true">
+    <mat-step [stepControl]="personalInfoFormGroup" label="Fill out your information" >
+        <form [formGroup]="personalInfoFormGroup" class="mt-3 d-flex flex-column flex-md-row justify-content-around align-items-center">
+            <div class="d-flex flex-column">
+                <h2 class="mb-3">Your Information</h2>
+                <mat-form-field appearance="outline">
+                    <mat-label>First Name</mat-label>
+                    <input matInput placeholder="Your First name" formControlName="firstName" required >
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Last Name</mat-label>
+                    <input matInput placeholder="Your Last name" formControlName="lastName" required >
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Email</mat-label>
+                    <input matInput placeholder="Your email" formControlName="email" required email >
+                    <mat-icon matSuffix>email</mat-icon>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Phone Number</mat-label>
+                    <input matInput placeholder="Your phone number" formControlName="phoneNumber" required maxlength="12" minlength="7" number>
+                    <mat-icon matSuffix>phone</mat-icon>
+                </mat-form-field>
+                <div class="mt-3">
+                    <button mat-flat-button color="primary" matStepperNext [disabled]="personalInfoFormGroup.invalid" (click)="savePersonInfo()">Proceed</button>
+                </div>
+            </div>
+            <div class="d-flex flex-column">
+              <div class="order-summary-container px-5 py-3 mt-4 mt-md-0">
+                <h2 class="mb-3">Order Summary</h2>
+                <div class="d-flex flex-column justify-content-center w-100">
+                @for (item of cartItems; track item) {
+                    <button mat-menu-item class="p-0 px-3 py-2 my-1 w-100" style="max-width: 250px;" (click)="openCartItemDetails(item.id)">
+                    <div class="d-flex flex-row" style="width: 180px;">
+                        <img  src="../../../assets/images/eros.jpg" class="mx-auto mx-md-0" style="max-width: 75px; border-radius:15px;" width="100%" alt="Photo">
+                        <div class="my-auto ms-3 w-100">
+                          <span class="cart-item-title">{{item.name}}</span>
+                          <br/>
+                          <div class="d-flex flex-row justify-content-between mt-2 w-100">
+                              <span class="cart-item-amount">x{{item.amount}}</span>
+                              <span class="cart-item-price">{{getCartItemPrice(item)}} €</span>
+                          </div>
+                        </div>
+                    </div>
+                    </button>
+                    <div class="horizontal-line my-2 w-100"></div>
+                }
+                <div class="total-container my-2 w-100 d-flex justify-content-space-between">
+                  <span class="spacer"></span>
+                  Total:<span class="cart-item-price ms-3"> {{calculateTotalPrice()}} €</span>
+                </div>
+              </div>
+              <div></div>
+            </div>
+          </div>
+        </form>
+    </mat-step>
+    <mat-step [stepControl]="secondFormGroup" label="Fill out your address">
+        <form [formGroup]="secondFormGroup">
+        <mat-form-field>
+            <mat-label>Address</mat-label>
+            <input matInput formControlName="secondCtrl" placeholder="Ex. 1 Main St, New York, NY"
+                required>
+        </mat-form-field>
+        <div>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button matStepperNext>Next</button>
+        </div>
+        </form>
+    </mat-step>
+    <mat-step [stepControl]="thirdFormGroup" label="Order summary">
+        <form [formGroup]="thirdFormGroup">
+        <mat-form-field>
+            <mat-label>Phone number</mat-label>
+            <input matInput formControlName="thirdCtrl" placeholder="Ex. 12345678" required>
+        </mat-form-field>
+        <div>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button matStepperNext>Next</button>
+        </div>
+        </form>
+    </mat-step>
+    <mat-step label="Payment">
+        <ng-template matStepLabel>Payment</ng-template>
+        <p>You are now done.</p>
+        <div>
+        <button mat-button matStepperPrevious>Back</button>
+        </div>
+    </mat-step>
+    </mat-stepper>
+</div>

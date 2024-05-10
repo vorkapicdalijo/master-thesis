@@ -27,4 +27,13 @@
       Total:<span class="cart-item-price ms-3"> {{calculateTotalPrice()}} €</span>
     </div>
   </div>
+  <div class="cart-actions-container d-flex flex-row mt-3">
+    <button mat-stroked-button class="p-4" (click)="navigateToProductsPage()">
+      Back to Store
+    </button>
+    <span class="spacer"></span>
+    <button mat-flat-button class="p-4" color="primary" (click)="navigateToPurchasePage()">
+      Purchase
+    </button>
+  </div>
 </div>
