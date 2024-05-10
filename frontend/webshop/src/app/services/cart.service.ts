@@ -2,11 +2,14 @@ import { Injectable, PLATFORM_ID, inject } from '@angular/core';
 import { CartItem } from '../models/cart-item';
 import { AuthService } from './auth.service';
 import { isPlatformBrowser } from '@angular/common';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
+
+  cartSub: Subject<boolean> = new Subject();
 
   cartItems: CartItem[] = [];
   private readonly platformId = inject(PLATFORM_ID);
@@ -29,6 +32,8 @@ export class CartService {
     }
 
     this.saveCart();
+
+    this.cartSub.next(true);
   }
 
   public saveCart() {
@@ -40,6 +45,7 @@ export class CartService {
   }
 
   public getCartItems() {
+    this.loadCart();
     return this.cartItems;
   }
 
@@ -63,6 +69,8 @@ export class CartService {
     if (index > -1) {
       this.cartItems.splice(index, 1);
       this.saveCart();
+
+      this.cartSub.next(true);
     }
   }
 

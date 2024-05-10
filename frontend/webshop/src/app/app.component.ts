@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import {
   Router,
   RouterModule,
@@ -13,6 +13,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatBadgeModule } from '@angular/material/badge';
 import { CartService } from './services/cart.service';
+import {MatMenuModule} from '@angular/material/menu';
+import { CartItem } from './models/cart-item';
 
 @Component({
   selector: 'app-root',
@@ -27,11 +29,12 @@ import { CartService } from './services/cart.service';
     MatTabsModule,
     RouterModule,
     MatBadgeModule,
+    MatMenuModule
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterViewInit {
   title = 'webshop';
   links = [
     { url: '/home', title: 'Home' },
@@ -39,31 +42,51 @@ export class AppComponent implements OnInit {
     { url: '/about-us', title: 'About Us' },
   ];
   activeLink = '';
+  cartItems: CartItem[] = [];
+  cartItemsCount: number = 0;
 
   mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;
 
   constructor(
-    changeDetectorRef: ChangeDetectorRef,
+    private changeDetectorRef: ChangeDetectorRef,
     media: MediaMatcher,
     private router: Router,
-    private cartService: CartService
+    private cartService: CartService,
   ) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
   }
+  ngAfterViewInit(): void {
+    this.changeDetectorRef.detectChanges();
+  }
   ngOnInit(): void {
+    this.cartService.cartSub.subscribe(cartItemAdded => {
+      this.getCartItems();
+      this.getCartItemsCount();
+    })
+
     setTimeout(() => {
       this.activeLink = this.router.url;
     }, 100);
+    
+    this.getCartItems();
+    this.getCartItemsCount();
   }
 
-  public getCartItemsCount() {
-    return this.cartService.getCartItemCount();
+  public getCartItemsCount(): void {
+    this.cartItemsCount = this.cartService.getCartItemCount();
   }
 
+  public getCartItems(): void {
+    this.cartItems = this.cartService.getCartItems();
+  }
 
+  public getCartItemPrice(item: CartItem): number {
+    return item.amount*item.price;
+  }
+  
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
   }
