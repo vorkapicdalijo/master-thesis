@@ -25,7 +25,7 @@
               mat-flat-button 
               class="h-100 ms-2" 
               color="primary"
-              (click)="addProductToCart()">
+              (click)="addProductToCart(); openSnackBar('Product added to Cart!', 'Dismiss')">
               <span>Add to cart</span>
               <mat-icon>shopping_basket</mat-icon>
             </button>

@@ -1,0 +1,30 @@
+<div class="container px-1 px-md-5 mt-5">
+  <h1 class="text-center mb-5">Your Cart</h1>
+  @for(item of cartItems; track item; let idx = $index){
+      <div class="d-flex flex-row align-items-center row justify-content-center text-align-center my-3 mx-2 mx-md-5">
+        <img mat-card-image src="../../../assets/images/eros.jpg" class="col-12 col-md-2 mx-auto mx-md-0" alt="Photo">
+        <h3 class="col-12 col-md-3 my-3 text-center text-md-start cart-item-title">{{item.name}}</h3>
+        <span class="col cart-item-amount text-center">{{item.price}} €</span>
+        <div class="col" style="max-width: 100px;">
+          <mat-form-field style="width: 100%; font-size: 14px; margin-bottom: -20px;">
+            <mat-select [(ngModel)]="item.amount" name="food" (selectionChange)="amountSelectionChange()">
+              @for (amount of amounts; track amount) {
+                <mat-option [value]="amount">{{amount}}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <span class="col cart-item-price text-center">{{getCartItemPrice(item)}} €</span>
+        <button mat-icon-button class="col-12 col-md-3" (click)="removeItemFromCart(idx)">
+          <mat-icon>remove_shopping_cart</mat-icon>
+        </button>
+      </div>
+  <mat-divider></mat-divider>
+  }
+  <div class="total-price mt-3 px-5 py-3 w-100 d-flex justify-content-space-between">
+    <span class="spacer"></span>
+    <div class="total-container">
+      Total:<span class="cart-item-price ms-3"> {{calculateTotalPrice()}} €</span>
+    </div>
+  </div>
+</div>

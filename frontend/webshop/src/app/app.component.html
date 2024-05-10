@@ -29,7 +29,7 @@
     <mat-menu #menu="matMenu">
       <div class="container d-flex flex-column justify-content-center">
         @for (item of cartItems; track item) {
-          <button mat-menu-item class="p-0 my-1">
+          <button mat-menu-item class="p-0 my-1" (click)="openCartItemDetails(item.id)">
             <div class="d-flex flex-row">
               <img mat-card-image src="../../../assets/images/eros.jpg" class="mx-auto mx-md-0" style="max-width: 75px;" width="100%" alt="Photo">
               <div class="my-auto w-100 ms-3">
@@ -46,7 +46,8 @@
         <button 
               mat-flat-button  
               class="mt-4"
-              color="primary">
+              color="primary"
+              (click)="navigateToCartPage()">
               <span>Go to Cart</span>
               <mat-icon>shopping_basket</mat-icon>
             </button>

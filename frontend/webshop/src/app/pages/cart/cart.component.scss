@@ -1,0 +1,39 @@
+.spacer {
+  flex: 1 1 auto;
+}
+
+.total-price {
+  background-color: rgb(245, 245, 245);
+}
+
+.mat-mdc-icon-button {
+    color: rgba(0, 0, 0, 0.6);
+}
+
+@media screen and (max-width: 770px) {
+  img {
+    max-width: 250px;
+  }
+}
+
+@media screen and (min-width: 770px) {
+  img {
+    max-width: 150px;
+  }
+}
+
+.cart-item-amount {
+  font-size: 14px;
+}
+
+.cart-item-price {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.total-container {
+  font-size: 18px;
+  span {
+    font-size: 18px;
+  }
+}

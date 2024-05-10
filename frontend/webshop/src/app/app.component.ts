@@ -86,6 +86,14 @@ export class AppComponent implements OnInit, AfterViewInit {
   public getCartItemPrice(item: CartItem): number {
     return item.amount*item.price;
   }
+
+  public openCartItemDetails(productId: number) {
+    this.router.navigateByUrl(`/product-details/${productId}`);
+  }
+
+  public navigateToCartPage() {
+    this.router.navigateByUrl('/cart');
+  }
   
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);

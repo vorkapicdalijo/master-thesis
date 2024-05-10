@@ -2,13 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ProductService } from '../../services/product.service';
 import { Product } from '../../models/product';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { CartItem } from '../../models/cart-item';
 import { CartService } from '../../services/cart.service';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-product-details',
@@ -17,7 +18,6 @@ import { CartService } from '../../services/cart.service';
     MatFormFieldModule,
     FormsModule,
     MatSelectModule,
-    ReactiveFormsModule,
     MatButtonModule,
     MatIconModule,
   ],
@@ -35,7 +35,8 @@ export class ProductDetailsComponent implements OnInit {
   constructor(
     private productService: ProductService,
     private route: ActivatedRoute,
-    private cartService: CartService
+    private cartService: CartService,
+    private _snackBar: MatSnackBar,
   ) {}
 
   ngOnInit(): void {
@@ -60,5 +61,9 @@ export class ProductDetailsComponent implements OnInit {
     );
 
     this.cartService.addToCart(cartItem);
+  }
+
+  public openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {duration: 3000});
   }
 }
