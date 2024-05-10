@@ -13,6 +13,7 @@ import { CartService } from '../../services/cart.service';
 import { CartItem } from '../../models/cart-item';
 import { Router } from '@angular/router';
 import { MatMenuModule } from '@angular/material/menu';
+import { PaymentService, PaypalResponse } from '../../services/payment.service';
 
 @Component({
   selector: 'app-purchase',
@@ -50,12 +51,14 @@ export class PurchaseComponent implements OnInit {
   stepperOrientation: Observable<StepperOrientation>;
 
   cartItems: CartItem[] = [];
+  paypalResponse!: PaypalResponse;
 
   constructor(
     private fb: FormBuilder,
     breakpointObserver: BreakpointObserver,
     private cartService: CartService,
-    private router: Router
+    private router: Router,
+    private paymentService: PaymentService,
   ) {
     this.stepperOrientation = breakpointObserver
       .observe('(min-width: 750px)')
@@ -64,6 +67,13 @@ export class PurchaseComponent implements OnInit {
 
   ngOnInit(): void {
     this.cartItems = this.cartService.getCartItems();
+    
+    this.paypalResponse = this.paymentService.paypalResponse;
+    if (this.paypalResponse)
+      this.paymentService.completePayment(this.paypalResponse.token)
+      .subscribe(res => {
+        console.log(res);
+      })
   }
 
   public openCartItemDetails(productId: number) {
@@ -89,6 +99,16 @@ export class PurchaseComponent implements OnInit {
 
   public savePersonInfo() {
     console.log(this.personalInfoFormGroup);
+  }
+
+  public sendPaymentOrder() {
+    var sum = 2;
+
+    this.paymentService.sendPaymentOrder(sum)
+      .subscribe(res => {
+        console.log(res);
+        window.location.href = res.redirectUrl
+      })
   }
 
   

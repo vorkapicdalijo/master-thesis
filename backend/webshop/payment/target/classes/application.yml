@@ -1,0 +1,8 @@
+server:
+  port: 8085
+spring:
+  application:
+    name: payment
+paypal:
+  clientId: AZNtdsOelf0q-PwHLYs4r1f1dSgs0ZW8IbsFj8JdINUUGaDbhh-KtDCTI8zqh043bFU30MVNP534dTI1
+  clientSecret: EA_Rzwrs91PbZsyYttyedTE4VsIIOgzv8-lEshDDa68HfZFAHc-uWqUlYO5_dVB0wGoea1W7AmbomxFd

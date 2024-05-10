@@ -1,5 +1,6 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import {
+  ActivatedRoute,
   Router,
   RouterModule,
   RouterOutlet,
@@ -15,6 +16,7 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { CartService } from './services/cart.service';
 import {MatMenuModule} from '@angular/material/menu';
 import { CartItem } from './models/cart-item';
+import { PaymentService } from './services/payment.service';
 
 @Component({
   selector: 'app-root',
@@ -53,6 +55,8 @@ export class AppComponent implements OnInit, AfterViewInit {
     media: MediaMatcher,
     private router: Router,
     private cartService: CartService,
+    private route: ActivatedRoute,
+    private paymentService: PaymentService,
   ) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
@@ -65,7 +69,16 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.cartService.cartSub.subscribe(cartItemAdded => {
       this.getCartItems();
       this.getCartItemsCount();
-    })
+    });
+  
+    this.route.queryParams
+      .subscribe(params => {
+        if(params['token'] && params['PayerID']) {
+          //this.paymentService.paymentSub.next({token: params['token'], PayerID: params['PayerID']});
+          this.paymentService.paypalResponse = {token: params['token'], PayerID: params['PayerID']};
+          this.router.navigateByUrl('purchase');
+        }
+      });
 
     setTimeout(() => {
       this.activeLink = this.router.url;
