@@ -2,7 +2,9 @@
     <mat-stepper
     class="stepper"
     [orientation]="(stepperOrientation | async)!"
-    [linear]="false">
+    [linear]="false"
+    [selectedIndex]="currentStep"
+    #stepper>
     <mat-step [stepControl]="personalInfoFormGroup" label="Fill out your information" >
         <form [formGroup]="personalInfoFormGroup" class="mt-3 d-flex flex-column flex-md-row justify-content-around align-items-center">
             <div class="d-flex flex-column">
@@ -26,7 +28,7 @@
                     <mat-icon matSuffix>phone</mat-icon>
                 </mat-form-field>
                 <div class="mt-3">
-                    <button mat-flat-button color="primary" matStepperNext [disabled]="personalInfoFormGroup.invalid" (click)="savePersonInfo()">Proceed</button>
+                    <button mat-flat-button color="primary" matStepperNext [disabled]="personalInfoFormGroup.invalid">Proceed</button>
                 </div>
             </div>
             <div class="d-flex flex-column">
@@ -85,7 +87,7 @@
             </mat-form-field>
             <div class="mt-3">
                 <button mat-flat-button matStepperPrevious class="me-1">Back</button>
-                <button mat-flat-button color="primary" matStepperNext [disabled]="addressFormGroup.invalid" (click)="savePersonInfo()">Proceed</button>
+                <button mat-flat-button color="primary" matStepperNext [disabled]="addressFormGroup.invalid" (click)="submitPurchaseData()">Proceed</button>
             </div>
         </div>
         <div class="d-flex flex-column">
@@ -118,24 +120,20 @@
       </div>
     </form>
     </mat-step>
-    <mat-step [stepControl]="thirdFormGroup" label="Order summary">
-        <form [formGroup]="thirdFormGroup">
-        <mat-form-field>
-            <mat-label>Phone number</mat-label>
-            <input matInput formControlName="thirdCtrl" placeholder="Ex. 12345678" required>
-        </mat-form-field>
-        <div>
-            <button mat-button matStepperPrevious>Back</button>
-            <button mat-button matStepperNext>Next</button>
+    <mat-step [stepControl]="thirdFormGroup" label="Summary">
+        <div class="container mx-auto">
+
         </div>
-        </form>
     </mat-step>
     <mat-step label="Payment">
         <ng-template matStepLabel>Payment</ng-template>
+        <h1>{{isPaymentSuccess}}</h1>
         <div class="my-3 container w-100 d-flex flex-column align-items-center">
           <h2>Payment</h2>
           <div>
-            <button mat-flat-button color="primary" (click)="sendPaymentOrder()">Paypal</button>
+            <button mat-raised-button (click)="sendPaymentOrder()">
+              <img  src="../../../assets/images/paypal.png" class="mx-auto mx-md-0" style="max-width: 100px;" width="100%" alt="Photo">
+            </button>
           </div>
         </div>
         <div>

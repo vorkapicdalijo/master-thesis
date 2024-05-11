@@ -2,7 +2,11 @@
   border-radius: 20px;
 }
 
-::ng-deep .mat-step-header:hover {
+::ng-deep .mat-step-header:hover{
+  border-radius: 15px !important;
+}
+
+::ng-deep .mat-step-header:focus {
   border-radius: 15px !important;
 }
 

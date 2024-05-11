@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {FormBuilder, Validators, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {BreakpointObserver} from '@angular/cdk/layout';
-import {StepperOrientation, MatStepperModule} from '@angular/material/stepper';
+import {StepperOrientation, MatStepperModule, MatStepper} from '@angular/material/stepper';
 import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {first, map, take} from 'rxjs/operators';
 import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -11,9 +11,12 @@ import {AsyncPipe} from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { CartService } from '../../services/cart.service';
 import { CartItem } from '../../models/cart-item';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatMenuModule } from '@angular/material/menu';
 import { PaymentService, PaypalResponse } from '../../services/payment.service';
+import { Purchase } from '../../models/purchase';
+import { Person } from '../../models/person';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-purchase',
@@ -33,6 +36,8 @@ import { PaymentService, PaypalResponse } from '../../services/payment.service';
   styleUrl: './purchase.component.scss'
 })
 export class PurchaseComponent implements OnInit {
+  @ViewChild('stepper') stepper!: MatStepper;
+
   personalInfoFormGroup = this.fb.group({
     firstName: ['', Validators.required,],
     lastName: ['', Validators.required],
@@ -49,9 +54,13 @@ export class PurchaseComponent implements OnInit {
     thirdCtrl: ['', Validators.required],
   });
   stepperOrientation: Observable<StepperOrientation>;
+  currentStep = 0;
 
   cartItems: CartItem[] = [];
   paypalResponse!: PaypalResponse;
+  isPaymentSuccess: boolean = false;
+  isPaymentCanceled: boolean = false;
+  finishedPayment: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -59,6 +68,8 @@ export class PurchaseComponent implements OnInit {
     private cartService: CartService,
     private router: Router,
     private paymentService: PaymentService,
+    private authService: AuthService,
+    private route: ActivatedRoute,
   ) {
     this.stepperOrientation = breakpointObserver
       .observe('(min-width: 750px)')
@@ -67,14 +78,39 @@ export class PurchaseComponent implements OnInit {
 
   ngOnInit(): void {
     this.cartItems = this.cartService.getCartItems();
-    
-    this.paypalResponse = this.paymentService.paypalResponse;
-    if (this.paypalResponse)
-      this.paymentService.completePayment(this.paypalResponse.token)
+    let token = (this.route.snapshot.queryParams['token']);
+
+    this.paymentService.completePayment(token)
       .subscribe(res => {
         console.log(res);
-      })
+        this.currentStep = 3;
+        if(res.status == 'success') {
+          this.isPaymentSuccess = true;
+          //localStorage.setItem('payment', JSON.stringify({status: res.status}))
+        }
+        else {
+          this.isPaymentSuccess = false;
+        }
+        
+      });
   }
+  //       if(params['token'] && params['PayerID'] && !this.finishedPayment) {
+  //         this.finishedPayment = true;
+  //         this.paymentService.completePayment(params['token'])
+  //           .subscribe(res => {
+  //             this.currentStep = 3;
+  //             if(res.status == 'success') {
+  //               localStorage.setItem('payment', JSON.stringify({status: res.status, payId: res.payId}));
+  //               this.isPaymentSuccess = true;
+
+  //             }
+  //             else {
+  //               this.isPaymentSuccess = false;
+  //             }
+              
+  //           });
+  //       }
+  // }
 
   public openCartItemDetails(productId: number) {
     this.router.navigateByUrl(`/product-details/${productId}`);
@@ -97,14 +133,35 @@ export class PurchaseComponent implements OnInit {
     return total;
   }
 
-  public savePersonInfo() {
-    console.log(this.personalInfoFormGroup);
+  public submitPurchaseData() {
+    let buyerInfo: Person = new Person(
+      this.authService.userId,
+      this.personalInfoFormGroup.get('firstname')?.value!,
+      this.personalInfoFormGroup.get('lastName')?.value!,
+      this.personalInfoFormGroup.get('email')?.value!,
+      this.personalInfoFormGroup.get('phoneNumber')?.value!,
+      this.addressFormGroup.get('address')?.value!,
+      this.addressFormGroup.get('city')?.value!,
+      parseInt(this.addressFormGroup.get('zipCode')?.value!),
+      this.addressFormGroup.get('country')?.value!,
+    );
+
+    // let purchaseInfo: Purchase = new Purchase(
+    //   null,
+    //   new Date(),
+    //   this.calculateTotalPrice(),
+    //   buyerInfo,
+    //   this.paypalResponse.PayerID
+    // )
+
+    
   }
 
   public sendPaymentOrder() {
     var sum = 2;
 
     this.paymentService.sendPaymentOrder(sum)
+      .pipe(take(1))
       .subscribe(res => {
         console.log(res);
         window.location.href = res.redirectUrl

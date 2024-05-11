@@ -3,15 +3,17 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
 export interface PaypalResponse {
-  token: string,
-  PayerID: string
+  token?: string,
+  PayerID?: string,
+  payID?: string,
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class PaymentService {
-  paymentSub: Subject<PaypalResponse> = new Subject();
+  paymentSub: Subject<string> = new Subject();
+  flag: boolean = false;
   paypalResponse!: PaypalResponse;
 
   constructor(private http: HttpClient) { }

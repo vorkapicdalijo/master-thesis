@@ -17,6 +17,12 @@ import { CartService } from './services/cart.service';
 import {MatMenuModule} from '@angular/material/menu';
 import { CartItem } from './models/cart-item';
 import { PaymentService } from './services/payment.service';
+import { first, take } from 'rxjs';
+import {
+  MatDialog,
+  MatDialogModule,
+} from '@angular/material/dialog';
+import { PurchaseDialogComponent } from './dialogs/purchase-dialog/purchase-dialog.component';
 
 @Component({
   selector: 'app-root',
@@ -31,7 +37,8 @@ import { PaymentService } from './services/payment.service';
     MatTabsModule,
     RouterModule,
     MatBadgeModule,
-    MatMenuModule
+    MatMenuModule,
+    MatDialogModule,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -57,6 +64,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     private cartService: CartService,
     private route: ActivatedRoute,
     private paymentService: PaymentService,
+    public dialog: MatDialog,
   ) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
@@ -70,15 +78,6 @@ export class AppComponent implements OnInit, AfterViewInit {
       this.getCartItems();
       this.getCartItemsCount();
     });
-  
-    this.route.queryParams
-      .subscribe(params => {
-        if(params['token'] && params['PayerID']) {
-          //this.paymentService.paymentSub.next({token: params['token'], PayerID: params['PayerID']});
-          this.paymentService.paypalResponse = {token: params['token'], PayerID: params['PayerID']};
-          this.router.navigateByUrl('purchase');
-        }
-      });
 
     setTimeout(() => {
       this.activeLink = this.router.url;
@@ -106,6 +105,21 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   public navigateToCartPage() {
     this.router.navigateByUrl('/cart');
+  }
+
+  public openDialog(enterAnimationDuration: string, exitAnimationDuration: string, title: string): void {
+    const dialogRef = this.dialog.open(PurchaseDialogComponent, {
+      width: '250px',
+      enterAnimationDuration,
+      exitAnimationDuration,
+      data: {
+        title: title
+      },
+      position: {
+        top: '100px'
+      },
+      disableClose: false
+    });
   }
   
   ngOnDestroy(): void {
