@@ -22,7 +22,7 @@ export class CartService {
     this.loadCart();
     let itemExistsInCart: boolean = false;
     this.cartItems.forEach(item => {
-      if (item.id == addedItem.id) {
+      if (item.productId == addedItem.productId) {
         itemExistsInCart = true;
         item.amount = item.amount + addedItem.amount;
       }
@@ -63,7 +63,7 @@ export class CartService {
 
   public removeCartItem(itemId: number) {
     const index = this.cartItems.findIndex(
-      item => item.id == itemId
+      item => item.productId == itemId
     );
 
     if (index > -1) {

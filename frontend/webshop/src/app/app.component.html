@@ -29,7 +29,7 @@
     <mat-menu #menu="matMenu">
       <div class="container d-flex flex-column justify-content-center">
         @for (item of cartItems; track item) {
-          <button mat-menu-item class="cart-menu-item p-0 my-1" (click)="openCartItemDetails(item.id)">
+          <button mat-menu-item class="cart-menu-item p-0 my-1" (click)="openCartItemDetails(item.productId)">
             <div class="d-flex flex-row">
               <img mat-card-image src="../../../assets/images/eros.jpg" class="mx-auto mx-md-0" style="max-width: 75px;" width="100%" alt="Photo">
               <div class="my-auto w-100 ms-3">

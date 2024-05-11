@@ -11,10 +11,9 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
 public class Person {
 
-    @Id
+    private Long id;
     private Long userId;
     private String firstName;
     private String lastName;

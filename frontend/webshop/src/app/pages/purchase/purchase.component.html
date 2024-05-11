@@ -36,7 +36,7 @@
                 <h2 class="mb-3">Order Summary</h2>
                 <div class="d-flex flex-column justify-content-center w-100">
                 @for (item of cartItems; track item) {
-                    <button mat-menu-item class="p-0 px-3 py-2 my-1 w-100" style="max-width: 250px;" (click)="openCartItemDetails(item.id)">
+                    <button mat-menu-item class="p-0 px-3 py-2 my-1 w-100" style="max-width: 250px;" (click)="openCartItemDetails(item.productId)">
                     <div class="d-flex flex-row" style="width: 180px;">
                         <img  src="../../../assets/images/eros.jpg" class="mx-auto mx-md-0" style="max-width: 75px; border-radius:15px;" width="100%" alt="Photo">
                         <div class="my-auto ms-3 w-100">
@@ -95,7 +95,7 @@
             <h2 class="mb-3">Order Summary</h2>
             <div class="d-flex flex-column justify-content-center w-100">
             @for (item of cartItems; track item) {
-                <button mat-menu-item class="p-0 px-3 py-2 my-1 w-100" style="max-width: 250px;" (click)="openCartItemDetails(item.id)">
+                <button mat-menu-item class="p-0 px-3 py-2 my-1 w-100" style="max-width: 250px;" (click)="openCartItemDetails(item.productId)">
                 <div class="d-flex flex-row" style="width: 180px;">
                     <img  src="../../../assets/images/eros.jpg" class="mx-auto mx-md-0" style="max-width: 75px; border-radius:15px;" width="100%" alt="Photo">
                     <div class="my-auto ms-3 w-100">

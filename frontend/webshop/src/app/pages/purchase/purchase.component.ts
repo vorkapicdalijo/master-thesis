@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, PLATFORM_ID, ViewChild, inject } from '@angular/core';
 import {FormBuilder, Validators, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {BreakpointObserver} from '@angular/cdk/layout';
 import {StepperOrientation, MatStepperModule, MatStepper} from '@angular/material/stepper';
@@ -7,7 +7,7 @@ import {first, map, take} from 'rxjs/operators';
 import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import {AsyncPipe} from '@angular/common';
+import {AsyncPipe, isPlatformBrowser} from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { CartService } from '../../services/cart.service';
 import { CartItem } from '../../models/cart-item';
@@ -17,6 +17,7 @@ import { PaymentService, PaypalResponse } from '../../services/payment.service';
 import { Order } from '../../models/order';
 import { Person } from '../../models/person';
 import { AuthService } from '../../services/auth.service';
+import { OrderService } from '../../services/order.service';
 
 @Component({
   selector: 'app-purchase',
@@ -56,11 +57,17 @@ export class PurchaseComponent implements OnInit {
   stepperOrientation: Observable<StepperOrientation>;
   currentStep = 0;
 
+  orderDetails!: Order;
   cartItems: CartItem[] = [];
   paypalResponse!: PaypalResponse;
+  token!: string;
+  payerId!: string;
+  payId!: string;
+
   isPaymentSuccess: boolean = false;
   isPaymentCanceled: boolean = false;
   finishedPayment: boolean = false;
+  private readonly platformId = inject(PLATFORM_ID);
 
   constructor(
     private fb: FormBuilder,
@@ -70,6 +77,7 @@ export class PurchaseComponent implements OnInit {
     private paymentService: PaymentService,
     private authService: AuthService,
     private route: ActivatedRoute,
+    private orderService: OrderService,
   ) {
     this.stepperOrientation = breakpointObserver
       .observe('(min-width: 750px)')
@@ -77,12 +85,15 @@ export class PurchaseComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.router.navigateByUrl('/purchase');
     this.cartItems = this.cartService.getCartItems();
-    let token = (this.route.snapshot.queryParams['token']);
+    this.token = (this.route.snapshot.queryParams['token']);
+    this.payerId = (this.route.snapshot.queryParams['PayerID']);
 
-    if (token) {
-      this.paymentService.completePayment(token)
+    if (this.token) {
+      this.paymentService.completePayment(this.token)
         .subscribe(res => {
+          this.saveOrderDetails();
           this.currentStep = 3;
           this.isPaymentSuccess = true;
         });
@@ -113,7 +124,7 @@ export class PurchaseComponent implements OnInit {
   public submitPurchaseData() {
     let buyerInfo: Person = new Person(
       this.authService.userId,
-      this.personalInfoFormGroup.get('firstname')?.value!,
+      this.personalInfoFormGroup.get('firstName')?.value!,
       this.personalInfoFormGroup.get('lastName')?.value!,
       this.personalInfoFormGroup.get('email')?.value!,
       this.personalInfoFormGroup.get('phoneNumber')?.value!,
@@ -123,24 +134,43 @@ export class PurchaseComponent implements OnInit {
       this.addressFormGroup.get('country')?.value!,
     );
 
-    // let purchaseInfo: Purchase = new Purchase(
-    //   null,
-    //   new Date(),
-    //   this.calculateTotalPrice(),
-    //   buyerInfo,
-    //   this.paypalResponse.PayerID
-    // )
+    let orderDetails: Order = new Order(
+      null!,
+      new Date(),
+      this.calculateTotalPrice(),
+      buyerInfo,
+      this.payId,
+      this.payerId,
+      this.cartItems
+    );
 
-    
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.setItem('orderDetails', JSON.stringify(orderDetails));
+    }
+  }
+
+  public saveOrderDetails() {
+    if (isPlatformBrowser(this.platformId)) {
+      this.orderDetails = JSON.parse(localStorage.getItem('orderDetails')!) ?? {}
+      this.payId = JSON.parse(localStorage.getItem('payId')!) ?? ''
+      this.orderDetails.payId = this.payId;
+      this.orderDetails.payerId = this.payerId;
+      
+      // this.orderService.sendOrderDetails(this.orderDetails)
+      //   .subscribe(res => {
+      //     console.log(res);
+      //   })
+    }
   }
 
   public sendPaymentOrder() {
-    var sum = 2;
 
-    this.paymentService.sendPaymentOrder(sum)
+    this.paymentService.sendPaymentOrder(this.calculateTotalPrice())
       .pipe(take(1))
       .subscribe(res => {
-        console.log(res);
+        if(isPlatformBrowser(this.platformId)) {
+          localStorage.setItem('payId', JSON.stringify(res.payId))
+        }
         window.location.href = res.redirectUrl
       })
   }

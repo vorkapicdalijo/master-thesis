@@ -11,16 +11,11 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table(name = "cart")
 public class CartItem {
-    @Id
+    private Long id;
     private Long productId;
     private String name;
     private Double price;
     private Integer amount;
-
-    @ManyToOne
-    @JoinColumn(name = "order_id", referencedColumnName="id", nullable=false,unique=true)
     private Order order;
 }

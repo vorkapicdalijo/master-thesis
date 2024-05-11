@@ -7,6 +7,7 @@ spring:
     password: password
     url: jdbc:postgresql://localhost:5432/order
     username: admin
+    type: org.apache.tomcat.jdbc.pool.DataSource
   jpa:
     hibernate:
       ddl-auto: update
