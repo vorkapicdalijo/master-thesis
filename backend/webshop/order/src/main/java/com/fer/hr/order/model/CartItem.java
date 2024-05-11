@@ -17,5 +17,5 @@ public class CartItem {
     private String name;
     private Double price;
     private Integer amount;
-    private Order order;
+    private Long orderId;
 }

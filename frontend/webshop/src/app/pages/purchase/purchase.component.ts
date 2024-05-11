@@ -156,10 +156,10 @@ export class PurchaseComponent implements OnInit {
       this.orderDetails.payId = this.payId;
       this.orderDetails.payerId = this.payerId;
       
-      // this.orderService.sendOrderDetails(this.orderDetails)
-      //   .subscribe(res => {
-      //     console.log(res);
-      //   })
+      this.orderService.sendOrderDetails(this.orderDetails)
+        .subscribe(res => {
+          console.log(res);
+        })
     }
   }
 

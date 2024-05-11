@@ -6,6 +6,7 @@ import { AboutUsComponent } from './pages/about-us/about-us.component';
 import { ProductDetailsComponent } from './pages/product-details/product-details.component';
 import { CartComponent } from './pages/cart/cart.component';
 import { PurchaseComponent } from './pages/purchase/purchase.component';
+import { OrdersComponent } from './pages/orders/orders.component';
 
 export const routes: Routes = [
     { path: 'products', component: ProductsComponent },
@@ -14,6 +15,7 @@ export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'about-us', component: AboutUsComponent },
     { path: 'cart', component: CartComponent },
+    { path: 'orders', component: OrdersComponent },
     { path: 'purchase', component: PurchaseComponent },
     { path: 'purchase/capture', component: PurchaseComponent },
     { path: '', redirectTo: '/home', pathMatch: 'full' },
