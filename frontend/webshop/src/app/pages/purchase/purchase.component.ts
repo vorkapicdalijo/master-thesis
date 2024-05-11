@@ -80,37 +80,14 @@ export class PurchaseComponent implements OnInit {
     this.cartItems = this.cartService.getCartItems();
     let token = (this.route.snapshot.queryParams['token']);
 
-    this.paymentService.completePayment(token)
-      .subscribe(res => {
-        console.log(res);
-        this.currentStep = 3;
-        if(res.status == 'success') {
+    if (token) {
+      this.paymentService.completePayment(token)
+        .subscribe(res => {
+          this.currentStep = 3;
           this.isPaymentSuccess = true;
-          //localStorage.setItem('payment', JSON.stringify({status: res.status}))
-        }
-        else {
-          this.isPaymentSuccess = false;
-        }
-        
-      });
+        });
+    }
   }
-  //       if(params['token'] && params['PayerID'] && !this.finishedPayment) {
-  //         this.finishedPayment = true;
-  //         this.paymentService.completePayment(params['token'])
-  //           .subscribe(res => {
-  //             this.currentStep = 3;
-  //             if(res.status == 'success') {
-  //               localStorage.setItem('payment', JSON.stringify({status: res.status, payId: res.payId}));
-  //               this.isPaymentSuccess = true;
-
-  //             }
-  //             else {
-  //               this.isPaymentSuccess = false;
-  //             }
-              
-  //           });
-  //       }
-  // }
 
   public openCartItemDetails(productId: number) {
     this.router.navigateByUrl(`/product-details/${productId}`);
