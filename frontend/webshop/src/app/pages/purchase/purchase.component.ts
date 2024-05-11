@@ -14,7 +14,7 @@ import { CartItem } from '../../models/cart-item';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatMenuModule } from '@angular/material/menu';
 import { PaymentService, PaypalResponse } from '../../services/payment.service';
-import { Purchase } from '../../models/purchase';
+import { Order } from '../../models/order';
 import { Person } from '../../models/person';
 import { AuthService } from '../../services/auth.service';
 

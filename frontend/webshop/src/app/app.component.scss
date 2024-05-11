@@ -43,13 +43,14 @@ h1.example-app-name {
   cursor: pointer;
 }
 
-button.mat-mdc-menu-item:hover {
+button.cart-menu-item:hover {
   background-color: white;
   transform: translateY(-1px);
   span.cart-item-title {
     text-decoration: underline;
   }
 }
+
 
 .cart-item-title {
   font-size: 14px;

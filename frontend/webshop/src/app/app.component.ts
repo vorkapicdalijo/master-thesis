@@ -23,6 +23,7 @@ import {
   MatDialogModule,
 } from '@angular/material/dialog';
 import { PurchaseDialogComponent } from './dialogs/purchase-dialog/purchase-dialog.component';
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
   selector: 'app-root',
@@ -39,6 +40,7 @@ import { PurchaseDialogComponent } from './dialogs/purchase-dialog/purchase-dial
     MatBadgeModule,
     MatMenuModule,
     MatDialogModule,
+    MatDividerModule
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
