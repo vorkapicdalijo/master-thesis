@@ -1,1 +1,55 @@
-<p>orders works!</p>
+<div class="container mt-5">
+  <h2 class="text-center mb-5">Your past orders</h2>
+  <table mat-table
+       [dataSource]="orders" multiTemplateDataRows
+       class="mat-elevation-z8">
+  @for (column of columnsToDisplay; track column) {
+    <ng-container matColumnDef="{{column}}">
+      <th mat-header-cell *matHeaderCellDef> {{column == "id" ? "ID" : column == "createdAt" ? "DATE" : column == "payId" ? "PAYMENT ID" : column == "payerId" ? "BUYER ID" : column == "sum" ? "TOTAL" : ""}} </th>
+      <td mat-cell *matCellDef="let element"> {{ column == "sum" ? element[column] + " €" : element[column]}} </td>
+    </ng-container>
+  }
+  <ng-container matColumnDef="expand">
+    <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+    <td mat-cell *matCellDef="let element">
+      <button mat-icon-button aria-label="expand row" (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
+        @if (expandedElement === element) {
+          <mat-icon>keyboard_arrow_up</mat-icon>
+        } @else {
+          <mat-icon>keyboard_arrow_down</mat-icon>
+        }
+      </button>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="expandedDetail">
+    <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayWithExpand.length">
+      <div class="element-detail"
+           [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+        <div class="container">
+          <mat-list>
+          @for (item of element.items; track item) {
+            <div class="d-flex mb-2">
+              <img  src="../../../assets/images/eros.jpg" class="mx-auto mx-md-0" style="max-width: 75px;" width="100%" alt="Photo">
+              <mat-list-item>
+                <span matListItemTitle>{{item.name}}</span>
+                <span matListItemLine>x{{item.amount}}</span>
+                <span matListItemLine style="font-weight: 500;">{{item.price}} €</span>
+              </mat-list-item>
+            </div>
+          }
+          </mat-list>
+        </div>
+      </div>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
+  <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;"
+      class="element-row"
+      [class.expanded-row]="expandedElement === element"
+      (click)="expandedElement = expandedElement === element ? null : element">
+  </tr>
+  <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
+</table>
+</div>

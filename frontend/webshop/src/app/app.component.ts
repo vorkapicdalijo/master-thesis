@@ -24,6 +24,7 @@ import {
 } from '@angular/material/dialog';
 import { PurchaseDialogComponent } from './dialogs/purchase-dialog/purchase-dialog.component';
 import { MatDividerModule } from '@angular/material/divider';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -55,6 +56,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   activeLink = '';
   cartItems: CartItem[] = [];
   cartItemsCount: number = 0;
+  username: string = "";
 
   mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;
@@ -67,6 +69,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     private route: ActivatedRoute,
     private paymentService: PaymentService,
     public dialog: MatDialog,
+    private authService: AuthService
   ) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
@@ -76,6 +79,8 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.changeDetectorRef.detectChanges();
   }
   ngOnInit(): void {
+    this.username = this.authService.username;
+
     this.cartService.cartSub.subscribe(cartItemAdded => {
       this.getCartItems();
       this.getCartItemsCount();
@@ -124,6 +129,10 @@ export class AppComponent implements OnInit, AfterViewInit {
     });
   }
   
+  public navigateToOrders() {
+    this.router.navigateByUrl('/orders');
+  }
+
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
   }

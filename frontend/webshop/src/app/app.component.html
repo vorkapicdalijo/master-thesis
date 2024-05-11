@@ -59,9 +59,9 @@
     <mat-menu #userMenu="matMenu" class="user-menu p-0">
       <button mat-menu-item class="user-menu-item" disabled>
         <mat-icon>person_outline</mat-icon>
-        <span>Dalijo</span>
+        <span>{{username}}</span>
       </button>
-      <button mat-menu-item class="user-menu-item">
+      <button mat-menu-item class="user-menu-item" (click)="navigateToOrders()">
         <mat-icon>history</mat-icon>
         <span>Orders</span>
       </button>
