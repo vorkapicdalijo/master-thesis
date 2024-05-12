@@ -51,7 +51,7 @@ import { environment } from '../environment/environment';
 export class AppComponent implements OnInit, AfterViewInit {
   title = 'webshop';
   links = [
-    { url: '/home', title: 'Home' },
+    { url: '', title: 'Home' },
     { url: '/products', title: 'Products' },
     { url: '/about-us', title: 'About Us' },
   ];
