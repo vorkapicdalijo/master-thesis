@@ -25,7 +25,8 @@ import {
 import { PurchaseDialogComponent } from './dialogs/purchase-dialog/purchase-dialog.component';
 import { MatDividerModule } from '@angular/material/divider';
 import { AuthService } from './services/auth.service';
-import { OAuthService } from 'angular-oauth2-oidc';
+import { OAuthEvent, OAuthService } from 'angular-oauth2-oidc';
+import { environment } from '../environment/environment';
 
 @Component({
   selector: 'app-root',
@@ -57,7 +58,10 @@ export class AppComponent implements OnInit, AfterViewInit {
   activeLink = '';
   cartItems: CartItem[] = [];
   cartItemsCount: number = 0;
-  username: string = "";
+  userName: string = "";
+
+  isAdmin: boolean = false;
+  isAuthenticated: boolean = false;
 
   mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;
@@ -81,7 +85,19 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.changeDetectorRef.detectChanges();
   }
   ngOnInit(): void {
-    this.username = this.authService.username;
+    this.isAuthenticated = this.authService.isAuthenticated();
+    this.isAdmin = this.authService.getUserRoles().includes('admin');
+    this.userName = this.authService.getUserName();
+
+    this.oAuthService.events.subscribe(({ type }: OAuthEvent) => {
+      this.isAuthenticated = this.authService.isAuthenticated();
+      this.isAdmin = this.authService.getUserRoles().includes('admin');
+      this.userName = this.authService.getUserName();
+
+      this.getCartItems();
+      this.getCartItemsCount();
+    });
+    
 
     this.cartService.cartSub.subscribe(cartItemAdded => {
       this.getCartItems();
@@ -135,8 +151,16 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.router.navigateByUrl('/orders');
   }
 
+  public login() {
+    this.oAuthService.initLoginFlow();
+  }
+
   public logout() {
     this.oAuthService.logOut();
+  }
+
+  public navigateToKeycloakConsole() {
+    window.open(environment.keycloakUrl, "_blank");
   }
 
   ngOnDestroy(): void {

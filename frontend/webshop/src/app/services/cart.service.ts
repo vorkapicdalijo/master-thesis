@@ -38,7 +38,7 @@ export class CartService {
 
   public saveCart() {
     if (isPlatformBrowser(this.platformId)) {
-      localStorage.setItem(`cart_items_${this.authService.userId}`,
+      localStorage.setItem(`cart_items_${this.authService.getUserId()}`,
         JSON.stringify(this.cartItems)
       );
     }
@@ -51,13 +51,13 @@ export class CartService {
 
   public loadCart() {
     if (isPlatformBrowser(this.platformId)) {
-      this.cartItems = JSON.parse(localStorage.getItem(`cart_items_${this.authService.userId}`)!) ?? [];
+      this.cartItems = JSON.parse(localStorage.getItem(`cart_items_${this.authService.getUserId()}`)!) ?? [];
     }
   }
 
   public clearCart() {
     if (isPlatformBrowser(this.platformId)) {
-      localStorage.removeItem(`cart_items_${this.authService.userId}`);
+      localStorage.removeItem(`cart_items_${this.authService.getUserId()}`);
     }
   }
 

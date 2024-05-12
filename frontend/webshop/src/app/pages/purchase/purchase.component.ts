@@ -123,7 +123,7 @@ export class PurchaseComponent implements OnInit {
 
   public submitPurchaseData() {
     let buyerInfo: Person = new Person(
-      this.authService.userId,
+      this.authService.getUserId(),
       this.personalInfoFormGroup.get('firstName')?.value!,
       this.personalInfoFormGroup.get('lastName')?.value!,
       this.personalInfoFormGroup.get('email')?.value!,

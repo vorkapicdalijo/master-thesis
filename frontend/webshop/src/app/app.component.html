@@ -53,24 +53,37 @@
             </button>
       </div>
     </mat-menu>
-    <button mat-icon-button [matMenuTriggerFor]="userMenu">
-      <mat-icon>person_outline</mat-icon>
-    </button>
-    <mat-menu #userMenu="matMenu" class="user-menu p-0">
-      <button mat-menu-item class="user-menu-item" disabled>
+    @if (isAuthenticated) {
+      <button mat-icon-button [matMenuTriggerFor]="userMenu">
         <mat-icon>person_outline</mat-icon>
-        <span>{{username}}</span>
       </button>
-      <button mat-menu-item class="user-menu-item" (click)="navigateToOrders()">
-        <mat-icon>history</mat-icon>
-        <span>Orders</span>
+      <mat-menu #userMenu="matMenu" class="user-menu p-0">
+        <button mat-menu-item class="user-menu-item" disabled>
+          <mat-icon>person_outline</mat-icon>
+          <span>{{userName}}</span>
+        </button>
+        <button mat-menu-item class="user-menu-item" (click)="navigateToOrders()">
+          <mat-icon>history</mat-icon>
+          <span>Orders</span>
+        </button>
+        @if (isAdmin) {
+          <button mat-menu-item class="user-menu-item" (click)="navigateToKeycloakConsole()">
+            <mat-icon>supervisor_account</mat-icon>
+            <span>Manage Users</span>
+          </button>
+        }
+        <mat-divider></mat-divider>
+        <button mat-menu-item class="user-menu-item" (click)="logout()"> 
+          <mat-icon>exit_to_app</mat-icon>
+          <span>Logout</span>
+        </button>
+      </mat-menu>
+    }
+    @else {
+      <button mat-flat-button (click)="login()" class="ms-3">
+        LOGIN
       </button>
-      <mat-divider></mat-divider>
-      <button mat-menu-item class="user-menu-item" (click)="logout()"> 
-        <mat-icon>exit_to_app</mat-icon>
-        <span>Logout</span>
-      </button>
-    </mat-menu>
+    }
   </mat-toolbar>
   <mat-sidenav-container
     class="example-sidenav-container"

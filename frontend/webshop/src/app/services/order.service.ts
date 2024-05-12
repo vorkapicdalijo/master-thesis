@@ -17,6 +17,6 @@ export class OrderService {
   }
 
   public getOrdersByUserId() {
-    return this.http.get<Order[]>(`http://localhost:8083/api/order/${this.authService.userId}`);
+    return this.http.get<Order[]>(`http://localhost:8083/api/order/${this.authService.getUserId()}`);
   }
 }

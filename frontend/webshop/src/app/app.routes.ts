@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+import { CanActivateFn, Routes } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
 import { LoginComponent } from './pages/login/login.component';
 import { ProductsComponent } from './pages/products/products.component';
@@ -7,6 +7,9 @@ import { ProductDetailsComponent } from './pages/product-details/product-details
 import { CartComponent } from './pages/cart/cart.component';
 import { PurchaseComponent } from './pages/purchase/purchase.component';
 import { OrdersComponent } from './pages/orders/orders.component';
+import { AuthGuard } from './guards/auth.guard';
+import { inject } from '@angular/core';
+
 
 export const routes: Routes = [
     { path: 'products', component: ProductsComponent },
@@ -15,9 +18,9 @@ export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'about-us', component: AboutUsComponent },
     { path: 'cart', component: CartComponent },
-    { path: 'orders', component: OrdersComponent },
-    { path: 'purchase', component: PurchaseComponent },
-    { path: 'purchase/capture', component: PurchaseComponent },
+    { path: 'orders', component: OrdersComponent, canActivate:[AuthGuard] },
+    { path: 'purchase', component: PurchaseComponent, canActivate:[AuthGuard] },
+    { path: 'purchase/capture', component: PurchaseComponent, canActivate:[AuthGuard] },
     { path: '', redirectTo: '/home', pathMatch: 'full' },
     { path: '**', component: HomeComponent },
 ];

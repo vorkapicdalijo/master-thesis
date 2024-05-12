@@ -23,7 +23,7 @@ function initializeOAuth(oauthService: OAuthService): Promise<void> {
   return new Promise((resolve) => {
     oauthService.configure(authCodeFlowConfig);
     oauthService.setupAutomaticSilentRefresh();
-    oauthService.loadDiscoveryDocumentAndLogin()
+    oauthService.loadDiscoveryDocumentAndTryLogin()
       .then(() => resolve());
   });
 }
