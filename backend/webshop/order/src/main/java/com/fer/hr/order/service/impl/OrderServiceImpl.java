@@ -30,7 +30,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> getOrdersByUserId(Long userId) {
+    public List<Order> getOrdersByUserId(String userId) {
         List<Order> orders = this.orderDao.getOrdersByUserId(userId);
 
         for (Order order : orders) {

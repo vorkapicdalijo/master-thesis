@@ -11,7 +11,7 @@ public interface OrderDao {
 
     public void insertOrderItems(List<CartItem> cartItems);
 
-    public List<Order> getOrdersByUserId(Long userId);
+    public List<Order> getOrdersByUserId(String userId);
 
     public List<CartItem> getItemsByOrderId(Long orderId);
 }

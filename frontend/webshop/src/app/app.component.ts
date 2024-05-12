@@ -86,6 +86,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
   ngOnInit(): void {
     this.isAuthenticated = this.authService.isAuthenticated();
+
     this.isAdmin = this.authService.getUserRoles().includes('admin');
     this.userName = this.authService.getUserName();
 

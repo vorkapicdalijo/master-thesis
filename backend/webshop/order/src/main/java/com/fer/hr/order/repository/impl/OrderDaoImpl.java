@@ -86,7 +86,7 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public List<Order> getOrdersByUserId(Long userId) {
+    public List<Order> getOrdersByUserId(String userId) {
         final String sql = "SELECT * FROM public.order WHERE userid = :userId";
 
         Map<String, Object> params = new HashMap<>();
@@ -104,7 +104,7 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public List<CartItem> getItemsByOrderId(Long orderId) {
-        final String sql = "SELECT * FROM public.cart_item WHERE orderid = :orderId";
+        final String sql = "SELECT id, sum, payid, payerid, createdat FROM public.cart_item WHERE orderid = :orderId";
 
         Map<String, Object> params = new HashMap<>();
         params.put("orderId", orderId);
@@ -128,19 +128,6 @@ public class OrderDaoImpl implements OrderDao {
                    .payerId(rs.getString("payerid"))
                    .createdAt(rs.getDate("createdat"))
                    .build();
-
-            Person person = Person.builder()
-                    .userId(rs.getLong("userid"))
-                    .email(rs.getString("email"))
-                    .firstName(rs.getString("firstname"))
-                    .lastName(rs.getString("lastname"))
-                    .phoneNumber(rs.getString("phonenumber"))
-                    .address(rs.getString("address"))
-                    .city(rs.getString("city"))
-                    .zipCode(rs.getInt("zipcode"))
-                    .country(rs.getString("country"))
-                    .build();
-            order.setPerson(person);
            return order;
         });
     }

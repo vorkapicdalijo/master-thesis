@@ -98,6 +98,16 @@ export class PurchaseComponent implements OnInit {
           this.isPaymentSuccess = true;
         });
     }
+
+    this.fillPersonForm();
+  }
+
+  public fillPersonForm() {
+    let authPerson: Person = this.authService.getUserData();
+
+    this.personalInfoFormGroup.get('firstName')?.setValue(authPerson.firstName);
+    this.personalInfoFormGroup.get('lastName')?.setValue(authPerson.lastName);
+    this.personalInfoFormGroup.get('email')?.setValue(authPerson.email);
   }
 
   public openCartItemDetails(productId: number) {

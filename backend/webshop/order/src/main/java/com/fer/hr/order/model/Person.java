@@ -14,7 +14,7 @@ import javax.persistence.*;
 public class Person {
 
     private Long id;
-    private Long userId;
+    private String userId;
     private String firstName;
     private String lastName;
     private String email;
