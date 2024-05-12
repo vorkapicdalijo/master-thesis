@@ -4,6 +4,12 @@ server:
 spring:
   application:
     name: api-gateway
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8181/realms/webshop
+          jwk-set-uri: http://localhost:8181/realms/webshop/protocol/openid-connect/certs
   zipkin:
     base-url: http://localhost:9411
   cloud:
@@ -34,15 +40,11 @@ spring:
       globalcors:
         cors-configurations:
           '[/**]':
-            allowedOrigins: "http://localhost:4200"
+            allowedOrigins: "*"
             allowedHeaders: "*"
-            allowCredentials: true
             allowedMethods:
               - GET
               - POST
-              - DELETE
-              - PUT
-              - OPTIONS
 eureka:
   client:
     service-url:

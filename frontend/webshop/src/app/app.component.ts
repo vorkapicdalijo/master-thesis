@@ -25,6 +25,7 @@ import {
 import { PurchaseDialogComponent } from './dialogs/purchase-dialog/purchase-dialog.component';
 import { MatDividerModule } from '@angular/material/divider';
 import { AuthService } from './services/auth.service';
+import { OAuthService } from 'angular-oauth2-oidc';
 
 @Component({
   selector: 'app-root',
@@ -69,7 +70,8 @@ export class AppComponent implements OnInit, AfterViewInit {
     private route: ActivatedRoute,
     private paymentService: PaymentService,
     public dialog: MatDialog,
-    private authService: AuthService
+    private authService: AuthService,
+    private oAuthService: OAuthService,
   ) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
@@ -131,6 +133,10 @@ export class AppComponent implements OnInit, AfterViewInit {
   
   public navigateToOrders() {
     this.router.navigateByUrl('/orders');
+  }
+
+  public logout() {
+    this.oAuthService.logOut();
   }
 
   ngOnDestroy(): void {
