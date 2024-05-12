@@ -18,6 +18,8 @@ import { Order } from '../../models/order';
 import { Person } from '../../models/person';
 import { AuthService } from '../../services/auth.service';
 import { OrderService } from '../../services/order.service';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { PurchaseDialogComponent } from '../../dialogs/purchase-dialog/purchase-dialog.component';
 
 @Component({
   selector: 'app-purchase',
@@ -32,6 +34,7 @@ import { OrderService } from '../../services/order.service';
     AsyncPipe,
     MatIconModule,
     MatMenuModule,
+    MatDialogModule,
   ],
   templateUrl: './purchase.component.html',
   styleUrl: './purchase.component.scss'
@@ -64,9 +67,6 @@ export class PurchaseComponent implements OnInit {
   payerId!: string;
   payId!: string;
 
-  isPaymentSuccess: boolean = false;
-  isPaymentCanceled: boolean = false;
-  finishedPayment: boolean = false;
   private readonly platformId = inject(PLATFORM_ID);
 
   constructor(
@@ -78,6 +78,7 @@ export class PurchaseComponent implements OnInit {
     private authService: AuthService,
     private route: ActivatedRoute,
     private orderService: OrderService,
+    public dialog: MatDialog,
   ) {
     this.stepperOrientation = breakpointObserver
       .observe('(min-width: 750px)')
@@ -85,20 +86,24 @@ export class PurchaseComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.router.navigateByUrl('/purchase');
     this.cartItems = this.cartService.getCartItems();
     this.token = (this.route.snapshot.queryParams['token']);
     this.payerId = (this.route.snapshot.queryParams['PayerID']);
-
-    if (this.token) {
-      this.paymentService.completePayment(this.token)
-        .subscribe(res => {
-          this.saveOrderDetails();
-          this.currentStep = 3;
-          this.isPaymentSuccess = true;
-        });
+    if(this.router.url.includes('capture')) {
+      if (this.token) {
+        this.paymentService.completePayment(this.token)
+          .subscribe(res => {
+            this.saveOrderDetails();
+            this.cartService.clearCart();
+            this.openDialog('1500ms', '800ms', 'Order canceled !');
+            this.router.navigateByUrl('');
+          });
+      }
     }
-
+    if(this.router.url.includes('cancel')) {
+      this.openDialog('1500ms', '800ms', 'Order canceled !');
+      this.router.navigateByUrl('/cart');
+    }
     this.fillPersonForm();
   }
 
@@ -168,7 +173,6 @@ export class PurchaseComponent implements OnInit {
       
       this.orderService.sendOrderDetails(this.orderDetails)
         .subscribe(res => {
-          console.log(res);
         })
     }
   }
@@ -183,6 +187,20 @@ export class PurchaseComponent implements OnInit {
         }
         window.location.href = res.redirectUrl
       })
+  }
+
+  public openDialog(enterAnimationDuration: string, exitAnimationDuration: string, title: string): void {
+    const dialogRef = this.dialog.open(PurchaseDialogComponent, {
+      width: '250px',
+      enterAnimationDuration,
+      exitAnimationDuration,
+      data: {
+        title: title
+      },
+      position: {
+        top: '100px'
+      },
+    });
   }
 
   

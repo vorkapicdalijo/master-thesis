@@ -21,6 +21,7 @@ export const routes: Routes = [
     { path: 'orders', component: OrdersComponent, canActivate:[AuthGuard] },
     { path: 'purchase', component: PurchaseComponent, canActivate:[AuthGuard] },
     { path: 'purchase/capture', component: PurchaseComponent, canActivate:[AuthGuard] },
+    { path: 'purchase/cancel', component: PurchaseComponent, canActivate:[AuthGuard] },
     { path: '', redirectTo: '/home', pathMatch: 'full' },
     { path: '**', component: HomeComponent },
 ];

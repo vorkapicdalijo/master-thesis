@@ -87,7 +87,7 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public List<Order> getOrdersByUserId(String userId) {
-        final String sql = "SELECT * FROM public.order WHERE userid = :userId";
+        final String sql = "SELECT id, sum, payid, payerid, createdat FROM public.order WHERE userid = :userId";
 
         Map<String, Object> params = new HashMap<>();
         params.put("userId", userId);
@@ -104,7 +104,7 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public List<CartItem> getItemsByOrderId(Long orderId) {
-        final String sql = "SELECT id, sum, payid, payerid, createdat FROM public.cart_item WHERE orderid = :orderId";
+        final String sql = "SELECT * FROM public.cart_item WHERE orderid = :orderId";
 
         Map<String, Object> params = new HashMap<>();
         params.put("orderId", orderId);

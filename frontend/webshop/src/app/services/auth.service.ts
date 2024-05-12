@@ -12,7 +12,6 @@ export class AuthService {
   public getUserRoles(): string[] {
     if (this.isAuthenticated()) {
       const token: any = jwtDecode(this.oAuthService.getAccessToken());
-      console.log(token);
       const userRoles: string[] = token.realm_access.roles ?? '';
       return userRoles;
     } else {

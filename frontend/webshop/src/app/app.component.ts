@@ -17,11 +17,6 @@ import { CartService } from './services/cart.service';
 import {MatMenuModule} from '@angular/material/menu';
 import { CartItem } from './models/cart-item';
 import { PaymentService } from './services/payment.service';
-import { first, take } from 'rxjs';
-import {
-  MatDialog,
-  MatDialogModule,
-} from '@angular/material/dialog';
 import { PurchaseDialogComponent } from './dialogs/purchase-dialog/purchase-dialog.component';
 import { MatDividerModule } from '@angular/material/divider';
 import { AuthService } from './services/auth.service';
@@ -42,7 +37,6 @@ import { environment } from '../environment/environment';
     RouterModule,
     MatBadgeModule,
     MatMenuModule,
-    MatDialogModule,
     MatDividerModule
   ],
   templateUrl: './app.component.html',
@@ -72,8 +66,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     private router: Router,
     private cartService: CartService,
     private route: ActivatedRoute,
-    private paymentService: PaymentService,
-    public dialog: MatDialog,
+    private paymentService: PaymentService,    
     private authService: AuthService,
     private oAuthService: OAuthService,
   ) {
@@ -131,21 +124,6 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   public navigateToCartPage() {
     this.router.navigateByUrl('/cart');
-  }
-
-  public openDialog(enterAnimationDuration: string, exitAnimationDuration: string, title: string): void {
-    const dialogRef = this.dialog.open(PurchaseDialogComponent, {
-      width: '250px',
-      enterAnimationDuration,
-      exitAnimationDuration,
-      data: {
-        title: title
-      },
-      position: {
-        top: '100px'
-      },
-      disableClose: false
-    });
   }
   
   public navigateToOrders() {

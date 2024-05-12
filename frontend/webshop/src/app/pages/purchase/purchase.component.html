@@ -2,7 +2,7 @@
     <mat-stepper
     class="stepper"
     [orientation]="(stepperOrientation | async)!"
-    [linear]="false"
+    [linear]="true"
     [selectedIndex]="currentStep"
     #stepper>
     <mat-step [stepControl]="personalInfoFormGroup" label="Fill out your information" >
@@ -120,17 +120,17 @@
       </div>
     </form>
     </mat-step>
-    <mat-step [stepControl]="thirdFormGroup" label="Summary">
+    <mat-step label="Summary">
         <div class="container mx-auto">
-
+          <div class="mt-3">
+            <button mat-flat-button matStepperPrevious class="me-1">Back</button>
+            <button mat-flat-button color="primary" matStepperNext>Proceed</button>
+        </div>
         </div>
     </mat-step>
     <mat-step label="Payment">
         <ng-template matStepLabel>Payment</ng-template>
         <div class="container mx-auto">
-          @if(isPaymentSuccess) {
-            <h2>Payment Successful!</h2>
-          } 
         </div>
         <div class="my-3 container w-100 d-flex flex-column align-items-center">
           <h2>Payment</h2>
