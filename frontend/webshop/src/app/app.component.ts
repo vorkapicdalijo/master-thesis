@@ -1,11 +1,11 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import {
   ActivatedRoute,
   Router,
   RouterModule,
   RouterOutlet,
 } from '@angular/router';
-import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
@@ -43,6 +43,8 @@ import { environment } from '../environment/environment';
   styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit, AfterViewInit {
+  @ViewChild('sidenav') sidenav: MatSidenav;
+
   title = 'webshop';
   links = [
     { url: '', title: 'Home' },
@@ -88,6 +90,7 @@ export class AppComponent implements OnInit, AfterViewInit {
       this.isAdmin = this.authService.getUserRoles().includes('admin');
       this.userName = this.authService.getUserName();
 
+      this.cartService.relocateCartToUser();
       this.getCartItems();
       this.getCartItemsCount();
     });
@@ -140,6 +143,10 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   public navigateToKeycloakConsole() {
     window.open(environment.keycloakUrl, "_blank");
+  }
+
+  closeSidenav() {
+    this.sidenav.close();
   }
 
   ngOnDestroy(): void {

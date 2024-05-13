@@ -84,5 +84,20 @@ export class CartService {
     return count;
   }
 
+  public relocateCartToUser(): void {
+    this.loadCart();
+    if (this.cartItems.length == 0) {
+      if (isPlatformBrowser(this.platformId)) {
+        let cartItemsGuest = JSON.parse(localStorage.getItem(`cart_items_`)!) ?? [];
+        
+        if (cartItemsGuest.length > 0) {
+          this.cartItems = cartItemsGuest;
+          this.saveCart();
+          localStorage.removeItem(`cart_items_`);
+        }
+      }
+    }
+  }
+
 
 }

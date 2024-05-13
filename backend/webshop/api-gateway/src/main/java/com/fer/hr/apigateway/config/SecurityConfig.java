@@ -28,8 +28,12 @@ public class SecurityConfig {
     public SecurityWebFilterChain filterChain(ServerHttpSecurity http) throws Exception {
         http    .cors().configurationSource(corsConfigurationSource())
                 .and()
-                .authorizeExchange(authorize -> authorize
-                        .anyExchange().authenticated()
+                .authorizeExchange(authorize ->
+                        authorize.pathMatchers("/api/products/**").permitAll()
+                                .pathMatchers("/api/inventory/**").permitAll()
+                                .pathMatchers("/api/order/**").authenticated()
+                                .pathMatchers("api/payment/**").authenticated()
+                        //.anyExchange().authenticated()
                 )
                 .oauth2ResourceServer((oauth2) -> oauth2.jwt(
                         jwt -> jwt.jwtAuthenticationConverter(customJwtConverter())
