@@ -47,7 +47,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   title = 'webshop';
   links = [
-    { url: '', title: 'Home' },
+    { url: '/', title: 'Home' },
     { url: '/products', title: 'Products' },
     { url: '/about-us', title: 'About Us' },
   ];
@@ -127,6 +127,10 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   public navigateToCartPage() {
     this.router.navigateByUrl('/cart');
+  }
+
+  public navigateToHome() {
+    this.router.navigateByUrl('/');
   }
   
   public navigateToOrders() {

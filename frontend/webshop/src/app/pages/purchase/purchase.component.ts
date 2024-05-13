@@ -51,7 +51,7 @@ export class PurchaseComponent implements OnInit {
   addressFormGroup = this.fb.group({
     address: ['', Validators.required],
     city: ['', Validators.required],
-    zipCode: ['', Validators.required],
+    zipCode: ['', [Validators.required, Validators.pattern(/^[0-9]\d*$/)]],
     country: ['', Validators.required],
   });
   thirdFormGroup = this.fb.group({
@@ -59,7 +59,7 @@ export class PurchaseComponent implements OnInit {
   });
   stepperOrientation: Observable<StepperOrientation>;
   currentStep = 0;
-
+  isFormSubmitted: boolean = false;
   orderDetails!: Order;
   cartItems: CartItem[] = [];
   paypalResponse!: PaypalResponse;
@@ -95,13 +95,13 @@ export class PurchaseComponent implements OnInit {
           .subscribe(res => {
             this.saveOrderDetails();
             this.cartService.clearCart();
-            this.openDialog('1500ms', '800ms', 'Order canceled !');
+            this.openDialog('1500ms', '800ms', 'Order Completed!', 'Hope You will enjoy your purchased products :)');
             this.router.navigateByUrl('');
           });
       }
     }
     if(this.router.url.includes('cancel')) {
-      this.openDialog('1500ms', '800ms', 'Order canceled !');
+      this.openDialog('1500ms', '800ms', 'Order Canceled!', 'Thank You for your time :)');
       this.router.navigateByUrl('/cart');
     }
     this.fillPersonForm();
@@ -136,6 +136,7 @@ export class PurchaseComponent implements OnInit {
     return total;
   }
 
+
   public submitPurchaseData() {
     let buyerInfo: Person = new Person(
       this.authService.getUserId(),
@@ -158,6 +159,8 @@ export class PurchaseComponent implements OnInit {
       this.payerId,
       this.cartItems
     );
+    this.orderDetails = orderDetails;
+    this.isFormSubmitted = true;
 
     if (isPlatformBrowser(this.platformId)) {
       localStorage.setItem('orderDetails', JSON.stringify(orderDetails));
@@ -189,13 +192,14 @@ export class PurchaseComponent implements OnInit {
       })
   }
 
-  public openDialog(enterAnimationDuration: string, exitAnimationDuration: string, title: string): void {
+  public openDialog(enterAnimationDuration: string, exitAnimationDuration: string, title: string, content: string): void {
     const dialogRef = this.dialog.open(PurchaseDialogComponent, {
       width: '250px',
       enterAnimationDuration,
       exitAnimationDuration,
       data: {
-        title: title
+        title: title,
+        content: content,
       },
       position: {
         top: '100px'

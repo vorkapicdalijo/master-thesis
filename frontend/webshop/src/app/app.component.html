@@ -3,7 +3,7 @@
     <button class="d-md-none me-2" mat-icon-button (click)="snav.toggle()">
         <mat-icon>menu</mat-icon>
     </button>
-    <h1 class="header-title">FRAGRANCE.HR</h1>
+    <h1 class="header-title" (click)="navigateToHome()">FRAGRANCE.HR</h1>
     <mat-icon class="ms-1">air_purifier</mat-icon>
     <span class="spacer"></span>
     <nav mat-tab-nav-bar [tabPanel]="tabPanel" class="d-none d-md-block">

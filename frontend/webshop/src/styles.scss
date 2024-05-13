@@ -9,3 +9,20 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .mat-mdc-dialog-container {
     --mdc-dialog-container-shape: 20px;
 }
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+ 
+::-webkit-scrollbar-track {
+    border-radius: 10px;
+    background: white;
+}
+ 
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: gray;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #050738;
+}

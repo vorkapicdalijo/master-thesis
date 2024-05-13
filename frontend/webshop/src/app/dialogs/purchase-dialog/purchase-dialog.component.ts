@@ -4,6 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogContent, Ma
 
 export interface DialogData {
   title: string;
+  content: string;
 }
 
 @Component({

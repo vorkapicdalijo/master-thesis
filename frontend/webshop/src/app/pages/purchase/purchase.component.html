@@ -8,7 +8,7 @@
     <mat-step [stepControl]="personalInfoFormGroup" label="Fill out your information" >
         <form [formGroup]="personalInfoFormGroup" class="mt-3 d-flex flex-column flex-md-row justify-content-around align-items-center">
             <div class="d-flex flex-column">
-                <h2 class="mb-3">Your Information</h2>
+                <h2 class="mb-4 text-center text-md-start">Your Information</h2>
                 <mat-form-field appearance="outline">
                     <mat-label>First Name</mat-label>
                     <input matInput placeholder="Your First name" formControlName="firstName" required >
@@ -32,7 +32,7 @@
                 </div>
             </div>
             <div class="d-flex flex-column">
-              <div class="order-summary-container px-5 py-3 mt-4 mt-md-0">
+              <div class="order-summary-container px-2 px-md-5 py-3 mt-5 mt-md-0">
                 <h2 class="mb-3 text-center">Order Summary</h2>
                 <div class="d-flex flex-column justify-content-center w-100">
                 @for (item of cartItems; track item) {
@@ -49,11 +49,11 @@
                         </div>
                     </div>
                     </button>
-                    <div class="horizontal-line my-2 w-100"></div>
+                    <div class="horizontal-line my-2 px-5 px-md-0 w-100 mx-auto"></div>
                 }
                 <div class="total-container my-2 w-100 d-flex justify-content-space-between">
                   <span class="spacer"></span>
-                  Total:<span class="cart-item-price ms-3"> {{calculateTotalPrice()}} €</span>
+                  Total:<span class="cart-item-price ms-3 me-3 me-md-0"> {{calculateTotalPrice()}} €</span>
                 </div>
               </div>
               <div></div>
@@ -64,7 +64,7 @@
     <mat-step [stepControl]="addressFormGroup" label="Fill out your address">
       <form [formGroup]="addressFormGroup" class="mt-3 d-flex flex-column flex-md-row justify-content-around align-items-center">
         <div class="d-flex flex-column">
-            <h2 class="mb-3">Your Address</h2>
+            <h2 class="mb-4 text-center text-md-start">Your Address</h2>
             <mat-form-field appearance="outline">
                 <mat-label>Address</mat-label>
                 <input matInput placeholder="Your Address" formControlName="address" required >
@@ -86,12 +86,12 @@
                 <mat-icon matSuffix>outlined_flag</mat-icon>
             </mat-form-field>
             <div class="mt-3">
-                <button mat-flat-button matStepperPrevious class="me-1">Back</button>
+                <button mat-stroked-button matStepperPrevious class="me-1">Back</button>
                 <button mat-flat-button color="primary" matStepperNext [disabled]="addressFormGroup.invalid" (click)="submitPurchaseData()">Proceed</button>
             </div>
         </div>
         <div class="d-flex flex-column">
-          <div class="order-summary-container px-5 py-3 mt-4 mt-md-0">
+          <div class="order-summary-container px-5 py-3 mt-5 mt-md-0">
             <h2 class="mb-3 text-center">Order Summary</h2>
             <div class="d-flex flex-column justify-content-center w-100">
             @for (item of cartItems; track item) {
@@ -108,7 +108,7 @@
                     </div>
                 </div>
                 </button>
-                <div class="horizontal-line my-2 w-100"></div>
+                <div class="horizontal-line my-2 px-5 px-md-0 w-100 mx-auto"></div>
             }
             <div class="total-container my-2 w-100 d-flex justify-content-space-between">
               <span class="spacer"></span>
@@ -121,28 +121,102 @@
     </form>
     </mat-step>
     <mat-step label="Summary">
-        <div class="container mx-auto">
-          <div class="mt-3">
-            <button mat-flat-button matStepperPrevious class="me-1">Back</button>
-            <button mat-flat-button color="primary" matStepperNext>Proceed</button>
+        @if (isFormSubmitted){
+          <div class="container mx-auto my-4 d-flex flex-column align-items-center">
+            <h2 class="mb-5 text-center">Your Information</h2>
+            <div class="d-flex flex-column flex-md-row justify-content-mb-center align-items-mb-center mb-2 mb-md-5">
+              <div>
+                <div class="d-flex flex-column mb-3">
+                  <span class="summary-element-title">First name</span>
+                  <span class="summary-element-content">{{orderDetails.person.firstName}}</span>
+                </div>
+                <div class="d-flex flex-column mb-3">
+                  <span class="summary-element-title">Last name</span>
+                  <span class="summary-element-content">{{orderDetails.person.lastName}}</span>
+                </div>
+                <div class="d-flex flex-column mb-3">
+                  <span class="summary-element-title">Email</span>
+                  <span class="summary-element-content">{{orderDetails.person.email}}</span>
+                </div>
+                <div class="d-flex flex-column mb-3">
+                  <span class="summary-element-title">Phone</span>
+                  <span class="summary-element-content">{{orderDetails.person.phoneNumber}}</span>
+                </div>
+              </div>
+              <div class="vertical-line mx-5 d-none d-md-block my-auto"></div>
+              <div class="horizontal-line d-md-none my-3" style="width: 150px;"></div>
+              <div>
+                <div class="d-flex flex-column mb-3">
+                  <span class="summary-element-title">Address</span>
+                  <span class="summary-element-content">{{orderDetails.person.address}}</span>
+                </div>
+                <div class="d-flex flex-column mb-3">
+                  <span class="summary-element-title">City</span>
+                  <span class="summary-element-content">{{orderDetails.person.city}}</span>
+                </div>
+                <div class="d-flex flex-column mb-3">
+                  <span class="summary-element-title">Zip Code</span>
+                  <span class="summary-element-content">{{orderDetails.person.zipCode}}</span>
+                </div>
+                <div class="d-flex flex-column mb-3">
+                  <span class="summary-element-title">Country</span>
+                  <span class="summary-element-content">{{orderDetails.person.country}}</span>
+                </div>
+              </div>
+            </div>
+            <div class="mt-3 d-flex justify-content-center">
+              <button mat-stroked-button matStepperPrevious class="me-1">Back</button>
+              <button mat-flat-button color="primary" matStepperNext>Proceed</button>
+            </div>
         </div>
-        </div>
+        }
     </mat-step>
     <mat-step label="Payment">
-        <ng-template matStepLabel>Payment</ng-template>
-        <div class="container mx-auto">
-        </div>
-        <div class="my-3 container w-100 d-flex flex-column align-items-center">
-          <h2>Payment</h2>
-          <div>
-            <button mat-raised-button (click)="sendPaymentOrder()">
-              <img  src="../../../assets/images/paypal.png" class="mx-auto mx-md-0" style="max-width: 100px;" width="100%" alt="Photo">
-            </button>
+      <ng-template matStepLabel>Payment</ng-template>
+      <div class="container mx-auto my-4">
+        <h2 class="text-center">Your Purchase</h2>
+        <div class="container d-flex flex-column-reverse flex-md-row justify-content-center align-items-center mb-5">
+          <div class="order-summary-container px-1 px-md-5 py-3 mt-1 mt-md-5 mt-md-0">
+            <h2 class="mb-3 text-center">Order Summary</h2>
+            <div class="d-flex flex-column justify-content-center w-100">
+              @for (item of cartItems; track item) {
+                  <button mat-menu-item class="p-0 px-3 py-2 my-1 w-100" style="max-width: 250px;" (click)="openCartItemDetails(item.productId)">
+                  <div class="d-flex flex-row" style="width: 180px;">
+                      <img  src="../../../assets/images/eros.jpg" class="mx-auto mx-md-0" style="max-width: 75px; border-radius:15px;" width="100%" alt="Photo">
+                      <div class="my-auto ms-3 w-100">
+                        <span class="cart-item-title">{{item.name}}</span>
+                        <br/>
+                        <div class="d-flex flex-row justify-content-between mt-2 w-100">
+                            <span class="cart-item-amount">x{{item.amount}}</span>
+                            <span class="cart-item-price">{{getCartItemPrice(item)}} €</span>
+                        </div>
+                      </div>
+                  </div>
+                  </button>
+                  <div class="horizontal-line my-2 px-5 px-md-0 w-100 mx-auto"></div>
+              }
+            </div>
+          </div>
+          <div class="vertical-line mx-5 d-none d-md-block my-auto"></div>
+          <div class="horizontal-line d-md-none my-5" style="width: 150px;"></div>
+          <div class="d-flex flex-column">
+            <div class="total-container total-payment-container px-5 py-3 my-2 w-100 d-flex justify-content-space-between">
+              <div class="mx-auto">
+                Total:<span class="cart-item-price ms-3"> {{calculateTotalPrice()}} €</span>
+              </div>
+            </div>
+            <div class="d-flex flex-column justify-content-center align-items-center total-container total-payment-container px-5 py-4">
+              <h4 class="text-center">Pay with</h4>
+              <button mat-raised-button (click)="sendPaymentOrder()">
+                <img  src="../../../assets/images/paypal.png" class="mx-auto mx-md-0" style="max-width: 100px;" width="100%" alt="Photo">
+              </button>
+            </div>
           </div>
         </div>
-        <div>
-          <button mat-button matStepperPrevious>Back</button>
+        <div class="d-flex justify-content-center">
+          <button mat-stroked-button matStepperPrevious>Back</button>
         </div>
+      </div>
     </mat-step>
-    </mat-stepper>
+  </mat-stepper>
 </div>

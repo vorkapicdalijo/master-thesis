@@ -39,6 +39,11 @@ h1.example-app-name {
   font-size: 20px;
 }
 
+.header-title:hover {
+  cursor: pointer;
+}
+
+
 .menu-button:hover {
   cursor: pointer;
 }

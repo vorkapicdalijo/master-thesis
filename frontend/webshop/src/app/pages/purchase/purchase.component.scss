@@ -14,13 +14,13 @@ mat-icon {
   color: rgba(0, 0, 0, 0.6);
 }
 
-@media screen and (max-width: 770px) {
+@media screen and (max-width: 992px) {
   mat-form-field {
     width: 250px;
   }
 }
 
-@media screen and (min-width: 770px) {
+@media screen and (min-width: 992px) {
   mat-form-field {
     width: 350px;
   }
@@ -47,9 +47,15 @@ mat-icon {
   width: 300px;
 }
 
+.total-payment-container {
+  background-color: #f5f5f5;
+  border-radius: 20px;
+  display: inline-block;
+}
+
 .total-container {
   font-size: 18px;
-  span {
+  span, h4 {
     font-size: 18px;
   }
 }
@@ -59,8 +65,7 @@ mat-icon {
 }
 
 .horizontal-line {
-  height: 1px;
-  background-color: gray;
+  border-top: 1px solid lightgray;
 }
 
 button.mat-mdc-menu-item:hover {
@@ -70,9 +75,24 @@ button.mat-mdc-menu-item:hover {
 }
 
 button {
-  font-size: 20px;
+  font-size: 16px;
 }
 
 .mat-mdc-menu-panel {
   min-width: none;
+}
+
+span.summary-element-title {
+  color: darkgray;
+  font-size: 16px;
+}
+span.summary-element-content {
+  font-size: 18px;
+  color: darkslategray;
+  font-weight: 400;
+}
+
+.vertical-line {
+  border-left: 1px solid lightgray;
+  height: 150px;
 }
