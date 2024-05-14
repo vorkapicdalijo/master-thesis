@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -16,12 +17,24 @@ public class ReviewServiceImpl implements ReviewService {
     public final ReviewRepository reviewRepository;
     @Override
     public List<Review> getReviewsByProductId(Long productId) {
-        return reviewRepository.findByProductId(productId);
+        return reviewRepository.findByReviewIdProductId(productId);
+    }
+
+    @Override
+    public Review getReviewByProductIdAndUserId(Long productId, String userId) {
+        Optional<Review> review = reviewRepository.findByReviewIdProductIdAndReviewIdUserId(productId, userId).stream().findFirst();
+
+        if (review.isPresent()) {
+            return review.get();
+        }
+        else {
+            return null;
+        }
     }
 
     @Override
     public Review addReview(Review review) {
-        reviewRepository.saveAndFlush(review);
+        reviewRepository.save(review);
 
         return review;
     }

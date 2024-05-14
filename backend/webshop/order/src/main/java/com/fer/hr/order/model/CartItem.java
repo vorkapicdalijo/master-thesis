@@ -1,5 +1,6 @@
 package com.fer.hr.order.model;
 
+import com.fer.hr.clients.review.dto.Review;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,4 +19,5 @@ public class CartItem {
     private Double price;
     private Integer amount;
     private Long orderId;
+    private Review review;
 }

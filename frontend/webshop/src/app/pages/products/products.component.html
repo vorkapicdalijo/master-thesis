@@ -5,9 +5,23 @@
                 class="product col m-2"
                 (click)="openProductDetails(product.id)">
                 <img mat-card-image src="../../../assets/images/eros.jpg" alt="Photo of a Shiba Inu">
-                <mat-card-header>
-                    <mat-card-title>{{product.name}}</mat-card-title>
-                    <mat-card-subtitle>{{product.description}}</mat-card-subtitle>
+                <mat-card-header class="h-100 w-100">
+                    <div class="d-flex flex-column h-100 w-100 justify-content-between">
+                        <div class="d-flex flex-column">
+                            <mat-card-title>{{product.name}}</mat-card-title>
+                            <mat-card-subtitle>{{product.size}} ml</mat-card-subtitle>
+                        </div>
+                        <div class="d-flex flex-row justify-content-between align-items-center my-2">
+                            <div class="d-flex align-items-center">
+                                <span>{{product.averageRatingAndCount.averageRating}}</span>
+                                <mat-icon>star</mat-icon>
+                                <span>{{product.averageRatingAndCount.count ? '(' + product.averageRatingAndCount.count + ')' : ''}}</span>
+                            </div>
+                            <div>
+                                <span class="price">{{product.price}} €</span>
+                            </div>
+                        </div>
+                    </div>
                 </mat-card-header>
             </mat-card>
         }

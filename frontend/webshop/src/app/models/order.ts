@@ -1,5 +1,6 @@
 import { CartItem } from "./cart-item";
 import { Person } from "./person";
+import { Review } from "./review";
 
 export class Order {
     id: number;
@@ -9,6 +10,7 @@ export class Order {
     sum: number;
     person: Person;
     items: CartItem[];
+    review: Review;
   
     constructor(
       id: number,
@@ -17,7 +19,8 @@ export class Order {
       person: Person,
       payId: string,
       payerId: string,
-      items: CartItem[]
+      items: CartItem[],
+      review: Review,
     ) {
       this.id = id;
       this.createdAt = createdAt;
@@ -26,6 +29,7 @@ export class Order {
       this.items = items;
       this.sum = sum;
       this.person = person;
+      this.review = review;
     }
   }
   

@@ -1,9 +1,12 @@
-export class Review {
-    id: number;
+export class ReviewId {
+    productId: number;
     userId: string;
+}
+
+export class Review {
+    reviewId: ReviewId;
     userName: string;
     rating: number;
-    productId: number;
     comment: string;
     createdAt: Date;
 }

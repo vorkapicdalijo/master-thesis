@@ -17,4 +17,7 @@ public interface ReviewClient {
 
     @GetMapping("/api/reviews/{productId}")
     public ResponseEntity<List<Review>> getReviewsByProductId(@PathVariable("productId") Long productId);
+
+    @GetMapping("/api/reviews/{productId}/user/{userId}")
+    public ResponseEntity<Review> getReviewByProductIdAndUserId(@PathVariable("productId") Long productId, @PathVariable("userId") String userId);
 }

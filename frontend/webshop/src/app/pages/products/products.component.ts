@@ -5,11 +5,12 @@ import {MatCardModule} from '@angular/material/card';
 import { Product } from '../../models/product';
 import { MatRippleModule } from '@angular/material/core';
 import { Router } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-products',
   standalone: true,
-  imports: [MatCardModule, MatButtonModule, MatRippleModule],
+  imports: [MatCardModule, MatButtonModule, MatRippleModule, MatIconModule,],
   templateUrl: './products.component.html',
   styleUrl: './products.component.scss'
 })

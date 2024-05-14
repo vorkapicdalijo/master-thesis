@@ -23,6 +23,14 @@ public class ReviewController {
 
         return new ResponseEntity<>(reviewList, HttpStatus.OK);
     }
+    @GetMapping("/{productId}/user/{userId}")
+    public ResponseEntity<Review> getReviewByProductIdAndUserId(@PathVariable("productId") Long productId, @PathVariable("userId") String userId) {
+        Review review = reviewService.getReviewByProductIdAndUserId(productId, userId);
+
+        return new ResponseEntity<>(review, HttpStatus.OK);
+    }
+
+
 
     @GetMapping("/average/{productId}")
     public ResponseEntity<AverageRatingAndCount> getAverageReviewsRatingAndCountByProductId(@PathVariable("productId") Long productId) {

@@ -49,3 +49,39 @@ tr.element-row:not(.expanded-row):active {
 h4 {
   font-size: 14px;
 }
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.star:hover {
+  cursor: pointer;
+  color: darkred;
+}
+
+.mdc-button__label {
+  font-size: 14px;
+}
+
+.mat-mdc-form-field {
+  font-size: 14px;
+}
+
+.mat-mdc-form-field.mat-mdc-form-field-type-mat-input.mat-form-field-disabled.mat-form-field-appearance-outline {
+  font-size: 14px;
+  mat-label {
+    color: black;
+  }
+  textarea {
+    color: black;
+  }
+}
+
+.change {
+  text-decoration: underline;
+}
+
+.change:hover {
+  cursor: pointer;
+  color: gray;
+}

@@ -15,20 +15,10 @@ import java.util.Date;
 @Entity
 @Table(name = "review")
 public class Review {
-    @Id
-    @SequenceGenerator(
-            name = "review_id_sequence",
-            sequenceName = "review_id_sequence"
-    )
-    @GeneratedValue(
-            strategy = GenerationType.IDENTITY,
-            generator = "review_id_sequence"
-    )
-    private Long id;
-    private String userId;
+    @EmbeddedId
+    private ReviewId reviewId;
     private String userName;
     private int rating;
-    private Long productId;
     private String comment;
     private Date createdAt;
 }

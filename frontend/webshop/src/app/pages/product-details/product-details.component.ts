@@ -39,11 +39,11 @@ export class ProductDetailsComponent implements OnInit {
   starArray: number[] = Array.from({ length: 5 }, (_, i) => i + 1);
   selectedAmount: number = 1;
 
-  reviews: Review[] = [
-    {id:1, productId: 52, userId: '1', userName: 'Marko', comment: 'Loving the product', rating: 4.5, createdAt: new Date()},
-    {id:1, productId: 52, userId: '1', userName: 'Marko', comment: 'Loving the product', rating: 4.5, createdAt: new Date()},
-    {id:1, productId: 52, userId: '1', userName: 'Marko', comment: 'Loving the product', rating: 4.5, createdAt: new Date()}
-  ]
+  // reviews: Review[] = [
+  //   {id:1, productId: 52, userId: '1', userName: 'Marko', comment: 'Loving the product', rating: 4.5, createdAt: new Date()},
+  //   {id:1, productId: 52, userId: '1', userName: 'Marko', comment: 'Loving the product', rating: 4.5, createdAt: new Date()},
+  //   {id:1, productId: 52, userId: '1', userName: 'Marko', comment: 'Loving the product', rating: 4.5, createdAt: new Date()}
+  // ]
 
   constructor(
     private productService: ProductService,
@@ -70,7 +70,8 @@ export class ProductDetailsComponent implements OnInit {
       this.product.id,
       this.product.name,
       this.product.price,
-      this.selectedAmount
+      this.selectedAmount,
+      null!
     );
 
     this.cartService.addToCart(cartItem);

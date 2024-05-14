@@ -9,6 +9,8 @@ public interface ReviewService {
 
     public List<Review> getReviewsByProductId(Long productId);
 
+    public Review getReviewByProductIdAndUserId(Long productId, String userId);
+
     public Review addReview(Review review);
     public AverageRatingAndCount getAverageReviewsRatingAndCountByProductId(Long productId);
 }

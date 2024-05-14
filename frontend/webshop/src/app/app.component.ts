@@ -67,7 +67,6 @@ export class AppComponent implements OnInit, AfterViewInit {
   links = [
     { url: '/', title: 'Home' },
     { url: '/products', title: 'Products' },
-    { url: '/about-us', title: 'About Us' },
   ];
   activeLink = '';
   cartItems: CartItem[] = [];

@@ -12,11 +12,9 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Review {
-    private Long id;
-    private String userId;
+    private ReviewId reviewId;
     private String userName;
     private int rating;
-    private Long productId;
     private String comment;
     private Date createdAt;
 }
