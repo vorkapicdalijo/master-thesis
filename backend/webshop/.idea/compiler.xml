@@ -10,6 +10,7 @@
       <directory url="file://$PROJECT_DIR$/api-gateway/src/main/resources/archetype-resources" includeSubdirectories="true" />
       <directory url="file://$PROJECT_DIR$/payment/src/main/resources/archetype-resources" includeSubdirectories="true" />
       <directory url="file://$PROJECT_DIR$/order/src/main/resources/archetype-resources" includeSubdirectories="true" />
+      <directory url="file://$PROJECT_DIR$/review/src/main/resources/archetype-resources" includeSubdirectories="true" />
     </excludeFromCompile>
     <annotationProcessing>
       <profile default="true" name="Default" enabled="true" />
@@ -19,6 +20,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="product" />
         <module name="clients" />
+        <module name="review" />
         <module name="api-gateway" />
         <module name="payment" />
         <module name="inventory" />

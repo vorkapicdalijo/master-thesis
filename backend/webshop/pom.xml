@@ -15,6 +15,7 @@
       <module>api-gateway</module>
       <module>payment</module>
       <module>order</module>
+      <module>review</module>
   </modules>
 
   <properties>
