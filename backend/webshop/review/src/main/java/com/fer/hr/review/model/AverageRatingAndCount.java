@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AverageRatingAndCount {
-    private Float averageRating;
+    private double averageRating;
     private int count;
 }

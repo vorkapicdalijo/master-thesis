@@ -28,6 +28,20 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public AverageRatingAndCount getAverageReviewsRatingAndCountByProductId(Long productId) {
-        return null;
+        List<Review> reviewList = getReviewsByProductId(productId);
+
+        int count = reviewList.size();
+        double averageRating = reviewList.stream()
+                .mapToDouble(Review::getRating)
+                .average()
+                .orElse(0);
+
+        AverageRatingAndCount averageRatingAndCount = AverageRatingAndCount
+                .builder()
+                .averageRating(averageRating)
+                .count(count)
+                .build();
+
+        return averageRatingAndCount;
     }
 }

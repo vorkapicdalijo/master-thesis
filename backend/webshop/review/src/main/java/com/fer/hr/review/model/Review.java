@@ -26,7 +26,7 @@ public class Review {
     private Long id;
     private String userId;
     private String userName;
-    private Float rating;
+    private double rating;
     private Long productId;
     private String comment;
 }
