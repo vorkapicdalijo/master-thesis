@@ -1,5 +1,6 @@
 package com.fer.hr.webshopassistant.controller;
 
+import com.fer.hr.webshopassistant.model.ChatResponse;
 import com.fer.hr.webshopassistant.service.AssistantService;
 import org.springframework.ai.chat.ChatClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +19,7 @@ public class AssistantController {
     }
 
     @GetMapping("/chat")
-    public String chat(@RequestParam(value="message", defaultValue = "Hi! Who are you") String message) {
+    public ChatResponse chat(@RequestParam(value="message", defaultValue = "Hi! Who are you") String message) {
         return assistantService.chat(message);
     }
 

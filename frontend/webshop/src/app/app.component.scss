@@ -125,6 +125,15 @@ p {
     width: 100%;
   }
 }
+@media screen and (max-width: 450px) {
+  .chat-container {
+    width: 100%;
+  }
+  p {
+    font-size: 12px;
+  }
+}
+
 @media screen and (min-height: 1200px) {
   .scrollable-container {
     max-height: 100vh;

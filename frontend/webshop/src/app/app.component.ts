@@ -26,6 +26,8 @@ import { ChatQA } from './models/chat-qa';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
+import { ChatService } from './services/chat.service';
+import { ChatResponse } from './models/chat-response';
 
 @Component({
   selector: 'app-root',
@@ -57,12 +59,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   questionForm: FormGroup;
 
   QAs: ChatQA[] = [
-    {question: 'This is a test question', answer: 'This is a test answer This is a test answer This is a test answer'},
-    {question: 'This is a test question', answer: 'This is a test answer'},
-    {question: 'This is a test question', answer: 'This is a test answer'},
-    {question: 'This is a test question', answer: 'This is a test answer'},
-    {question: 'This is a test question', answer: 'This is a test answer'},
-    {question: 'This is a test question', answer: 'This is a test answer'},
+    {question: '', answer: 'Welcome to the chat. You are chatting with our virtual assistant.'},
   ]
 
 
@@ -79,6 +76,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   isAdmin: boolean = false;
   isAuthenticated: boolean = false;
+  isAnswerLoading: boolean = false;
 
   mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;
@@ -92,7 +90,8 @@ export class AppComponent implements OnInit, AfterViewInit {
     private paymentService: PaymentService,    
     private authService: AuthService,
     private oAuthService: OAuthService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    public chatService: ChatService,
   ) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
@@ -180,9 +179,26 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   public askQuestion() {
+    this.isAnswerLoading = true;
     let question: string = this.questionForm.get('question')?.value;
-
+    this.QAs.push({question: question, answer: ''});
     this.questionForm.reset();
+
+    this.chatService.chat(question)
+      .subscribe((answer: ChatResponse) => {
+        this.QAs[this.QAs.length-1].answer = answer.message
+        this.isAnswerLoading = false;
+      });
+    // setTimeout(() => {
+    //   this.QAs[this.QAs.length-1].answer = "Received answer mock"
+    //   this.isAnswerLoading = false;
+    // }, 3000)
+  }
+
+  scrollToBottom(): void {
+    try {
+        this.itemContainer.nativeElement.scrollTop = this.itemContainer.nativeElement.scrollHeight;
+    } catch(err) { }                 
   }
 
   ngOnDestroy(): void {

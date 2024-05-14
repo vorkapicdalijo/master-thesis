@@ -1,5 +1,6 @@
 package com.fer.hr.webshopassistant.service;
 
+import com.fer.hr.webshopassistant.model.ChatResponse;
 import org.springframework.ai.chat.ChatClient;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
@@ -28,7 +29,7 @@ public class AssistantService {
         this.vectorStore = vectorStore;
     }
 
-    public String chat(String message) {
+    public ChatResponse chat(String message) {
         List<Document> similarDocuments = vectorStore.similaritySearch(SearchRequest.query(message).withTopK(2));
         List<String> contentList = similarDocuments.stream().map(Document::getContent).toList();
         PromptTemplate promptTemplate = new PromptTemplate(assistantPromptTemplate);
@@ -37,7 +38,11 @@ public class AssistantService {
         promptParameters.put("documents", String.join("\n", contentList));
         Prompt prompt = promptTemplate.create(promptParameters);
 
-        return chatClient.call(prompt).getResult().getOutput().getContent();
+        ChatResponse chatResponse = new ChatResponse();
+        String answer = chatClient.call(prompt).getResult().getOutput().getContent();
+        chatResponse.setMessage(answer);
+
+        return chatResponse;
 
     }
 }
