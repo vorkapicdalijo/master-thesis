@@ -10,6 +10,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { CartItem } from '../../models/cart-item';
 import { CartService } from '../../services/cart.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {MatExpansionModule} from '@angular/material/expansion';
+import { Review } from '../../models/review';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-product-details',
@@ -20,6 +23,8 @@ import {MatSnackBar} from '@angular/material/snack-bar';
     MatSelectModule,
     MatButtonModule,
     MatIconModule,
+    MatExpansionModule,
+    DatePipe
   ],
   templateUrl: './product-details.component.html',
   styleUrl: './product-details.component.scss',
@@ -28,9 +33,17 @@ export class ProductDetailsComponent implements OnInit {
   productId!: number;
   product!: Product;
   isLoaded: boolean = false;
+  panelOpenState = false;
 
   amounts: number[] = Array.from({ length: 10 }, (_, i) => i + 1);
+  starArray: number[] = Array.from({ length: 5 }, (_, i) => i + 1);
   selectedAmount: number = 1;
+
+  reviews: Review[] = [
+    {id:1, productId: 52, userId: '1', userName: 'Marko', comment: 'Loving the product', rating: 4.5, createdAt: new Date()},
+    {id:1, productId: 52, userId: '1', userName: 'Marko', comment: 'Loving the product', rating: 4.5, createdAt: new Date()},
+    {id:1, productId: 52, userId: '1', userName: 'Marko', comment: 'Loving the product', rating: 4.5, createdAt: new Date()}
+  ]
 
   constructor(
     private productService: ProductService,
@@ -65,5 +78,13 @@ export class ProductDetailsComponent implements OnInit {
 
   public openSnackBar(message: string, action: string) {
     this._snackBar.open(message, action, {duration: 3000});
+  }
+
+  showRatingIcon(rating: number, index:number) {
+    if (rating >= index + 1) {
+      return 'star';
+    } else {
+      return 'star_border';
+    }
   }
 }

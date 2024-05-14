@@ -34,6 +34,41 @@
         </div>
     </div>
   </div>
+  <div class="container my-5">
+    <mat-accordion>
+      <mat-expansion-panel (opened)="panelOpenState = true"
+                           (closed)="panelOpenState = false"
+                           [disabled]="product.averageRatingAndCount.count == 0"
+                           class="mat-elevation-z0">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Reviews
+          </mat-panel-title>
+          <mat-panel-description>
+            <span>{{product.averageRatingAndCount.averageRating ? product.averageRatingAndCount.averageRating : 'No Reviews'}}</span>
+            <mat-icon>star</mat-icon>
+            <span>({{product.averageRatingAndCount.count}})</span>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        @for(review of product.reviews; track review) {
+          <div class="d-flex flex-column mt-3 mb-4">
+            <div>
+              <p>{{review.comment}}</p>
+            </div>
+            <div class="d-flex flex-row align-items-center">
+              @for(star of starArray; track star; let i = $index) {
+                  <mat-icon color="accent" [id]="'star_'+i">
+                    {{showRatingIcon(review.rating, i)}}
+                  </mat-icon>
+              }
+              <span class="mx-3 fw-medium">{{review.userName}}</span>
+              <span class=" fw-medium">{{review.createdAt | date:'longDate'}}</span>
+            </div>
+          </div>
+        }
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
 </div>
 }
 @else {

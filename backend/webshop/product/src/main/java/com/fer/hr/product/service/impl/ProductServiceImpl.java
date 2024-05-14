@@ -4,6 +4,7 @@ import com.fer.hr.clients.inventory.InventoryClient;
 import com.fer.hr.clients.inventory.dto.InventoryItemRequest;
 import com.fer.hr.clients.review.dto.AverageRatingAndCount;
 import com.fer.hr.clients.review.ReviewClient;
+import com.fer.hr.clients.review.dto.Review;
 import com.fer.hr.product.dto.ProductRequest;
 import com.fer.hr.product.dto.ProductResponse;
 import com.fer.hr.product.mapper.ProductMapper;
@@ -33,10 +34,13 @@ public class ProductServiceImpl implements ProductService {
             return null;
         }
         ProductResponse productResponse = ProductMapper.mapProductToProductResponse(product.get());
+        List<Review> productReviews = reviewClient.getReviewsByProductId(product.get().getId()).getBody();
+        productResponse.setReviews(productReviews);
+
+        AverageRatingAndCount averageRatingAndCount = reviewClient.getAverageReviewsRatingAndCountByProductId(product.get().getId()).getBody();
+        productResponse.setAverageRatingAndCount(averageRatingAndCount);
 
         return productResponse;
-
-        // TODO: Get Product Reviews from the Review Microservice
     }
 
     @Override

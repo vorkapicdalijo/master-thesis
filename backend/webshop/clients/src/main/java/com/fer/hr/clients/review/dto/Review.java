@@ -1,29 +1,17 @@
-package com.fer.hr.review.model;
+package com.fer.hr.clients.review.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 import java.util.Date;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table(name = "review")
 public class Review {
-    @Id
-    @SequenceGenerator(
-            name = "review_id_sequence",
-            sequenceName = "review_id_sequence"
-    )
-    @GeneratedValue(
-            strategy = GenerationType.IDENTITY,
-            generator = "review_id_sequence"
-    )
     private Long id;
     private String userId;
     private String userName;

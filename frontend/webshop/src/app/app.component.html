@@ -94,7 +94,7 @@
   >
     <mat-sidenav
       #snav
-      [mode]="mobileQuery.matches ? 'over' : 'side'"
+      mode="over"
       [fixedInViewport]="mobileQuery.matches"
       fixedTopGap="56"
     >
@@ -106,7 +106,7 @@
     </mat-sidenav>
     <mat-sidenav
       #cnav
-      [mode]="mobileQuery.matches ? 'over' : 'side'"
+      mode="over"
       [fixedInViewport]="mobileQuery.matches"
       fixedTopGap="56"
       position="end"

@@ -1,3 +1,6 @@
+import { AverageRatingAndCount } from "./average-rating-and-count";
+import { Review } from "./review";
+
 export class Product {
   id: number;
   name: string;
@@ -7,6 +10,8 @@ export class Product {
   typeId: number;
   brandId: number;
   description: string;
+  reviews: Review[];
+  averageRatingAndCount: AverageRatingAndCount;
 
   constructor(
     id: number,
@@ -16,7 +21,9 @@ export class Product {
     typeId: number,
     brandId: number,
     size: number,
-    description: string
+    description: string,
+    reviews: Review[],
+    averageRatingAndCount: AverageRatingAndCount
   ) {
     this.id = id;
     this.name = name;
@@ -26,5 +33,7 @@ export class Product {
     this.typeId = typeId;
     this.brandId = brandId;
     this.description = description;
+    this.averageRatingAndCount = averageRatingAndCount;
+    this.reviews = reviews;
   }
 }

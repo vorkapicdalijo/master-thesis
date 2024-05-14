@@ -1,10 +1,13 @@
 package com.fer.hr.product.dto;
 
 import com.fer.hr.clients.review.dto.AverageRatingAndCount;
+import com.fer.hr.clients.review.dto.Review;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @Builder
@@ -21,6 +24,7 @@ public class ProductResponse {
     private Long brandId;
 
     private AverageRatingAndCount averageRatingAndCount;
+    private List<Review> reviews;
 
     private Integer amount;
 }

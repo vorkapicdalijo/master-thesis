@@ -18,14 +18,14 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     @GetMapping("/{productId}")
-    public ResponseEntity<List<Review>> getReviewsByProductId(@PathVariable Long productId) {
+    public ResponseEntity<List<Review>> getReviewsByProductId(@PathVariable("productId") Long productId) {
         List<Review> reviewList = reviewService.getReviewsByProductId(productId);
 
         return new ResponseEntity<>(reviewList, HttpStatus.OK);
     }
 
     @GetMapping("/average/{productId}")
-    public ResponseEntity<AverageRatingAndCount> getAverageReviewsRatingAndCountByProductId(@PathVariable Long productId) {
+    public ResponseEntity<AverageRatingAndCount> getAverageReviewsRatingAndCountByProductId(@PathVariable("productId") Long productId) {
         AverageRatingAndCount averageRatingAndCount = reviewService.getAverageReviewsRatingAndCountByProductId(productId);
 
         return new ResponseEntity<>(averageRatingAndCount, HttpStatus.OK);
