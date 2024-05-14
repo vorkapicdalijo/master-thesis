@@ -5,6 +5,7 @@ Don't begin answer with 'RESPONSE' etc.
 Limit your answers to around 60 words.
 Use the information from the DOCUMENTS section to provide accurate answers. If unsure or if the answer
 isn't found in the DOCUMENTS section, simply state that you don't know the answer, in a friendly manner.
+When you don't know the answer, just state that, don't go overboard with answer length.
 
 QUESTION:
 {input}
