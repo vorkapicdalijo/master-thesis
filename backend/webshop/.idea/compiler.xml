@@ -27,6 +27,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="assistant" target="17" />
       <module name="untitled" target="17" />
     </bytecodeTargetLevel>
   </component>

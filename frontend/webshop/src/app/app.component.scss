@@ -74,3 +74,80 @@ button.cart-menu-item:hover {
   min-width: none;
 }
 
+.floating-button {
+  position: fixed;
+  top: 70px;
+  right: 10px;
+  z-index: 1000;
+  background-color: lightseagreen;
+}
+
+.chat-title {
+  font-size: 18px;
+}
+
+.header-container {
+  border-bottom: 1px solid lightgray;
+}
+
+.question {
+  background-color: lightgreen;
+  border-radius: 30px;
+  display: inline-block;
+}
+
+.answer {
+  background-color: lightskyblue;
+  border-radius: 30px;
+  display: inline-block;
+}
+
+p {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 26px;
+  letter-spacing: 1px;
+  color: darkslategray;
+}
+
+.scrollable-container {
+  max-height: 75vh; 
+  overflow-y: auto;
+  border-bottom: 1px solid lightgray;
+}
+
+.chat-container {
+  width: 450px;
+}
+
+@media screen and (max-width: 450px) {
+  .chat-container {
+    width: 100%;
+  }
+}
+@media screen and (min-height: 1200px) {
+  .scrollable-container {
+    max-height: 100vh;
+  }
+}
+
+@media screen and (max-height: 1000px) {
+  .scrollable-container {
+    max-height: 72vh;
+  }
+}
+
+@media screen and (max-height: 740px) {
+  .scrollable-container {
+    max-height: 65vh;
+  }
+}
+
+.send-button {
+  min-height: 56px;
+  border-radius: 15px;
+}
+
+.question-field {
+  width: 100%;
+}

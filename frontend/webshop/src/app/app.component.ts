@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import {
   ActivatedRoute,
   Router,
@@ -22,6 +22,10 @@ import { MatDividerModule } from '@angular/material/divider';
 import { AuthService } from './services/auth.service';
 import { OAuthEvent, OAuthService } from 'angular-oauth2-oidc';
 import { environment } from '../environment/environment';
+import { ChatQA } from './models/chat-qa';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-root',
@@ -37,13 +41,30 @@ import { environment } from '../environment/environment';
     RouterModule,
     MatBadgeModule,
     MatMenuModule,
-    MatDividerModule
+    MatDividerModule,
+    MatFormFieldModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatInputModule,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit, AfterViewInit {
   @ViewChild('sidenav') sidenav: MatSidenav;
+  @ViewChild('itemContainer', { static: false }) itemContainer: ElementRef;
+  
+  questionForm: FormGroup;
+
+  QAs: ChatQA[] = [
+    {question: 'This is a test question', answer: 'This is a test answer This is a test answer This is a test answer'},
+    {question: 'This is a test question', answer: 'This is a test answer'},
+    {question: 'This is a test question', answer: 'This is a test answer'},
+    {question: 'This is a test question', answer: 'This is a test answer'},
+    {question: 'This is a test question', answer: 'This is a test answer'},
+    {question: 'This is a test question', answer: 'This is a test answer'},
+  ]
+
 
   title = 'webshop';
   links = [
@@ -71,6 +92,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     private paymentService: PaymentService,    
     private authService: AuthService,
     private oAuthService: OAuthService,
+    private fb: FormBuilder
   ) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
@@ -80,6 +102,10 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.changeDetectorRef.detectChanges();
   }
   ngOnInit(): void {
+    this.questionForm = this.fb.group({
+      question: new FormControl('', Validators.required),
+    });
+
     this.isAuthenticated = this.authService.isAuthenticated();
 
     this.isAdmin = this.authService.getUserRoles().includes('admin');
@@ -151,6 +177,12 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   closeSidenav() {
     this.sidenav.close();
+  }
+
+  public askQuestion() {
+    let question: string = this.questionForm.get('question')?.value;
+
+    this.questionForm.reset();
   }
 
   ngOnDestroy(): void {

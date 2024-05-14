@@ -104,8 +104,55 @@
         }
       </mat-nav-list>
     </mat-sidenav>
+    <mat-sidenav
+      #cnav
+      [mode]="mobileQuery.matches ? 'over' : 'side'"
+      [fixedInViewport]="mobileQuery.matches"
+      fixedTopGap="56"
+      position="end"
+    >
+      <div class="container chat-container">
+        <div class="d-flex flex-column align-items-center w-100">
+          <div class="header-container px-3 py-2 w-100">
+            <img  src="../../../assets/images/chatbot.png" class="me-3" width="50px" alt="Photo">
+            <span class="chat-title">Assistant</span>
+          </div>
+          <div class="scrollable-container px-2 px-md-5 mb-4 py-2 w-100" #itemContainer>
+            @for(qa of QAs; track qa; let i = $index) {
+              <div class="w-100">
+                <span class="spacer"></span>
+                <div class="question p-4 my-2 float-end">
+                  <p class="m-0">{{ qa.question }}</p>
+                </div>
+              </div>
+              <br />
+              <div class="w-100"> 
+                <div class="answer p-4 mt-2">
+                  <p class="m-0">{{ qa.answer }}</p>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <form [formGroup]="questionForm" class="d-flex flex-row align-items-center w-100">
+          <mat-form-field appearance="outline" subscriptSizing="dynamic" class="question-field me-2">
+            <mat-label>Question</mat-label>
+            <input matInput formControlName="question" required>
+            <mat-icon matSuffix style="color: rgba(0, 0, 0, 0.6);">question_mark</mat-icon>
+          </mat-form-field>
+          <button mat-raised-button color="primary" class="send-button" [disabled]="questionForm.invalid" (click)="askQuestion()">
+            <mat-icon class="ms-2">send</mat-icon>
+          </button>
+        </form>
+      </div>
+    </mat-sidenav>
     <mat-sidenav-content>
       <router-outlet></router-outlet>
     </mat-sidenav-content>
   </mat-sidenav-container>
 </div>
+<button mat-mini-fab class="floating-button" (click)="cnav.toggle()">
+  <mat-icon>chat</mat-icon>
+</button>
