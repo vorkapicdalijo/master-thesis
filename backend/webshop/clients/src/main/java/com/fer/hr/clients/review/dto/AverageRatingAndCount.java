@@ -1,4 +1,4 @@
-package com.fer.hr.review.model;
+package com.fer.hr.clients.review.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,5 +12,4 @@ import lombok.NoArgsConstructor;
 public class AverageRatingAndCount {
     private double averageRating;
     private int count;
-
 }

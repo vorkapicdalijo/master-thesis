@@ -17,14 +17,14 @@ public class ReviewController {
 
     private final ReviewService reviewService;
 
-    @GetMapping()
+    @GetMapping("/{productId}")
     public ResponseEntity<List<Review>> getReviewsByProductId(@PathVariable Long productId) {
         List<Review> reviewList = reviewService.getReviewsByProductId(productId);
 
         return new ResponseEntity<>(reviewList, HttpStatus.OK);
     }
 
-    @GetMapping("/average")
+    @GetMapping("/average/{productId}")
     public ResponseEntity<AverageRatingAndCount> getAverageReviewsRatingAndCountByProductId(@PathVariable Long productId) {
         AverageRatingAndCount averageRatingAndCount = reviewService.getAverageReviewsRatingAndCountByProductId(productId);
 

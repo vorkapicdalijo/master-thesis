@@ -1,5 +1,6 @@
 package com.fer.hr.product.dto;
 
+import com.fer.hr.clients.review.dto.AverageRatingAndCount;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,6 +19,8 @@ public class ProductResponse {
     private Long categoryId;
     private Long typeId;
     private Long brandId;
+
+    private AverageRatingAndCount averageRatingAndCount;
 
     private Integer amount;
 }

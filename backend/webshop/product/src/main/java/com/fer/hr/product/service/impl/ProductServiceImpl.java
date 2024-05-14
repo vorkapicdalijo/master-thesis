@@ -2,6 +2,8 @@ package com.fer.hr.product.service.impl;
 
 import com.fer.hr.clients.inventory.InventoryClient;
 import com.fer.hr.clients.inventory.dto.InventoryItemRequest;
+import com.fer.hr.clients.review.dto.AverageRatingAndCount;
+import com.fer.hr.clients.review.ReviewClient;
 import com.fer.hr.product.dto.ProductRequest;
 import com.fer.hr.product.dto.ProductResponse;
 import com.fer.hr.product.mapper.ProductMapper;
@@ -21,6 +23,7 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
     private final InventoryClient inventoryClient;
+    private final ReviewClient reviewClient;
 
     @Override
     public ProductResponse getProductById(Long productId) {
@@ -43,7 +46,9 @@ public class ProductServiceImpl implements ProductService {
         List<ProductResponse> productResponseList = new ArrayList<>();
         productList.forEach(product -> {
             ProductResponse productResponse = ProductMapper.mapProductToProductResponse(product);
+            AverageRatingAndCount averageRatingAndCount = reviewClient.getAverageReviewsRatingAndCountByProductId(product.getId()).getBody();
 
+            productResponse.setAverageRatingAndCount(averageRatingAndCount);
             productResponseList.add(productResponse);
         });
 

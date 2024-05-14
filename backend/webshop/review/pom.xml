@@ -28,7 +28,7 @@
         </dependency>
         <dependency>
             <groupId>com.fer.hr</groupId>
-            <artifactId>clients</artifactId>
+            <artifactId>product</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
