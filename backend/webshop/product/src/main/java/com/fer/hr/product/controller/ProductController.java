@@ -2,6 +2,7 @@ package com.fer.hr.product.controller;
 
 import com.fer.hr.product.dto.ProductRequest;
 import com.fer.hr.product.dto.ProductResponse;
+import com.fer.hr.product.model.Product;
 import com.fer.hr.product.service.impl.ProductServiceImpl;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -46,9 +47,9 @@ public class ProductController {
 
     @PostMapping("/add")
     public ResponseEntity<ProductResponse> addProduct(@RequestBody ProductRequest productToAdd) {
-        ProductResponse newProduct = productServiceImpl.addProduct(productToAdd);
+        ProductResponse productResponse = productServiceImpl.addProduct(productToAdd);
 
-        return new ResponseEntity<>(newProduct, HttpStatus.CREATED);
+        return new ResponseEntity<>(productResponse, HttpStatus.CREATED);
     }
 
     @PostMapping("/update/{productId}")

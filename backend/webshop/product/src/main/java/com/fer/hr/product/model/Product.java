@@ -4,33 +4,45 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.engine.jdbc.Size;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "product")
 public class Product {
 
     @Id
-    @SequenceGenerator(
-            name = "product_id_sequence",
-            sequenceName = "product_id_sequence"
-    )
-    @GeneratedValue(
-            strategy = GenerationType.IDENTITY,
-            generator = "product_id_sequence"
-    )
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long productId;
+
     private String name;
     private String description;
-    private Float price;
-    private Float size;
+    private String imageUrl;
 
-    private Long categoryId;
-    private Long typeId;
-    private Long brandId;
+    @ManyToOne
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
+
+    @ManyToOne
+    @JoinColumn(name = "type_id", nullable = false)
+    private Type type;
+
+    @ManyToOne
+    @JoinColumn(name = "brand_id", nullable = false)
+    private Brand brand;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private List<SizePrice> sizePrices;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private List<ProductNote> productNotes;
+
+    // Getters and Setters
 }
+

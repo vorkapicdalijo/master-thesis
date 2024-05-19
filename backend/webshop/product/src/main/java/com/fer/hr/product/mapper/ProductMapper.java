@@ -5,7 +5,7 @@ import com.fer.hr.product.dto.ProductResponse;
 import com.fer.hr.product.model.Product;
 
 public class ProductMapper {
-    public static Product mapProductRequestToProduct(ProductRequest productRequest) {
+    /*public static Product mapProductRequestToProduct(ProductRequest productRequest) {
         Product product = Product
                 .builder()
                 .id(productRequest.getId())
@@ -35,5 +35,5 @@ public class ProductMapper {
                 .build();
 
         return productResponse;
-    }
+    }*/
 }

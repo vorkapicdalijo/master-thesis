@@ -9,9 +9,14 @@ import com.fer.hr.product.dto.ProductRequest;
 import com.fer.hr.product.dto.ProductResponse;
 import com.fer.hr.product.mapper.ProductMapper;
 import com.fer.hr.product.model.Product;
+import com.fer.hr.product.model.ProductNote;
+import com.fer.hr.product.model.SizePrice;
+import com.fer.hr.product.repository.ProductNoteRepository;
 import com.fer.hr.product.repository.ProductRepository;
+import com.fer.hr.product.repository.SizePriceRepository;
 import com.fer.hr.product.service.ProductService;
 import lombok.AllArgsConstructor;
+import org.hibernate.engine.jdbc.Size;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -23,6 +28,8 @@ import java.util.Optional;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
+    private final SizePriceRepository sizePriceRepository;
+    private final ProductNoteRepository productNoteRepository;
     private final InventoryClient inventoryClient;
     private final ReviewClient reviewClient;
 
@@ -33,12 +40,22 @@ public class ProductServiceImpl implements ProductService {
         if(product.isEmpty()) {
             return null;
         }
-        ProductResponse productResponse = ProductMapper.mapProductToProductResponse(product.get());
-        List<Review> productReviews = reviewClient.getReviewsByProductId(product.get().getId()).getBody();
-        productResponse.setReviews(productReviews);
+        List<Review> productReviews = reviewClient.getReviewsByProductId(product.get().getProductId()).getBody();
+        AverageRatingAndCount averageRatingAndCount = reviewClient.getAverageReviewsRatingAndCountByProductId(product.get().getProductId()).getBody();
 
-        AverageRatingAndCount averageRatingAndCount = reviewClient.getAverageReviewsRatingAndCountByProductId(product.get().getId()).getBody();
-        productResponse.setAverageRatingAndCount(averageRatingAndCount);
+        ProductResponse productResponse = ProductResponse.builder()
+                .productId(product.get().getProductId())
+                .name(product.get().getName())
+                .description(product.get().getDescription())
+                .imageUrl(product.get().getImageUrl())
+                .brand(product.get().getBrand())
+                .category(product.get().getCategory())
+                .type(product.get().getType())
+                .productNotes(product.get().getProductNotes())
+                .sizePrices(product.get().getSizePrices())
+                .reviews(productReviews)
+                .averageRatingAndCount(averageRatingAndCount)
+                .build();
 
         return productResponse;
     }
@@ -49,10 +66,21 @@ public class ProductServiceImpl implements ProductService {
 
         List<ProductResponse> productResponseList = new ArrayList<>();
         productList.forEach(product -> {
-            ProductResponse productResponse = ProductMapper.mapProductToProductResponse(product);
-            AverageRatingAndCount averageRatingAndCount = reviewClient.getAverageReviewsRatingAndCountByProductId(product.getId()).getBody();
+            AverageRatingAndCount averageRatingAndCount = reviewClient.getAverageReviewsRatingAndCountByProductId(product.getProductId()).getBody();
 
-            productResponse.setAverageRatingAndCount(averageRatingAndCount);
+            ProductResponse productResponse = ProductResponse.builder()
+                    .productId(product.getProductId())
+                    .description(product.getDescription())
+                    .name(product.getName())
+                    .type(product.getType())
+                    .brand(product.getBrand())
+                    .category(product.getCategory())
+                    .imageUrl(product.getImageUrl())
+                    .averageRatingAndCount(averageRatingAndCount)
+                    //.productNotes(product.getProductNotes())
+                    //.sizePrices(product.getSizePrices())
+                    .build();
+
             productResponseList.add(productResponse);
         });
 
@@ -61,38 +89,112 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductResponse addProduct(ProductRequest productRequest) {
-        Product product = ProductMapper.mapProductRequestToProduct(productRequest);
+
+        Product product = Product.builder()
+                .name(productRequest.getName())
+                .description(productRequest.getDescription())
+                .imageUrl(productRequest.getImageUrl())
+                .brand(productRequest.getBrand())
+                .category(productRequest.getCategory())
+                .type(productRequest.getType())
+                .build();
+
         productRepository.saveAndFlush(product);
 
-        ProductResponse productResponse = ProductMapper.mapProductToProductResponse(product);
-        productResponse.setAmount(productRequest.getAmount());
+        List<SizePrice> sizePrices = new ArrayList<>();
+        for (SizePrice sizePrice : productRequest.getSizePrices()) {
+            sizePrice.setProduct(product);
+
+            sizePrices.add(sizePrice);
+        }
+        sizePriceRepository.saveAll(sizePrices);
+
+        List<ProductNote> productNotes = new ArrayList<>();
+        for (ProductNote productNote : productRequest.getProductNotes()) {
+            productNote.setProduct(product);
+
+            productNotes.add(productNote);
+        }
+        productNoteRepository.saveAll(productNotes);
+
+        ProductResponse productResponse = ProductResponse.builder()
+                .productId(product.getProductId())
+                .name(product.getName())
+                .description(product.getDescription())
+                .imageUrl(product.getImageUrl())
+                .brand(product.getBrand())
+                .category(product.getCategory())
+                .type(product.getType())
+                .productNotes(productNotes)
+                .sizePrices(sizePrices)
+                .amount(productRequest.getAmount())
+                .build();
+
         // TODO: Update the Inventory ammount of the product in Inventory Microservice
 
         InventoryItemRequest inventoryItemRequest = InventoryItemRequest
                 .builder()
-                .productId(product.getId())
-                .amount(productRequest.getAmount()).build();
+                .productId(product.getProductId())
+                .amount(productRequest.getAmount())
+                .build();
         inventoryClient.updateInventoryProductAmount(inventoryItemRequest);
 
         return productResponse;
     }
 
     @Override
-    public ProductResponse updateProduct(Long productId, ProductRequest updatedProduct) {
+    public ProductResponse updateProduct(Long productId, ProductRequest productRequest) {
         Optional<Product> product = productRepository.findById(productId);
 
-        if (product.isPresent()) {
-            product.get().setName(updatedProduct.getName());
-            product.get().setCategoryId(updatedProduct.getCategoryId());
-            product.get().setTypeId(updatedProduct.getTypeId());
-            product.get().setBrandId(updatedProduct.getBrandId());
-            product.get().setDescription(updatedProduct.getDescription());
-            product.get().setPrice(updatedProduct.getPrice());
+        if (product.isEmpty()) {
+            return null;
         }
 
-        productRepository.save(product.get());
+        Product updatedProduct = Product.builder()
+                .productId(product.get().getProductId())
+                .name(productRequest.getName())
+                .description(productRequest.getDescription())
+                .imageUrl(productRequest.getImageUrl())
+                .brand(productRequest.getBrand())
+                .category(productRequest.getCategory())
+                .type(productRequest.getType())
+                .build();
 
-        ProductResponse productResponse = ProductMapper.mapProductToProductResponse(product.get());
+        productRepository.save(updatedProduct);
+
+        //sizePriceRepository.deleteByProductId(updatedProduct.getProductId());
+
+        List<SizePrice> sizePrices = new ArrayList<>();
+        for (SizePrice sizePrice : productRequest.getSizePrices()) {
+            sizePrice.setProduct(updatedProduct);
+
+            sizePrices.add(sizePrice);
+        }
+        sizePriceRepository.saveAll(sizePrices);
+
+        List<ProductNote> productNotes = new ArrayList<>();
+        for (ProductNote productNote : productRequest.getProductNotes()) {
+            productNote.setProduct(updatedProduct);
+
+            productNotes.add(productNote);
+        }
+        productNoteRepository.saveAll(productNotes);
+
+        ProductResponse productResponse = ProductResponse.builder()
+                .productId(updatedProduct.getProductId())
+                .name(updatedProduct.getName())
+                .description(updatedProduct.getDescription())
+                .imageUrl(updatedProduct.getImageUrl())
+                .brand(updatedProduct.getBrand())
+                .category(updatedProduct.getCategory())
+                .type(updatedProduct.getType())
+                .productNotes(productNotes)
+                .sizePrices(sizePrices)
+                .amount(productRequest.getAmount())
+                .build();
+
+
+
         return productResponse;
     }
 

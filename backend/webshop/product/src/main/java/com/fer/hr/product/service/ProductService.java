@@ -2,6 +2,7 @@ package com.fer.hr.product.service;
 
 import com.fer.hr.product.dto.ProductRequest;
 import com.fer.hr.product.dto.ProductResponse;
+import com.fer.hr.product.model.Product;
 
 import java.util.List;
 

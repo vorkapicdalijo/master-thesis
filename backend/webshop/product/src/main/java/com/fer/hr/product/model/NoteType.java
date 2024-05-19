@@ -14,15 +14,16 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Category {
+public class NoteType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long categoryId;
+    private Long noteTypeId;
 
     private String name;
 
-    @OneToMany(mappedBy = "category")
+    @OneToMany(mappedBy = "noteType")
     @JsonIgnore
-    private List<Product> products;
+    private List<ProductNote> productNotes;
+
 }

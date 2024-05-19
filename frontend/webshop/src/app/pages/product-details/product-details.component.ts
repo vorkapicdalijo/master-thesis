@@ -61,15 +61,16 @@ export class ProductDetailsComponent implements OnInit {
         .subscribe((product) => {
           this.product = product;
           this.isLoaded = true;
+          console.log(product);
         });
     });
   }
 
   public addProductToCart() {
     const cartItem = new CartItem(
-      this.product.id,
+      this.product.productId,
       this.product.name,
-      this.product.price,
+      this.product.productId,
       this.selectedAmount,
       null!
     );

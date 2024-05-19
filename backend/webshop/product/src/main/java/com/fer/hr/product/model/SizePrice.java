@@ -7,22 +7,23 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Category {
+public class SizePrice {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long categoryId;
+    private Long sizePriceId;
 
-    private String name;
+    private Integer size;
+    private double price;
 
-    @OneToMany(mappedBy = "category")
+    @ManyToOne
     @JsonIgnore
-    private List<Product> products;
+    @JoinColumn(name = "product_id", nullable = false)
+    private Product product;
 }
