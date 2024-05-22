@@ -8,12 +8,8 @@ import com.fer.hr.clients.review.dto.Review;
 import com.fer.hr.product.dto.ProductRequest;
 import com.fer.hr.product.dto.ProductResponse;
 import com.fer.hr.product.mapper.ProductMapper;
-import com.fer.hr.product.model.Product;
-import com.fer.hr.product.model.ProductNote;
-import com.fer.hr.product.model.SizePrice;
-import com.fer.hr.product.repository.ProductNoteRepository;
-import com.fer.hr.product.repository.ProductRepository;
-import com.fer.hr.product.repository.SizePriceRepository;
+import com.fer.hr.product.model.*;
+import com.fer.hr.product.repository.*;
 import com.fer.hr.product.service.ProductService;
 import lombok.AllArgsConstructor;
 import org.hibernate.engine.jdbc.Size;
@@ -30,6 +26,11 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final SizePriceRepository sizePriceRepository;
     private final ProductNoteRepository productNoteRepository;
+    private final BrandRepository brandRepository;
+    private final CategoryRepository categoryRepository;
+    private final TypeRepository typeRepository;
+    private final NoteRepository noteRepository;
+    private final NoteTypeRepository noteTypeRepository;
     private final InventoryClient inventoryClient;
     private final ReviewClient reviewClient;
 
@@ -204,5 +205,30 @@ public class ProductServiceImpl implements ProductService {
 
         // TODO: Check if > 0 & Update the Inventory ammount of the product in Inventory Microservice
         return null;
+    }
+
+    @Override
+    public List<Brand> getBrands() {
+        return brandRepository.findAll();
+    }
+
+    @Override
+    public List<Type> getTypes() {
+        return typeRepository.findAll();
+    }
+
+    @Override
+    public List<Category> getCategories() {
+        return categoryRepository.findAll();
+    }
+
+    @Override
+    public List<Note> getNotes() {
+        return noteRepository.findAll();
+    }
+
+    @Override
+    public List<NoteType> getNoteTypes() {
+        return noteTypeRepository.findAll();
     }
 }

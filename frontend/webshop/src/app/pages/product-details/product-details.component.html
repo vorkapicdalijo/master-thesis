@@ -38,16 +38,16 @@
     <mat-accordion>
       <mat-expansion-panel (opened)="panelOpenState = true"
                            (closed)="panelOpenState = false"
-                           [disabled]="product.averageRatingAndCount.count == 0"
+                           [disabled]="product.averageRatingAndCount!.count == 0"
                            class="mat-elevation-z0">
         <mat-expansion-panel-header>
           <mat-panel-title>
             Reviews
           </mat-panel-title>
           <mat-panel-description>
-            <span>{{product.averageRatingAndCount.averageRating ? product.averageRatingAndCount.averageRating : 'No Reviews'}}</span>
+            <span>{{product.averageRatingAndCount!.averageRating ? product.averageRatingAndCount!.averageRating : 'No Reviews'}}</span>
             <mat-icon>star</mat-icon>
-            <span>({{product.averageRatingAndCount.count}})</span>
+            <span>({{product.averageRatingAndCount!.count}})</span>
           </mat-panel-description>
         </mat-expansion-panel-header>
         @for(review of product.reviews; track review) {

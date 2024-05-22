@@ -1,0 +1,153 @@
+<div class="px-1 px-md-3 py-2">
+  <h2 mat-dialog-title>Add a Fragrance</h2>
+  <mat-dialog-content>
+    <form [formGroup]="productForm" class="d-flex flex-column justify-content-center my-2 ">
+      <mat-form-field appearance="outline">
+        <mat-label>Name</mat-label>
+        <input matInput formControlName="name">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Brand</mat-label>
+        <mat-select formControlName="brandId">
+          @for(brand of brands; track brand) {
+            <mat-option [value]="brand.brandId">{{ brand.name }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    
+      <mat-form-field appearance="outline">
+        <mat-label>Type</mat-label>
+        <mat-select formControlName="typeId">
+          @for(type of types; track type) {
+            <mat-option [value]="type.typeId">{{ type.name }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      
+      <mat-form-field appearance="outline">
+        <mat-label>Category</mat-label>
+        <mat-select formControlName="categoryId">
+          @for(category of categories; track category) {
+            <mat-option [value]="category.categoryId">{{ category.name }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    
+      <mat-form-field appearance="outline">
+        <mat-label>Description</mat-label>
+        <textarea matInput formControlName="description"></textarea>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Amount</mat-label>
+        <input matInput formControlName="amount" type="number">
+      </mat-form-field>
+    </form>
+    <form [formGroup]="sizePriceForm" class="w-100 my-2">
+      <div class="w-100">
+        <h3>Add Sizing and Price</h3>
+        @if (sizePrices.length > 0) {
+          <div class="mb-4">
+            <div class="row row-cols-3 fw-medium">
+              <span class="col">Size</span>
+              <span class="col">Price</span>
+              <span class="col"></span>
+            </div>
+            @for(sizePrice of sizePrices; track sizePrice; let idx = $index) {
+              <div class="row row-cols-3">
+                <span class="col my-auto">{{sizePrice.size}} ml</span>
+                <span class="col my-auto">{{sizePrice.price}} €</span>
+                <button mat-icon-button class="col" (click)="removeSizePrice(idx)">
+                  <mat-icon>delete_outline</mat-icon>
+                </button>
+              </div>
+              <mat-divider class="my-1"></mat-divider>
+            }
+          </div>
+        }
+        <div class="d-flex flex-column flex-md-row justify-content-center align-items-center w-100">
+          <mat-form-field appearance="outline" class="me-md-2 w-100">
+            <mat-label>Size</mat-label>
+            <input matInput formControlName="size" type="number">
+            <span matSuffix class="me-3">ml</span>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="ms-md-2 w-100">
+            <mat-label>Price</mat-label>
+            <input matInput formControlName="price" type="number">
+            <span matSuffix class="me-3">€</span>
+          </mat-form-field>
+          <span class="spacer"></span>
+          <button mat-icon-button color="primary" class="size-price-button ms-md-3 mb-4" [disabled]="sizePriceForm.invalid" (click)="addSizePrice()">
+            <mat-icon>playlist_add</mat-icon>
+          </button>
+        </div>
+      </div>
+    </form>
+    <form [formGroup]="productNoteForm" class="w-100 my-2">
+      <div class="w-100">
+        <h3>Add Notes</h3>
+        @if (productNotes.length > 0) {
+          <div class="mb-4">
+            <div>
+              <div class="row row-cols-3 fw-medium">
+                <span class="col">Note</span>
+                <span class="col">Type</span>
+                <span class="col"></span>
+              </div>
+            </div>
+            @for(noteType of noteTypes; track noteType;) {
+              @for(productNote of productNotes; track productNote; let idx = $index) {
+                @if (productNote.noteType.noteTypeId == noteType.noteTypeId) {
+                    <div class="row row-cols-3">
+                      <span class="col my-auto">{{productNote.note.name}}</span>
+                      <span class="col my-auto">{{productNote.noteType.name}}</span>
+                      <button mat-icon-button class="col" (click)="removeProductNote(idx)">
+                        <mat-icon>delete_outline</mat-icon>
+                      </button>
+                    </div>
+                    <mat-divider class="my-1"></mat-divider>
+                }
+              } 
+            }
+          </div>
+        }
+        <div class="d-flex flex-column flex-md-row justify-content-center align-items-center w-100">
+          <mat-form-field appearance="outline" class="me-md-2 w-100">
+            <mat-label>Note</mat-label>
+            <mat-select formControlName="noteId">
+              @for(note of notes; track note) {
+                <mat-option [value]="note.noteId">{{ note.name }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        
+          <mat-form-field appearance="outline" class="ms-md-2 w-100">
+            <mat-label>Note Type</mat-label>
+            <mat-select formControlName="noteTypeId">
+              @for(noteType of noteTypes; track noteType) {
+                <mat-option [value]="noteType.noteTypeId">{{ noteType.name }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+          <span class="spacer"></span>
+          <button mat-icon-button color="primary" class="size-price-button ms-md-3 mb-4" [disabled]="productNoteForm.invalid" (click)="addProductNote()">
+            <mat-icon>playlist_add</mat-icon>
+          </button>
+        </div>
+      </div>
+      <div class="mt-3">
+        <h3>Add Fragrance Image</h3>
+        <div class="d-flex flex-column align-items-center">
+          <button type="button" mat-raised-button (click)="fileInput.click()" class="w-100">Choose File</button>
+          <input hidden (change)="onFileSelected($event)" #fileInput type="file">
+          <h4 class="file-name text-center mt-2">{{selectedFile?.name}}</h4>
+          <img [src]="imgSrc" width="250px" class="mt-3">
+        </div>
+        <div class="d-flex flex-column">
+          <button mat-raised-button color="primary" class="mt-4" (click)="onSubmit()" [disabled]="productForm.invalid || sizePrices.length < 1 || productNotes.length < 1 || !selectedFile">Submit</button>
+          <button mat-stroked-button class="mt-2" (click)="closeDialog()">Cancel</button>
+        </div>
+      </div>
+    </form>
+  </mat-dialog-content>
+</div>

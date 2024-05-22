@@ -61,7 +61,6 @@ export class ProductDetailsComponent implements OnInit {
         .subscribe((product) => {
           this.product = product;
           this.isLoaded = true;
-          console.log(product);
         });
     });
   }
