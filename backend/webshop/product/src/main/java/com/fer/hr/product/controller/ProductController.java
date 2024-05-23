@@ -70,14 +70,29 @@ public class ProductController {
     @PostMapping("/update/{productId}")
     public ResponseEntity<ProductResponse> updateProduct(
             @PathVariable Long productId,
-            @RequestBody ProductRequest updatedProduct
+            @RequestParam(value = "file", required = false) MultipartFile file, @RequestParam("product") String product
     ) {
-        log.info("Updating product of id={}, Product={}", productId, updatedProduct);
-        if(updatedProduct != null) {
-          ProductResponse productResponse = productService.updateProduct(productId, updatedProduct);
-          return new ResponseEntity<>(productResponse, HttpStatus.OK);
+        log.info("Updating product of id={}, Product={}", productId, product);
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            ProductRequest productToUpdate = mapper.readValue(product, ProductRequest.class);
+            if (productToUpdate.getImageUrl() == null && file != null) {
+                String imageUrl = imageService.saveImageToStorage(file);
+                productToUpdate.setImageUrl(imageUrl);
+            }
+            if (productToUpdate.getImageUrl() != null && file != null) {
+                imageService.removeImageFromStorage(productToUpdate.getImageUrl());
+
+                String imageUrl = imageService.saveImageToStorage(file);
+                productToUpdate.setImageUrl(imageUrl);
+            }
+
+            ProductResponse productResponse = productService.updateProduct(productId, productToUpdate);
+            return new ResponseEntity<>(productResponse, HttpStatus.OK);
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @DeleteMapping("/delete/{productId}")

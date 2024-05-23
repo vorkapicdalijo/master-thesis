@@ -24,9 +24,11 @@ import { Product } from '../../models/product';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { ProductService } from '../../services/product.service';
+import { environment } from '../../../environment/environment';
 
 export interface DialogData {
   isEdit: boolean;
+  product?: Product;
 }
 
 @Component({
@@ -66,12 +68,11 @@ export class ProductFormDialogComponent implements OnInit{
 
   sizePrices: SizePrice[] = [];
   productNotes: ProductNote[] = [];
-  topNotes: ProductNote[] = [];
-  middleNotes: ProductNote[] = [];
-  baseNotes: ProductNote[] = [];
 
   selectedFile: File | null = null;
+  containsImage: boolean = false;
   imgSrc: string = "";
+  initialProductEditFormValue: any;
 
 
   constructor(
@@ -120,6 +121,28 @@ export class ProductFormDialogComponent implements OnInit{
     this.selectService.getNoteTypes().subscribe(noteTypes => {
       this.noteTypes = noteTypes;
     });
+
+    if(this.isEdit) {
+      this.product = this.data.product!;
+      this.fillProductFormValues();
+    }
+  }
+  
+  fillProductFormValues() {
+    this.productForm.patchValue({
+      name: this.product.name,
+      description: this.product.description,
+      amount: this.product.amount,
+      categoryId: this.product.category.categoryId,
+      brandId: this.product.brand.brandId,
+      typeId: this.product.type.typeId,
+    });
+
+    this.initialProductEditFormValue = this.productForm.value;
+    
+    this.productNotes = this.product.productNotes;
+    this.sizePrices = this.product.sizePrices;
+    this.imgSrc = environment.imageBaseUrl + this.product.imageUrl;
   }
 
   onFileSelected(event: any): void {
@@ -135,32 +158,64 @@ export class ProductFormDialogComponent implements OnInit{
       formData.append("file", this.selectedFile);
     }
 
-    this.product = {
-      name: this.productForm.get('name')?.value,
-      description: this.productForm.get('description')?.value,
-      imageUrl: null!,
-      brand: {
-        brandId: this.productForm.get('brandId')?.value,
-        name: null!
-      },
-      category: {
-        categoryId: this.productForm.get('categoryId')?.value,
-        name: null!
-      },
-      type: {
-        typeId: this.productForm.get('typeId')?.value,
-        name: null!
-      },
-      productId: null!,
-      productNotes: this.productNotes,
-      sizePrices: this.sizePrices,
-      amount: this.productForm.get('amount')?.value
-    }
-    formData.append('product', JSON.stringify(this.product));
 
-    this.productService.addProduct(formData).subscribe(res => {
-      console.log(res);
-    })
+    if(this.isEdit) {
+      this.product = {
+        name: this.productForm.get('name')?.value,
+        description: this.productForm.get('description')?.value,
+        imageUrl: this.product.imageUrl,
+        brand: {
+          brandId: this.productForm.get('brandId')?.value,
+          name: null!
+        },
+        category: {
+          categoryId: this.productForm.get('categoryId')?.value,
+          name: null!
+        },
+        type: {
+          typeId: this.productForm.get('typeId')?.value,
+          name: null!
+        },
+        productId: this.product.productId,
+        productNotes: this.productNotes,
+        sizePrices: this.sizePrices,
+        amount: this.productForm.get('amount')?.value
+      }
+      formData.append('product', JSON.stringify(this.product));
+
+
+      this.productService.updateProduct(formData, this.product.productId).subscribe(res => {
+        this.dialogRef.close(res);
+      });
+    }
+    else {
+      this.product = {
+        name: this.productForm.get('name')?.value,
+        description: this.productForm.get('description')?.value,
+        imageUrl: null!,
+        brand: {
+          brandId: this.productForm.get('brandId')?.value,
+          name: null!
+        },
+        category: {
+          categoryId: this.productForm.get('categoryId')?.value,
+          name: null!
+        },
+        type: {
+          typeId: this.productForm.get('typeId')?.value,
+          name: null!
+        },
+        productId: null!,
+        productNotes: this.productNotes,
+        sizePrices: this.sizePrices,
+        amount: this.productForm.get('amount')?.value
+      }
+      formData.append('product', JSON.stringify(this.product));
+
+      this.productService.addProduct(formData).subscribe(res => {
+        this.dialogRef.close(res);
+      });
+    }
   }
 
   addSizePrice() {

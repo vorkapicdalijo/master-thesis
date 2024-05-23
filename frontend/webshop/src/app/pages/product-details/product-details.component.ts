@@ -13,6 +13,9 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { Review } from '../../models/review';
 import { DatePipe } from '@angular/common';
+import { AuthService } from '../../services/auth.service';
+import { ProductFormDialogComponent } from '../../dialogs/product-form-dialog/product-form-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-product-details',
@@ -39,6 +42,8 @@ export class ProductDetailsComponent implements OnInit {
   starArray: number[] = Array.from({ length: 5 }, (_, i) => i + 1);
   selectedAmount: number = 1;
 
+  isAdmin: boolean = false;
+
   // reviews: Review[] = [
   //   {id:1, productId: 52, userId: '1', userName: 'Marko', comment: 'Loving the product', rating: 4.5, createdAt: new Date()},
   //   {id:1, productId: 52, userId: '1', userName: 'Marko', comment: 'Loving the product', rating: 4.5, createdAt: new Date()},
@@ -50,9 +55,13 @@ export class ProductDetailsComponent implements OnInit {
     private route: ActivatedRoute,
     private cartService: CartService,
     private _snackBar: MatSnackBar,
+    private authService: AuthService,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
+    this.isAdmin = this.authService.getUserRoles().includes('admin');
+
     this.route.params.subscribe((params) => {
       this.productId = params['id'];
 
@@ -87,5 +96,29 @@ export class ProductDetailsComponent implements OnInit {
     } else {
       return 'star_border';
     }
+  }
+
+  editProduct() {
+    const dialogRef = this.dialog.open(ProductFormDialogComponent, {
+      data: {
+        isEdit: true,
+        product: this.product
+      },
+      position: {
+        top: '100px'
+      },
+      disableClose: true
+    });
+
+    dialogRef.afterClosed().subscribe(res => {
+      console.log(res);
+    });
+  }
+
+  deleteProduct() {
+    this.productService.deleteProduct(this.product.productId)
+      .subscribe(res => {
+
+      });
   }
 }

@@ -23,6 +23,16 @@ export class ProductService {
   public addProduct(formData: FormData): Observable<any> {
     return this.http.post(environment.baseUrl+'api/products/add',
       formData
-    )
+    );
+  }
+
+  public updateProduct(formData: FormData, productId: number): Observable<any> {
+    return this.http.post(environment.baseUrl+`api/products/update/${productId}`,
+      formData
+    );
+  }
+
+  public deleteProduct(productId: number) {
+    return this.http.delete(environment.baseUrl+`api/products/delete/${productId}`);
   }
 }

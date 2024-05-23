@@ -14,6 +14,7 @@ import com.fer.hr.product.service.ProductService;
 import lombok.AllArgsConstructor;
 import org.hibernate.engine.jdbc.Size;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -144,6 +145,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
     public ProductResponse updateProduct(Long productId, ProductRequest productRequest) {
         Optional<Product> product = productRepository.findById(productId);
 
@@ -163,7 +165,9 @@ public class ProductServiceImpl implements ProductService {
 
         productRepository.save(updatedProduct);
 
-        //sizePriceRepository.deleteByProductId(updatedProduct.getProductId());
+        sizePriceRepository.deleteSizePricesByProductProductId(updatedProduct.getProductId());
+        productNoteRepository.deleteProductNotesByProductProductId(updatedProduct.getProductId());
+
 
         List<SizePrice> sizePrices = new ArrayList<>();
         for (SizePrice sizePrice : productRequest.getSizePrices()) {

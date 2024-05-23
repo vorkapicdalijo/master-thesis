@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.UUID;
 
@@ -14,12 +15,13 @@ import java.util.UUID;
 public class ImageServiceImpl implements ImageService {
     @Override
     public String saveImageToStorage(MultipartFile image) throws IOException {
-        String uploadDirectory = "image-uploads";
+        String uploadDirectory = "C:\\webshop\\image-uploads";
 
         String uniqueFileName = UUID.randomUUID().toString() + getFileExtension(image.getOriginalFilename());
 
-        Path uploadPath = Path.of(uploadDirectory);
-        Path filePath = Path.of(uploadDirectory + "/" + uniqueFileName);
+        Path uploadPath = Paths.get(uploadDirectory);
+
+        Path filePath = Path.of(uploadPath + "\\" + uniqueFileName);
 
         if (!Files.exists(uploadPath)) {
             Files.createDirectories(uploadPath);
@@ -29,6 +31,22 @@ public class ImageServiceImpl implements ImageService {
 
         return uniqueFileName;
 
+    }
+
+    @Override
+    public Boolean removeImageFromStorage(String imageUrl) throws IOException {
+        String uploadDirectory = "C:\\webshop\\image-uploads";
+        Path uploadPath = Path.of(uploadDirectory);
+
+        Path filePath = Path.of(uploadDirectory + "\\" + imageUrl);
+
+        if(Files.exists(filePath)) {
+            Files.delete(filePath);
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     public static String getFileExtension(String fileName) {

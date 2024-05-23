@@ -32,6 +32,7 @@ public class SecurityConfig {
                 .authorizeExchange(authorize ->
                         authorize.pathMatchers("/api/products/**").permitAll()
                                 .pathMatchers("/api/inventory/**").permitAll()
+                                .pathMatchers("/images/**").permitAll()
                                 .pathMatchers("/api/order/**").authenticated()
                                 .pathMatchers("api/payment/**").authenticated()
                         .anyExchange().authenticated()

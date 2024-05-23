@@ -7,4 +7,6 @@ import java.io.IOException;
 public interface ImageService {
 
     public String saveImageToStorage(MultipartFile image) throws IOException;
+
+    public Boolean removeImageFromStorage(String imageUrl) throws IOException;
 }
