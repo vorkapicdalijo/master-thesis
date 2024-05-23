@@ -10,6 +10,7 @@ import { SizePrice } from '../../models/size-price';
 import { AuthService } from '../../services/auth.service';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ProductFormDialogComponent } from '../../dialogs/product-form-dialog/product-form-dialog.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-products',
@@ -21,16 +22,24 @@ import { ProductFormDialogComponent } from '../../dialogs/product-form-dialog/pr
 export class ProductsComponent implements OnInit {
 
   isAdmin: boolean = false;
+  isLoaded: boolean = false;
   products: Product[] = [];
 
-  constructor(private productService: ProductService, private router: Router, private authService: AuthService, public dialog: MatDialog){}
+  constructor(private productService: ProductService, private router: Router, private authService: AuthService, public dialog: MatDialog, private _snackBar: MatSnackBar,){}
   
   ngOnInit(): void {
     this.isAdmin = this.authService.getUserRoles().includes('admin');
+
+    this.getProducts();
+  }
+
+  public getProducts() {
+    this.isLoaded = false;
     this.productService.getProducts()
-      .subscribe(res => {
-        this.products = res;
-      })
+    .subscribe(res => {
+      this.products = res;
+      this.isLoaded = true;
+    });
   }
 
   public openProductDetails(productId: number) {
@@ -61,8 +70,13 @@ export class ProductsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(res => {
-      console.log(res);
+      this.openSnackBar('New Fragrance added!', 'Dismiss');
+      this.getProducts();
     });
+  }
+
+  public openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {duration: 3000});
   }
 
 }

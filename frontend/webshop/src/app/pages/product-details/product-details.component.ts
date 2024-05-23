@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from '../../services/product.service';
 import { Product } from '../../models/product';
 import { FormsModule, } from '@angular/forms';
@@ -16,6 +16,7 @@ import { DatePipe } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 import { ProductFormDialogComponent } from '../../dialogs/product-form-dialog/product-form-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { PurchaseDialogComponent } from '../../dialogs/purchase-dialog/purchase-dialog.component';
 
 @Component({
   selector: 'app-product-details',
@@ -56,7 +57,8 @@ export class ProductDetailsComponent implements OnInit {
     private cartService: CartService,
     private _snackBar: MatSnackBar,
     private authService: AuthService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -65,13 +67,18 @@ export class ProductDetailsComponent implements OnInit {
     this.route.params.subscribe((params) => {
       this.productId = params['id'];
 
-      this.productService
-        .getProductById(this.productId)
-        .subscribe((product) => {
-          this.product = product;
-          this.isLoaded = true;
-        });
+      this.getProduct();
     });
+  }
+
+  public getProduct() {
+    this.isLoaded = false;
+    this.productService
+    .getProductById(this.productId)
+      .subscribe((product) => {
+        this.product = product;
+        this.isLoaded = true;
+      });
   }
 
   public addProductToCart() {
@@ -111,14 +118,30 @@ export class ProductDetailsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(res => {
-      console.log(res);
+      this.openSnackBar('Fragrance updated!', 'Dismiss');
+      this.getProduct();
     });
   }
 
   deleteProduct() {
+    let title = "Fragrance deleted!"
+    let content = `A fragrance with ID ${this.product.productId} has been deleted.`
     this.productService.deleteProduct(this.product.productId)
       .subscribe(res => {
-
+        const dialogRef = this.dialog.open(PurchaseDialogComponent, {
+          width: '250px',
+          enterAnimationDuration:'1500ms',
+          exitAnimationDuration: '800ms',
+          data: {
+            title: title,
+            content: content,
+          },
+          position: {
+            top: '100px'
+          },
+        });
+        this.router.navigateByUrl('/products');
       });
   }
+  
 }
