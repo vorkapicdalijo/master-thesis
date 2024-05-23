@@ -12,7 +12,7 @@ public interface ProductService {
     public List<ProductResponse> getProducts();
     public ProductResponse addProduct(ProductRequest productRequest);
     public ProductResponse updateProduct(Long productId, ProductRequest productRequest);
-    public Void deleteProduct(Long productId);
+    public void deleteProduct(Long productId);
 
 
     public List<Brand> getBrands();

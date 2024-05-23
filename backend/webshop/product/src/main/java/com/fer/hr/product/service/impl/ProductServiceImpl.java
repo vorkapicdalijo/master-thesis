@@ -69,7 +69,7 @@ public class ProductServiceImpl implements ProductService {
 
         List<ProductResponse> productResponseList = new ArrayList<>();
         productList.forEach(product -> {
-            AverageRatingAndCount averageRatingAndCount = reviewClient.getAverageReviewsRatingAndCountByProductId(product.getProductId()).getBody();
+            //AverageRatingAndCount averageRatingAndCount = reviewClient.getAverageReviewsRatingAndCountByProductId(product.getProductId()).getBody();
 
             ProductResponse productResponse = ProductResponse.builder()
                     .productId(product.getProductId())
@@ -79,7 +79,7 @@ public class ProductServiceImpl implements ProductService {
                     .brand(product.getBrand())
                     .category(product.getCategory())
                     .imageUrl(product.getImageUrl())
-                    .averageRatingAndCount(averageRatingAndCount)
+                    //.averageRatingAndCount(averageRatingAndCount)
                     //.productNotes(product.getProductNotes())
                     //.sizePrices(product.getSizePrices())
                     .build();
@@ -133,8 +133,7 @@ public class ProductServiceImpl implements ProductService {
                 .amount(productRequest.getAmount())
                 .build();
 
-        // TODO: Update the Inventory ammount of the product in Inventory Microservice
-
+        //Adding the product to inventory
         InventoryItemRequest inventoryItemRequest = InventoryItemRequest
                 .builder()
                 .productId(product.getProductId())
@@ -200,16 +199,24 @@ public class ProductServiceImpl implements ProductService {
                 .build();
 
 
+        InventoryItemRequest inventoryItemRequest = InventoryItemRequest
+                .builder()
+                .productId(productId)
+                .amount(productRequest.getAmount())
+                .build();
+
+        //Update inventory with new amount
+        inventoryClient.updateInventoryProductAmount(inventoryItemRequest);
 
         return productResponse;
     }
 
     @Override
-    public Void deleteProduct(Long productId) {
+    public void deleteProduct(Long productId) {
         productRepository.deleteById(productId);
 
-        // TODO: Check if > 0 & Update the Inventory ammount of the product in Inventory Microservice
-        return null;
+        //Remove product from inventory
+        inventoryClient.removeProductFromInventory(productId);
     }
 
     @Override

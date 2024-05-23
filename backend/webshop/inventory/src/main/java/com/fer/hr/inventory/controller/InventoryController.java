@@ -1,6 +1,7 @@
 package com.fer.hr.inventory.controller;
 
 import com.fer.hr.inventory.dto.InventoryItemRequest;
+import com.fer.hr.inventory.service.InventoryService;
 import com.fer.hr.inventory.service.impl.InventoryServiceImpl;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,13 +19,13 @@ import java.util.List;
 @AllArgsConstructor
 public class InventoryController {
 
-    private final InventoryServiceImpl inventoryServiceImpl;
+    private final InventoryService inventoryService;
     private static final Logger log = LoggerFactory.getLogger(InventoryController.class);
 
 
     @GetMapping("/check")
     public ResponseEntity<Boolean> isProductInStock(@RequestBody InventoryItemRequest inventoryItemRequest) {
-        boolean isProductAvailable = inventoryServiceImpl.isProductInStock(inventoryItemRequest);
+        boolean isProductAvailable = inventoryService.isProductInStock(inventoryItemRequest);
 
         return new ResponseEntity<>(isProductAvailable, HttpStatus.OK);
     }
@@ -32,11 +33,16 @@ public class InventoryController {
     @PostMapping("/product-update")
     public void updateInventoryProductAmount(@RequestBody InventoryItemRequest inventoryItemRequest) {
         log.info("Inventory update for product id = {} and new amount = {}", inventoryItemRequest.getProductId(), inventoryItemRequest.getAmount());
-        inventoryServiceImpl.updateSingleProductAmount(inventoryItemRequest);
+        inventoryService.updateSingleProductAmount(inventoryItemRequest);
     }
 
     @PostMapping("/products-order")
     public void updateProductsAmountOnOrder(@RequestBody List<InventoryItemRequest> inventoryItemRequestList) {
-        inventoryServiceImpl.updateProductsAmountOnOrder(inventoryItemRequestList);
+        inventoryService.updateProductsAmountOnOrder(inventoryItemRequestList);
+    }
+
+    @DeleteMapping("/remove/{productId}")
+    public void removeProductFromInventory(@PathVariable("productId") Long productId) {
+        inventoryService.removeProductFromInventory(productId);
     }
 }

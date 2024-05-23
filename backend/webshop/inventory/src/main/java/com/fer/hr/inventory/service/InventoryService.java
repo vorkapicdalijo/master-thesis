@@ -12,4 +12,6 @@ public interface InventoryService {
     public void updateSingleProductAmount(InventoryItemRequest inventoryItemRequest);
 
     public void updateProductsAmountOnOrder(List<InventoryItemRequest> inventoryItemRequestList);
+
+    public void removeProductFromInventory(Long productId);
 }

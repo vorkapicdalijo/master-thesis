@@ -44,4 +44,11 @@ public class InventoryServiceImpl implements InventoryService {
             updateSingleProductAmount(inventoryItemRequest);
         }
     }
+
+    @Override
+    public void removeProductFromInventory(Long productId) {
+        inventoryRepository.deleteInventoryItemByProductId(productId);
+
+
+    }
 }
