@@ -200,6 +200,10 @@ export class AppComponent implements OnInit, AfterViewInit {
     } catch(err) { }                 
   }
 
+  public getImageUrl(imageName: string) {
+    return environment.imageBaseUrl + imageName;
+  }
+
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
   }

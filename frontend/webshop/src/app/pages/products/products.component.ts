@@ -11,6 +11,7 @@ import { AuthService } from '../../services/auth.service';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ProductFormDialogComponent } from '../../dialogs/product-form-dialog/product-form-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { environment } from '../../../environment/environment';
 
 @Component({
   selector: 'app-products',
@@ -47,13 +48,19 @@ export class ProductsComponent implements OnInit {
   }
 
   public getLowestSizePrice(sizePrices: SizePrice[]) {
-    if (sizePrices) {
-      return sizePrices.reduce((minObj, currentObj) => {
-        if (!minObj || currentObj['price'] < minObj['price']) {
-          return currentObj;
+    if(sizePrices) {
+      if (sizePrices.length === 0) {
+        return null;
+      }
+      let lowestPriceItem = sizePrices[0];
+
+      for (let i = 1; i < sizePrices.length; i++) {
+        if (sizePrices[i].price < lowestPriceItem.price) {
+          lowestPriceItem = sizePrices[i];
         }
-        return minObj;
-      });
+      }
+  
+      return lowestPriceItem.price;
     }
     return null;
   }
@@ -77,6 +84,10 @@ export class ProductsComponent implements OnInit {
 
   public openSnackBar(message: string, action: string) {
     this._snackBar.open(message, action, {duration: 3000});
+  }
+
+  public getImageUrl(imageName: string) {
+    return environment.imageBaseUrl + imageName;
   }
 
 }

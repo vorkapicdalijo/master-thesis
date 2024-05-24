@@ -41,8 +41,22 @@ public class InventoryServiceImpl implements InventoryService {
     @Override
     public void updateProductsAmountOnOrder(List<InventoryItemRequest> inventoryItemRequestList) {
         for(InventoryItemRequest inventoryItemRequest : inventoryItemRequestList ) {
+            Integer newAmount = reduceProductAmount(inventoryItemRequest);
+            inventoryItemRequest.setAmount(newAmount);
             updateSingleProductAmount(inventoryItemRequest);
         }
+    }
+
+    private Integer reduceProductAmount(InventoryItemRequest inventoryItemRequest) {
+        Optional<InventoryItem> currentInventoryItem = inventoryRepository.findById(inventoryItemRequest.getProductId());
+
+        if (currentInventoryItem.isPresent()) {
+           Integer currentAmount = currentInventoryItem.get().getAmount();
+           Integer newAmount = currentAmount - inventoryItemRequest.getAmount();
+
+           return newAmount;
+        }
+        return null;
     }
 
     @Override

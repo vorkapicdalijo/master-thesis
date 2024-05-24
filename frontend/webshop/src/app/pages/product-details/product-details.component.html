@@ -2,25 +2,29 @@
 <div class="container mt-5">
   <div class="container">
     <div class="d-flex flex-column flex-md-row">
-        <img mat-card-image src="../../../assets/images/eros.jpg" class="mx-auto mx-md-0" style="max-width: 400px;" width="100%" alt="Photo">
+        <img mat-card-image [src]="getImageUrl()" class="mx-auto mx-md-0" style="max-width: 400px;" width="100%" alt="Photo">
         <div class="d-flex flex-column justify-content-between mt-3 ms-0 ms-md-5">
-          @if(isAdmin){
-            <button mat-stroked-button (click)="editProduct()">
-              Edit Fragrance 
-            </button>
-            <button mat-stroked-button color="warn" (click)="deleteProduct()">
-              Delete Fragrance
-            </button>
-          }
           <div>
-              <h3>{{product.name}}</h3>
-              <span>{{product.description}} ml</span>
+              <h3>{{product.brand.name}}</h3>
+              <h2>{{product.name}}</h2>
+              <h3>{{product.type.name}}</h3>
               <p>{{product.description}}</p>
-              <h2 class="mt-5">{{product.description}} €</h2>
+              <h3>Category:  {{product.category.name}}</h3>
+              <h2 class="mt-5">Available sizes</h2>
+              <mat-form-field appearance="outline">
+                <mat-select [(ngModel)]="selectedSizePrice" name="food" class="w-100">
+                  @for (sizePrice of product.sizePrices; track sizePrice) {
+                    <mat-option [value]="sizePrice" class="w-100">
+                      <span class="size-price-option">{{sizePrice.size}} ml </span><span> for </span><span class="size-price-option">{{sizePrice.price}} €</span>
+                    </mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
           </div>
           <div class="d-flex flex-row mx-auto mt-3">
-            <div style="width: 100px;">
-              <mat-form-field style="width: 100%; font-size: 14px; margin-bottom: -20px;">
+            <div style="width: 115px;">
+              <mat-form-field style="width: 100%; font-size: 14px; margin-bottom: -20px;" appearance="outline">
+                <mat-label>Amount</mat-label>
                 <mat-select [(ngModel)]="selectedAmount" name="food">
                   @for (amount of amounts; track amount) {
                     <mat-option [value]="amount">{{amount}}</mat-option>
@@ -43,6 +47,16 @@
     </div>
   </div>
   <div class="container my-5">
+    @if(isAdmin){
+      <div class="my-3">
+        <button mat-stroked-button (click)="editProduct()" class="mx-1">
+          Edit Fragrance 
+        </button>
+        <button mat-stroked-button color="warn" (click)="deleteProduct()" class="mx-1">
+          Delete Fragrance
+        </button>
+      </div>
+    }
     <mat-accordion>
       <mat-expansion-panel (opened)="panelOpenState = true"
                            (closed)="panelOpenState = false"

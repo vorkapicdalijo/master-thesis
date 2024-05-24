@@ -9,6 +9,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { Router } from '@angular/router';
+import { environment } from '../../../environment/environment';
+import { OrderService } from '../../services/order.service';
 
 @Component({
   selector: 'app-cart',
@@ -29,11 +31,16 @@ export class CartComponent implements OnInit {
 
   amounts: number[] = Array.from({ length: 10 }, (_, i) => i + 1);
   selectedAmount: number = 1;
+  isCheckingProductsAvailability: boolean = false;
 
-  constructor(private cartService: CartService, private router: Router) {}
+  areAllProductsAvailable: boolean = false;
+
+
+  constructor(private cartService: CartService, private router: Router, private orderService: OrderService) {}
 
   ngOnInit(): void {
     this.cartItems = this.cartService.getCartItems();
+    this.checkProductsAvailability();
   }
 
   public getCartItemPrice(item: CartItem): number {
@@ -41,6 +48,8 @@ export class CartComponent implements OnInit {
   }
 
   public amountSelectionChange() {
+    this.checkProductsAvailability();
+
     this.cartService.cartItems = this.cartItems;
     this.cartService.saveCart();
     this.cartService.cartSub.next(true);
@@ -66,7 +75,27 @@ export class CartComponent implements OnInit {
     this.router.navigateByUrl('/products');
   }
 
+  public checkProductsAvailability() {
+    this.isCheckingProductsAvailability = true;
+
+    this.cartItems.forEach(product => {
+      this.orderService.checkProductAvailability(product.productId, product.amount)
+        .subscribe((isAvailable: boolean) => {
+          product.isAvailable = isAvailable;
+
+          this.areAllProductsAvailable = this.cartItems.every(obj => obj.isAvailable == true);
+        });
+    });
+
+    this.isCheckingProductsAvailability = false;
+  }
+
+
   public navigateToPurchasePage() {
     this.router.navigateByUrl('/purchase');
+  }
+
+  public getImageUrl(imageName: string) {
+    return environment.imageBaseUrl + imageName;
   }
 }

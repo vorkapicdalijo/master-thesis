@@ -20,4 +20,8 @@ public class CartItem {
     private Integer amount;
     private Long orderId;
     private Review review;
+    private String imageUrl;
+    private Integer size;
+    private String brand;
+    private String type;
 }

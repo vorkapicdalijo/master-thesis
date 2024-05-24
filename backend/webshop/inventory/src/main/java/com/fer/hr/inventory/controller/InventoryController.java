@@ -23,7 +23,7 @@ public class InventoryController {
     private static final Logger log = LoggerFactory.getLogger(InventoryController.class);
 
 
-    @GetMapping("/check")
+    @PostMapping("/check")
     public ResponseEntity<Boolean> isProductInStock(@RequestBody InventoryItemRequest inventoryItemRequest) {
         boolean isProductAvailable = inventoryService.isProductInStock(inventoryItemRequest);
 

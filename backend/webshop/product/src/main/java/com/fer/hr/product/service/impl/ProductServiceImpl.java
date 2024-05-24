@@ -81,7 +81,7 @@ public class ProductServiceImpl implements ProductService {
                     .imageUrl(product.getImageUrl())
                     //.averageRatingAndCount(averageRatingAndCount)
                     //.productNotes(product.getProductNotes())
-                    //.sizePrices(product.getSizePrices())
+                    .sizePrices(product.getSizePrices())
                     .build();
 
             productResponseList.add(productResponse);

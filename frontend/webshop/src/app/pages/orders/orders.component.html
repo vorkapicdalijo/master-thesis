@@ -31,9 +31,12 @@
           @for (item of element.items; track item) {
             <div class="mb-2 row d-flex align-items-center">
               <div class="d-flex col-4">
-                <img  src="../../../assets/images/eros.jpg" class="mx-auto mx-md-0" style="max-width: 75px;" width="100%" alt="Photo">
+                <img [src]="getImageUrl(item.imageUrl)" class="me-3" style="max-width: 100px; max-height:150px;" width="100%" alt="Photo">
                 <div class="d-flex flex-column">
-                  <span>{{item.name}}</span>
+                  <span>{{item.brand}}</span>
+                  <h3 class="mb-0">{{item.name}}</h3>
+                  <span>{{item.type}}</span>
+                  <span>{{item.size}} ml</span>
                   <span>x{{item.amount}}</span>
                   <span style="font-weight: 500;">{{item.price}} €</span>
                 </div>

@@ -64,8 +64,8 @@ public class OrderDaoImpl implements OrderDao {
     @Override
     public void insertOrderItems(List<CartItem> cartItems) {
         final String sql =
-                "INSERT INTO public.cart_item (productid, name, price, amount, orderid) " +
-                        "VALUES (:productId, :name, :price, :amount, :orderId)";
+                "INSERT INTO public.cart_item (productid, name, price, amount, orderid, image_url, brand_name, type_name, size) " +
+                        "VALUES (:productId, :name, :price, :amount, :orderId, :imageUrl, :brand, :type, :size)";
 
         for (CartItem cartItem : cartItems) {
             SqlParameterSource parameters = new MapSqlParameterSource()
@@ -73,7 +73,11 @@ public class OrderDaoImpl implements OrderDao {
                     .addValue("name", cartItem.getName())
                     .addValue("price",cartItem.getPrice())
                     .addValue("amount", cartItem.getAmount())
-                    .addValue("orderId", cartItem.getOrderId());
+                    .addValue("orderId", cartItem.getOrderId())
+                    .addValue("imageUrl", cartItem.getImageUrl())
+                    .addValue("brand", cartItem.getBrand())
+                    .addValue("type", cartItem.getType())
+                    .addValue("size", cartItem.getSize());
 
             try {
                 namedParameterJdbcTemplate.update(sql, parameters);
@@ -140,6 +144,10 @@ public class OrderDaoImpl implements OrderDao {
                     .name(rs.getString("name"))
                     .price(rs.getDouble("price"))
                     .amount(rs.getInt("amount"))
+                    .size(rs.getInt("size"))
+                    .type(rs.getString("type_name"))
+                    .brand(rs.getString("brand_name"))
+                    .imageUrl(rs.getString("image_url"))
                     .build();
 
             return item;

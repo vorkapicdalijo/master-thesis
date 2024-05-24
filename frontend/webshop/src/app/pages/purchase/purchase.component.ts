@@ -177,8 +177,10 @@ export class PurchaseComponent implements OnInit {
       
       this.orderService.sendOrderDetails(this.orderDetails)
         .subscribe(res => {
-        })
+        });
     }
+
+    console.log(this.orderDetails);
   }
 
   public sendPaymentOrder() {

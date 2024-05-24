@@ -17,6 +17,8 @@ import { AuthService } from '../../services/auth.service';
 import { ProductFormDialogComponent } from '../../dialogs/product-form-dialog/product-form-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { PurchaseDialogComponent } from '../../dialogs/purchase-dialog/purchase-dialog.component';
+import { SizePrice } from '../../models/size-price';
+import { environment } from '../../../environment/environment';
 
 @Component({
   selector: 'app-product-details',
@@ -42,6 +44,8 @@ export class ProductDetailsComponent implements OnInit {
   amounts: number[] = Array.from({ length: 10 }, (_, i) => i + 1);
   starArray: number[] = Array.from({ length: 5 }, (_, i) => i + 1);
   selectedAmount: number = 1;
+
+  selectedSizePrice: SizePrice;
 
   isAdmin: boolean = false;
 
@@ -78,17 +82,22 @@ export class ProductDetailsComponent implements OnInit {
       .subscribe((product) => {
         this.product = product;
         this.isLoaded = true;
+        this.selectedSizePrice = this.product.sizePrices[0] ?? null;
       });
   }
 
   public addProductToCart() {
-    const cartItem = new CartItem(
-      this.product.productId,
-      this.product.name,
-      this.product.productId,
-      this.selectedAmount,
-      null!
-    );
+    const cartItem: CartItem = {
+      productId :this.product.productId,
+      name: this.product.name,
+      price: this.selectedSizePrice.price,
+      size: this.selectedSizePrice.size,
+      amount: this.selectedAmount,
+      review: null!,
+      brand: this.product.brand.name,
+      type: this.product.type.name,
+      imageUrl: this.product.imageUrl
+    }
 
     this.cartService.addToCart(cartItem);
   }
@@ -142,6 +151,10 @@ export class ProductDetailsComponent implements OnInit {
         });
         this.router.navigateByUrl('/products');
       });
+  }
+
+  public getImageUrl() {
+    return environment.imageBaseUrl + this.product.imageUrl;
   }
   
 }

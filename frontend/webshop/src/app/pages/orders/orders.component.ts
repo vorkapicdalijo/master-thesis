@@ -19,6 +19,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { DatePipe } from '@angular/common';
+import { environment } from '../../../environment/environment';
 
 @Component({
   selector: 'app-orders',
@@ -137,5 +138,9 @@ export class OrdersComponent implements OnInit {
 
   cancelRating() {
     this.isRatingProduct = false;
+  }
+
+  public getImageUrl(imageUrl: string) {
+    return environment.imageBaseUrl + imageUrl;
   }
 }

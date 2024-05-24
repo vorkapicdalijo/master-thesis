@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -57,6 +58,7 @@ public class OrderServiceImpl implements OrderService {
 
             order.setItems(cartItems);
         }
+        Collections.reverse(orders);
         return orders;
     }
 }
