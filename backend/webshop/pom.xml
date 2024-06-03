@@ -10,12 +10,12 @@
   <modules>
     <module>product</module>
     <module>inventory</module>
-      <module>clients</module>
+    <module>clients</module>
     <module>eureka-server</module>
-      <module>api-gateway</module>
-      <module>payment</module>
-      <module>order</module>
-      <module>review</module>
+    <module>api-gateway</module>
+    <module>payment</module>
+    <module>order</module>
+    <module>review</module>
   </modules>
 
   <properties>
