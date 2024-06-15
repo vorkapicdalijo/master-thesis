@@ -16,6 +16,7 @@ public class CustomJwtConverter implements Converter<Jwt, Mono<? extends Abstrac
 
     @Override
     public Mono<? extends AbstractAuthenticationToken> convert(@NonNull Jwt jwt) {
+
         // Extract claims and authorities as needed
         Collection<GrantedAuthority> authorities = extractAuthorities(jwt);
 
@@ -37,7 +38,7 @@ public class CustomJwtConverter implements Converter<Jwt, Mono<? extends Abstrac
             var roles = realm_access.get("roles");
             if (roles instanceof List l) {
                 l.forEach(role ->
-                        authorities.add(new SimpleGrantedAuthority("ROLE_" + role))
+                        authorities.add(new SimpleGrantedAuthority("ROLE_" + role.toString().toUpperCase()))
                 );
             }
         }
