@@ -19,6 +19,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { PurchaseDialogComponent } from '../../dialogs/purchase-dialog/purchase-dialog.component';
 import { SizePrice } from '../../models/size-price';
 import { environment } from '../../../environment/environment';
+import { NoteType } from '../../models/note-type';
+import { SelectService } from '../../services/select.service';
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
   selector: 'app-product-details',
@@ -30,7 +33,8 @@ import { environment } from '../../../environment/environment';
     MatButtonModule,
     MatIconModule,
     MatExpansionModule,
-    DatePipe
+    DatePipe,
+    MatDividerModule,
   ],
   templateUrl: './product-details.component.html',
   styleUrl: './product-details.component.scss',
@@ -49,11 +53,7 @@ export class ProductDetailsComponent implements OnInit {
 
   isAdmin: boolean = false;
 
-  // reviews: Review[] = [
-  //   {id:1, productId: 52, userId: '1', userName: 'Marko', comment: 'Loving the product', rating: 4.5, createdAt: new Date()},
-  //   {id:1, productId: 52, userId: '1', userName: 'Marko', comment: 'Loving the product', rating: 4.5, createdAt: new Date()},
-  //   {id:1, productId: 52, userId: '1', userName: 'Marko', comment: 'Loving the product', rating: 4.5, createdAt: new Date()}
-  // ]
+  noteTypes: NoteType[] = [];
 
   constructor(
     private productService: ProductService,
@@ -62,7 +62,8 @@ export class ProductDetailsComponent implements OnInit {
     private _snackBar: MatSnackBar,
     private authService: AuthService,
     public dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private selectService: SelectService,
   ) {}
 
   ngOnInit(): void {
@@ -72,6 +73,10 @@ export class ProductDetailsComponent implements OnInit {
       this.productId = params['id'];
 
       this.getProduct();
+    });
+
+    this.selectService.getNoteTypes().subscribe(noteTypes => {
+      this.noteTypes = noteTypes;
     });
   }
 

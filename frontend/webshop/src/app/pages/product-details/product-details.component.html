@@ -10,7 +10,28 @@
               <h3>{{product.type.name}}</h3>
               <p>{{product.description}}</p>
               <h3>Category:  {{product.category.name}}</h3>
-              <h2 class="mt-5">Available sizes</h2>
+              <div class="mb-4">
+                <h3>Scent profile</h3>
+                  <div>
+                    <div class="row row-cols-3 fw-medium my-3">
+                      <span class="col">Note</span>
+                      <span class="col">Layer</span>
+                      <span class="col"></span>
+                    </div>
+                  </div>
+                @for(noteType of noteTypes; track noteType;) {
+                  @for(productNote of product.productNotes; track productNote; let idx = $index) {
+                    @if (productNote.noteType.noteTypeId == noteType.noteTypeId) {
+                        <div class="row row-cols-3">
+                          <span class="col my-auto">{{productNote.note.name}}</span>
+                          <span class="col my-auto">{{productNote.noteType.name}}</span>
+                        </div>
+                    }
+                  } 
+                  <mat-divider class="my-2"></mat-divider>
+                }
+              </div>
+              <h4 class="mt-5">Available sizes</h4>
               <mat-form-field appearance="outline">
                 <mat-select [(ngModel)]="selectedSizePrice" name="food" class="w-100">
                   @for (sizePrice of product.sizePrices; track sizePrice) {

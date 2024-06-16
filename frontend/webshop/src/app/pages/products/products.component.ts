@@ -4,7 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { Product } from '../../models/product';
 import { MatRippleModule } from '@angular/material/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { SizePrice } from '../../models/size-price';
 import { AuthService } from '../../services/auth.service';
@@ -58,11 +58,13 @@ export class ProductsComponent implements OnInit {
   filterForm: FormGroup;
   isFormEmpty: boolean = true;
   areProductsFiltered: boolean = false;
+  categoryId: any;
 
   constructor(
     private fb: FormBuilder,
     private productService: ProductService,
     private router: Router,
+    private route: ActivatedRoute,
     private authService: AuthService,
     public dialog: MatDialog,
     private _snackBar: MatSnackBar,
@@ -70,11 +72,22 @@ export class ProductsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+
     this.filterForm = this.fb.group({
       brand: new FormControl(''),
       type: new FormControl(''),
       category: new FormControl(''),
     });
+
+    this.route.params.subscribe(params => {
+      this.categoryId = params['categoryId'];
+      if (this.categoryId){
+        this.getProducts(null, params['categoryId'], null);
+      }
+      else {
+        this.getProducts();
+      }
+    })
 
     this.isAdmin = this.authService.getUserRoles().includes('admin');
 
@@ -88,7 +101,10 @@ export class ProductsComponent implements OnInit {
     });
     this.selectService.getCategories().subscribe(categories => {
       this.categories = categories;
-
+      if(this.categoryId) {
+        this.filterForm.get('category').setValue(this.categories.find(category => category.categoryId == this.categoryId));
+        this.areProductsFiltered = true;
+      }  
       this.filteredCategories = this.filterForm.get('category')!.valueChanges.pipe(
         startWith(''),
         map(category => (category ? this._filterCategories(category.name ? category.name : category) : this.categories.slice())),
@@ -102,8 +118,6 @@ export class ProductsComponent implements OnInit {
         map(type => (type ? this._filterTypes(type.name ? type.name : type) : this.types.slice())),
       );
     });
-
-    this.getProducts();
 
     this.filterForm.valueChanges.subscribe(res => {
       this.checkIsFormEmpty();
@@ -154,7 +168,8 @@ export class ProductsComponent implements OnInit {
     this.filterForm.get('category').setValue('');
     this.filterForm.get('type').setValue('');
     this.areProductsFiltered = false;
-    this.getProducts();
+    this.router.navigateByUrl('/products');
+    //this.getProducts();
   }
 
   public openProductDetails(productId: number) {
@@ -168,6 +183,10 @@ export class ProductsComponent implements OnInit {
 
     this.isFormEmpty = typeof brand == 'string' && typeof category == 'string' && typeof type == 'string';
 
+  }
+
+  public getCategoryName() {
+    return this
   }
 
   public getLowestSizePrice(sizePrices: SizePrice[]) {
@@ -200,7 +219,8 @@ export class ProductsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((res) => {
-      this.openSnackBar('New Fragrance added!', 'Dismiss');
+      if (res)
+        this.openSnackBar('New Fragrance added!', 'Dismiss');
       this.getProducts();
     });
   }

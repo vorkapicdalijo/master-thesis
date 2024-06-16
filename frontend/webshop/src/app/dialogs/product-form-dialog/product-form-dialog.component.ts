@@ -210,7 +210,7 @@ export class ProductFormDialogComponent implements OnInit{
   }
 
   displayFn(value: any): string {
-    return value.name;
+    return value?.name;
   }
 
   onSubmit() {

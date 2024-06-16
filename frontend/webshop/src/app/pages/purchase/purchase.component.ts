@@ -177,6 +177,7 @@ export class PurchaseComponent implements OnInit {
       
       this.orderService.sendOrderDetails(this.orderDetails)
         .subscribe(res => {
+          this.cartService.clearCart();
         });
     }
 

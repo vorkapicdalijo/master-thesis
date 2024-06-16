@@ -1,1 +1,13 @@
-<div id="container"></div>
+<div id="container">
+</div>
+<div class="row row-cols-1 row-cols-md-3 text-center m-0" style="height:25%">
+    <a type="button" [routerLink]="['/products', MALE_CATEGORY_ID]" class="home-item col d-flex justify-content-center align-items-center">
+        <span class="fs-3">Male</span>
+    </a>
+    <a type="button" [routerLink]="['/products', UNISEX_CATEGORY_ID]" class="home-item col d-flex justify-content-center align-items-center">
+        <span class="fs-3">Unisex</span>
+    </a>
+    <a type="button" [routerLink]="['/products', FEMALE_CATEGORY_ID]"  class="home-item col d-flex justify-content-center align-items-center">
+        <span class="fs-3">Female</span>
+    </a>
+</div>

@@ -13,6 +13,7 @@ import { inject } from '@angular/core';
 
 export const routes: Routes = [
     { path: 'products', component: ProductsComponent },
+    { path: 'products/:categoryId', component: ProductsComponent },
     { path: 'product-details/:id', component: ProductDetailsComponent },
     { path: '', component: HomeComponent },
     { path: 'login', component: LoginComponent },
