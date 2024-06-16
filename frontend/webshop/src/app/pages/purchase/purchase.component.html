@@ -38,7 +38,7 @@
                 @for (item of cartItems; track item) {
                     <button mat-menu-item class="p-0 px-3 py-2 my-1 w-100" style="max-width: 250px;" (click)="openCartItemDetails(item.productId)">
                     <div class="d-flex flex-row" style="width: 180px;">
-                        <img  src="../../../assets/images/eros.jpg" class="mx-auto mx-md-0" style="max-width: 75px; border-radius:15px;" width="100%" alt="Photo">
+                        <img  [src]="getImageUrl(item.imageUrl)" class="mx-auto mx-md-0" style="max-width: 75px; border-radius:15px;" width="100%" alt="Photo">
                         <div class="my-auto ms-3 w-100">
                           <span class="cart-item-title">{{item.name}}</span>
                           <br/>
@@ -97,7 +97,7 @@
             @for (item of cartItems; track item) {
                 <button mat-menu-item class="p-0 px-3 py-2 my-1 w-100" style="max-width: 250px;" (click)="openCartItemDetails(item.productId)">
                 <div class="d-flex flex-row" style="width: 180px;">
-                    <img  src="../../../assets/images/eros.jpg" class="mx-auto mx-md-0" style="max-width: 75px; border-radius:15px;" width="100%" alt="Photo">
+                  <img  [src]="getImageUrl(item.imageUrl)" class="mx-auto mx-md-0" style="max-width: 75px; border-radius:15px;" width="100%" alt="Photo">
                     <div class="my-auto ms-3 w-100">
                       <span class="cart-item-title">{{item.name}}</span>
                       <br/>
@@ -182,7 +182,7 @@
               @for (item of cartItems; track item) {
                   <button mat-menu-item class="p-0 px-3 py-2 my-1 w-100" style="max-width: 250px;" (click)="openCartItemDetails(item.productId)">
                   <div class="d-flex flex-row" style="width: 180px;">
-                      <img  src="../../../assets/images/eros.jpg" class="mx-auto mx-md-0" style="max-width: 75px; border-radius:15px;" width="100%" alt="Photo">
+                    <img  [src]="getImageUrl(item.imageUrl)" class="mx-auto mx-md-0" style="max-width: 75px; border-radius:15px;" width="100%" alt="Photo">
                       <div class="my-auto ms-3 w-100">
                         <span class="cart-item-title">{{item.name}}</span>
                         <br/>
@@ -207,7 +207,10 @@
             </div>
             <div class="d-flex flex-column justify-content-center align-items-center total-container total-payment-container px-5 py-4">
               <h4 class="text-center">Pay with</h4>
-              <button mat-raised-button (click)="sendPaymentOrder()">
+              <button mat-raised-button (click)="sendPaymentOrder()" [disabled]="isPaying">
+                @if(isPaying) {
+                  <img src="../../../assets/images/rolling.svg" class="me-2" style="max-width: 30px;" alt="Loader">
+                }
                 <img  src="../../../assets/images/paypal.png" class="mx-auto mx-md-0" style="max-width: 100px;" width="100%" alt="Photo">
               </button>
             </div>

@@ -53,6 +53,8 @@ export class OrdersComponent implements OnInit {
   expandedElement!: Order | null;
   orders: Order[] = [];
 
+  isLoading: boolean = false;
+
   comment: string = '';
   rating: number = -1;
   ratingArray: number[] = Array.from({ length: 5 }, (_, i) => i + 1);
@@ -68,8 +70,10 @@ export class OrdersComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.isLoading = true;
     this.orderService.getOrdersByUserId().subscribe((orders) => {
       this.orders = orders;
+      this.isLoading = false;
     });
   }
 

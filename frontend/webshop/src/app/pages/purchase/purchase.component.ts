@@ -20,6 +20,7 @@ import { AuthService } from '../../services/auth.service';
 import { OrderService } from '../../services/order.service';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { PurchaseDialogComponent } from '../../dialogs/purchase-dialog/purchase-dialog.component';
+import { environment } from '../../../environment/environment';
 
 @Component({
   selector: 'app-purchase',
@@ -67,6 +68,8 @@ export class PurchaseComponent implements OnInit {
   payerId!: string;
   payId!: string;
 
+  isPaying: boolean = false;
+
   private readonly platformId = inject(PLATFORM_ID);
 
   constructor(
@@ -91,6 +94,7 @@ export class PurchaseComponent implements OnInit {
     this.payerId = (this.route.snapshot.queryParams['PayerID']);
     if(this.router.url.includes('capture')) {
       if (this.token) {
+        this.isPaying = true;
         this.paymentService.completePayment(this.token)
           .subscribe(res => {
             this.saveOrderDetails();
@@ -177,6 +181,7 @@ export class PurchaseComponent implements OnInit {
       
       this.orderService.sendOrderDetails(this.orderDetails)
         .subscribe(res => {
+          this.isPaying = false;
           this.cartService.clearCart();
         });
     }
@@ -184,8 +189,8 @@ export class PurchaseComponent implements OnInit {
     console.log(this.orderDetails);
   }
 
-  public sendPaymentOrder() {
-
+  public sendPaymentOrder() { 
+    this.isPaying = true;
     this.paymentService.sendPaymentOrder(this.calculateTotalPrice())
       .pipe(take(1))
       .subscribe(res => {
@@ -209,6 +214,10 @@ export class PurchaseComponent implements OnInit {
         top: '100px'
       },
     });
+  }
+
+  public getImageUrl(imageName: string) {
+    return environment.imageBaseUrl + imageName;
   }
 
   

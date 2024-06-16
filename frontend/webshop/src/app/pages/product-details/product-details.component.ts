@@ -133,8 +133,10 @@ export class ProductDetailsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(res => {
-      this.openSnackBar('Fragrance updated!', 'Dismiss');
-      this.getProduct();
+      if (res) {
+        this.openSnackBar('Fragrance updated!', 'Dismiss');
+        this.getProduct();
+      }
     });
   }
 
