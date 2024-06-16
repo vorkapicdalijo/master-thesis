@@ -50,8 +50,10 @@
         </div>
     </div>
     <div class="row mt-3">
-      <h3>Description</h3>
-      <p class="col-md-8">{{product.description}}</p>
+      @if(product.description) {
+        <h3>Description</h3>
+        <p class="col-md-8">{{product.description}}</p>
+      }
     </div>
   </div>
   <div class="container my-5">
@@ -60,7 +62,10 @@
         <button mat-stroked-button (click)="editProduct()" class="mx-1">
           Edit Fragrance 
         </button>
-        <button mat-stroked-button color="warn" (click)="deleteProduct()" class="mx-1">
+        <button mat-stroked-button color="warn" (click)="deleteProduct()" class="mx-1" [disabled]="isDeleting">
+          @if (isDeleting) {
+            <img src="../../../assets/images/rolling.svg" class="mx-auto mx-md-0" height="20px" alt="Loader">
+          }
           Delete Fragrance
         </button>
       </div>

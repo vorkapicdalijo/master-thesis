@@ -50,6 +50,7 @@ export class ProductDetailsComponent implements OnInit {
   selectedAmount: number = 1;
 
   selectedSizePrice: SizePrice;
+  isDeleting: boolean = false;
 
   isAdmin: boolean = false;
 
@@ -140,8 +141,10 @@ export class ProductDetailsComponent implements OnInit {
   deleteProduct() {
     let title = "Fragrance deleted!"
     let content = `A fragrance with ID ${this.product.productId} has been deleted.`
+    this.isDeleting = true;
     this.productService.deleteProduct(this.product.productId)
       .subscribe(res => {
+        this.isDeleting = false;
         const dialogRef = this.dialog.open(PurchaseDialogComponent, {
           width: '250px',
           enterAnimationDuration:'1500ms',

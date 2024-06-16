@@ -47,11 +47,11 @@
                   }
                 </mat-autocomplete>
               </mat-form-field>
-            <button mat-raised-button style="color: rgba(0, 0, 0, 0.6);" class="my-1 my-md-0 mx-1" (click)="filterProducts()" [disabled]="isFormEmpty">
-                Search <mat-icon>search</mat-icon>
+            <button mat-icon-button color="primary" class="my-1 my-md-0" (click)="filterProducts()" [disabled]="isFormEmpty">
+                <mat-icon>search</mat-icon>
             </button>
-            <button mat-raised-button color="warn" style="color: rgba(0, 0, 0, 0.6);" class="my-1 my-md-0 mx-1" (click)="clearFilter()" [hidden]="!areProductsFiltered">
-              Clear <mat-icon>close</mat-icon>
+            <button mat-icon-button color="warn" class="my-1 my-md-0" (click)="clearFilter()" [hidden]="!areProductsFiltered">
+                <mat-icon>close</mat-icon>
           </button>
         </form>
     </div>
@@ -67,7 +67,7 @@
               <mat-card 
                   class="product col m-2"
                   (click)="openProductDetails(product.productId)">
-                  <img mat-card-image [src]="getImageUrl(product.imageUrl)" alt="Cover Image">
+                  <img mat-card-image [src]="getImageUrl(product.imageUrl)" class="mx-auto mt-2" style="max-width: 150px; max-height: 150px;" alt="Photo" alt="Cover Image">
                   <mat-card-header class="h-100 w-100">
                       <div class="d-flex flex-column h-100 w-100 justify-content-between mb-3">
                           <div class="d-flex flex-column">

@@ -14,3 +14,16 @@ a {
     text-decoration: none;
     color: darkslategray;
 }
+
+@font-face {
+    font-family: 'Playwrite IS', cursive;
+    src: url('../../../assets/PlaywriteIS-VariableFont_wght.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  .item-title {
+    font-weight: bold;
+    font-size: 20px;
+    font-family: 'Playwrite IS', cursive;
+  }

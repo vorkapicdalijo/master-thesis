@@ -85,6 +85,8 @@ export class ProductFormDialogComponent implements OnInit{
   imgSrc: string = "";
   initialProductEditFormValue: any;
 
+  isSubmitting: boolean = false;
+
 
   constructor(
     private fb: FormBuilder,
@@ -214,6 +216,7 @@ export class ProductFormDialogComponent implements OnInit{
   }
 
   onSubmit() {
+    this.isSubmitting = true;
     const formData = new FormData();
     if (this.selectedFile) {
       formData.append("file", this.selectedFile);
@@ -237,6 +240,7 @@ export class ProductFormDialogComponent implements OnInit{
 
 
       this.productService.updateProduct(formData, this.product.productId).subscribe(res => {
+        this.isSubmitting = false;
         this.dialogRef.close(res);
       });
     }
@@ -256,6 +260,7 @@ export class ProductFormDialogComponent implements OnInit{
       formData.append('product', JSON.stringify(this.product));
 
       this.productService.addProduct(formData).subscribe(res => {
+        this.isSubmitting = false;
         this.dialogRef.close(res);
       });
     }
