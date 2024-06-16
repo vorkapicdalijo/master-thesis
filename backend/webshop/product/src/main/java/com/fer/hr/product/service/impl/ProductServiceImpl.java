@@ -64,8 +64,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductResponse> getProducts() {
-        List<Product> productList = productRepository.findAll();
+    public List<ProductResponse> getProducts(Long brandId, Long categoryId, Long typeId) {
+
+        List<Product> productList = productRepository.findByBrandIdAndTypeIdAndCategoryId(brandId, categoryId, typeId);
 
         List<ProductResponse> productResponseList = new ArrayList<>();
         productList.forEach(product -> {

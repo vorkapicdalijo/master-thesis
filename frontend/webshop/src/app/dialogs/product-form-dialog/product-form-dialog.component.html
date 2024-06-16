@@ -9,29 +9,44 @@
 
       <mat-form-field appearance="outline">
         <mat-label>Brand</mat-label>
-        <mat-select formControlName="brandId">
-          @for(brand of brands; track brand) {
-            <mat-option [value]="brand.brandId">{{ brand.name }}</mat-option>
+        <input type="text"
+           aria-label="Brand"
+           matInput
+           formControlName="brand"
+           [matAutocomplete]="autoBrand">
+        <mat-autocomplete #autoBrand="matAutocomplete" [displayWith]="displayFn">
+          @for(brand of filteredBrands | async; track brand) {
+            <mat-option [value]="brand">{{brand.name}}</mat-option>
           }
-        </mat-select>
+        </mat-autocomplete>
       </mat-form-field>
     
       <mat-form-field appearance="outline">
         <mat-label>Type</mat-label>
-        <mat-select formControlName="typeId">
-          @for(type of types; track type) {
-            <mat-option [value]="type.typeId">{{ type.name }}</mat-option>
+        <input type="text"
+           aria-label="Type"
+           matInput
+           formControlName="type"
+           [matAutocomplete]="autoType">
+        <mat-autocomplete #autoType="matAutocomplete" [displayWith]="displayFn">
+          @for(type of filteredTypes | async; track type) {
+            <mat-option [value]="type">{{type.name}}</mat-option>
           }
-        </mat-select>
+        </mat-autocomplete>
       </mat-form-field>
       
       <mat-form-field appearance="outline">
         <mat-label>Category</mat-label>
-        <mat-select formControlName="categoryId">
-          @for(category of categories; track category) {
-            <mat-option [value]="category.categoryId">{{ category.name }}</mat-option>
+        <input type="text"
+           aria-label="Category"
+           matInput
+           formControlName="category"
+           [matAutocomplete]="autoCategory">
+        <mat-autocomplete #autoCategory="matAutocomplete" [displayWith]="displayFn">
+          @for(category of filteredCategories | async; track category) {
+            <mat-option [value]="category">{{category.name}}</mat-option>
           }
-        </mat-select>
+        </mat-autocomplete>
       </mat-form-field>
     
       <mat-form-field appearance="outline">
@@ -112,13 +127,18 @@
           </div>
         }
         <div class="d-flex flex-column flex-md-row justify-content-center align-items-center w-100">
-          <mat-form-field appearance="outline" class="me-md-2 w-100">
+          <mat-form-field appearance="outline">
             <mat-label>Note</mat-label>
-            <mat-select formControlName="noteId">
-              @for(note of notes; track note) {
-                <mat-option [value]="note.noteId">{{ note.name }}</mat-option>
+            <input type="text"
+               aria-label="Note"
+               matInput
+               formControlName="note"
+               [matAutocomplete]="autoNote">
+            <mat-autocomplete #autoNote="matAutocomplete" [displayWith]="displayFn">
+              @for(note of filteredNotes | async; track note) {
+                <mat-option [value]="note">{{note.name}}</mat-option>
               }
-            </mat-select>
+            </mat-autocomplete>
           </mat-form-field>
         
           <mat-form-field appearance="outline" class="ms-md-2 w-100">

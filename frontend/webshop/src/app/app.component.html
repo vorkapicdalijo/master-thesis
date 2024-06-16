@@ -101,9 +101,9 @@
       [fixedInViewport]="mobileQuery.matches"
       fixedTopGap="56"
     >
-      <mat-nav-list>
+      <mat-nav-list class="my-1">
         @for (link of links; track link) {
-        <a mat-list-item [routerLink]="link.url" (click)="closeSidenav()">{{ link.title }}</a>
+        <a mat-list-item [routerLink]="link.url" (click)="closeSidenav()" class="px-4 py-4">{{ link.title }}</a>
         }
       </mat-nav-list>
     </mat-sidenav>

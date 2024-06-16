@@ -1,11 +1,60 @@
 <div class="mt-5 container-sm">
-    @if (isAdmin) {
-        <div class="ms-2 mb-3">
-            <button mat-stroked-button (click)="addProduct()">
-                Add Fragrance
+    <div class="mb-4 w-100 d-flex flex-column align-items-center">
+        @if (isAdmin) {
+            <button mat-stroked-button (click)="addProduct()" class="mb-2" style="color: rgba(0, 0, 0, 0.6);">
+                Add Fragrance <mat-icon>add</mat-icon>
             </button>
-        </div>
-    }
+        }
+        <form [formGroup]="filterForm" class="d-flex flex-column flex-md-row justify-content-center align-items-md-center">
+            <mat-form-field appearance="outline" subscriptSizing="dynamic" class="my-1 my-md-0 mx-1">
+                <mat-label>Brand</mat-label>
+                <input type="text"
+                   aria-label="Brand"
+                   matInput
+                   formControlName="brand"
+                   [matAutocomplete]="autoBrand">
+                <mat-autocomplete #autoBrand="matAutocomplete" [displayWith]="displayFn">
+                  @for(brand of filteredBrands | async; track brand) {
+                    <mat-option [value]="brand">{{brand.name}}</mat-option>
+                  }
+                </mat-autocomplete>
+              </mat-form-field>
+            
+              <mat-form-field appearance="outline" subscriptSizing="dynamic" class="my-1 my-md-0 mx-1">
+                <mat-label>Type</mat-label>
+                <input type="text"
+                   aria-label="Type"
+                   matInput
+                   formControlName="type"
+                   [matAutocomplete]="autoType">
+                <mat-autocomplete #autoType="matAutocomplete"  [displayWith]="displayFn">
+                  @for(type of filteredTypes | async; track type) {
+                    <mat-option [value]="type">{{type.name}}</mat-option>
+                  }
+                </mat-autocomplete>
+              </mat-form-field>
+              
+              <mat-form-field appearance="outline" subscriptSizing="dynamic" class="my-1 my-md-0 mx-1">
+                <mat-label>Category</mat-label>
+                <input type="text"
+                   aria-label="Category"
+                   matInput
+                   formControlName="category"
+                   [matAutocomplete]="autoCategory">
+                <mat-autocomplete #autoCategory="matAutocomplete" [displayWith]="displayFn">
+                  @for(category of filteredCategories | async; track category) {
+                    <mat-option [value]="category">{{category.name}}</mat-option>
+                  }
+                </mat-autocomplete>
+              </mat-form-field>
+            <button mat-raised-button style="color: rgba(0, 0, 0, 0.6);" class="my-1 my-md-0 mx-1" (click)="filterProducts()" [disabled]="isFormEmpty">
+                Search <mat-icon>search</mat-icon>
+            </button>
+            <button mat-raised-button color="warn" style="color: rgba(0, 0, 0, 0.6);" class="my-1 my-md-0 mx-1" (click)="clearFilter()" [hidden]="!areProductsFiltered">
+              Clear <mat-icon>close</mat-icon>
+          </button>
+        </form>
+    </div>
     <div class="row justify-content-center">
         @for (product of products; track product) {
             <mat-card 

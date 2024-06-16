@@ -28,9 +28,13 @@ public class ProductController {
     private static final Logger log = LoggerFactory.getLogger(ProductController.class);
 
     @GetMapping
-    public ResponseEntity<List<ProductResponse>> getProducts() {
+    public ResponseEntity<List<ProductResponse>> getProducts(
+            @RequestParam(required = false) Long brandId,
+            @RequestParam(required = false) Long typeId,
+            @RequestParam(required = false) Long categoryId
+    ) {
         log.info("Getting products...");
-        List<ProductResponse> productResponseList = productService.getProducts();
+        List<ProductResponse> productResponseList = productService.getProducts(brandId, categoryId, typeId);
 
         if(productResponseList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

@@ -25,6 +25,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { ProductService } from '../../services/product.service';
 import { environment } from '../../../environment/environment';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { State } from '@popperjs/core';
+import { Observable, map, startWith } from 'rxjs';
+import { AsyncPipe } from '@angular/common';
 
 export interface DialogData {
   isEdit: boolean;
@@ -47,6 +51,8 @@ export interface DialogData {
     MatSelectModule,
     MatIconModule,
     MatDividerModule,
+    MatAutocompleteModule,
+    AsyncPipe,
   ],
   templateUrl: './product-form-dialog.component.html',
   styleUrl: './product-form-dialog.component.scss',
@@ -62,6 +68,11 @@ export class ProductFormDialogComponent implements OnInit{
   categories: Category[] = [];
   brands: Brand[] = [];
   types: Type[] = [];
+
+  filteredCategories: Observable<Category[]>;
+  filteredBrands: Observable<Brand[]>;
+  filteredTypes: Observable<Type[]>;
+  filteredNotes: Observable<Note[]>;
 
   notes: Note[] = [];
   noteTypes: NoteType[] = [];
@@ -89,9 +100,9 @@ export class ProductFormDialogComponent implements OnInit{
   ngOnInit(): void {
     this.productForm = this.fb.group({
       name: new FormControl('', Validators.required),
-      typeId: new FormControl('', Validators.required),
-      brandId: new FormControl('', Validators.required),
-      categoryId: new FormControl('', Validators.required),
+      type: new FormControl('', Validators.required),
+      brand: new FormControl('', Validators.required),
+      category: new FormControl('', Validators.required),
       description: new FormControl('',),
       amount: new FormControl('',  Validators.required)
     });
@@ -102,21 +113,42 @@ export class ProductFormDialogComponent implements OnInit{
     });
 
     this.productNoteForm = this.fb.group({
-      noteId: new FormControl('', Validators.required),
+      note: new FormControl('', Validators.required),
       noteTypeId: new FormControl('', Validators.required),
-    })
+    });
+
 
     this.selectService.getBrands().subscribe(brands => {
       this.brands = brands;
+
+      this.filteredBrands = this.productForm.get('brand')!.valueChanges.pipe(
+        startWith(''),
+        map(brand => (brand ? this._filterBrands(brand.name ? brand.name : brand) : this.brands.slice())),
+      );
     });
     this.selectService.getCategories().subscribe(categories => {
       this.categories = categories;
+
+      this.filteredCategories = this.productForm.get('category')!.valueChanges.pipe(
+        startWith(''),
+        map(category => (category ? this._filterCategories(category.name ? category.name : category) : this.categories.slice())),
+      );
     });
     this.selectService.getTypes().subscribe(types => {
       this.types = types;
+
+      this.filteredTypes = this.productForm.get('type')!.valueChanges.pipe(
+        startWith(''),
+        map(type => (type ? this._filterTypes(type.name ? type.name : type) : this.types.slice())),
+      );
     });
     this.selectService.getNotes().subscribe(notes => {
       this.notes = notes;
+
+      this.filteredNotes = this.productNoteForm.get('note')!.valueChanges.pipe(
+        startWith(''),
+        map(note => (note ? this._filterNotes(note.name ? note.name : note) : this.notes.slice())),
+      );
     });
     this.selectService.getNoteTypes().subscribe(noteTypes => {
       this.noteTypes = noteTypes;
@@ -127,15 +159,40 @@ export class ProductFormDialogComponent implements OnInit{
       this.fillProductFormValues();
     }
   }
+
+  private _filterBrands(value: string): Brand[] {
+    const filterValue = value.toLowerCase();
+
+    return this.brands.filter(brand => brand.name.toLowerCase().includes(filterValue));
+  }
+
+  private _filterCategories(value: string): Category[] {
+    const filterValue = value.toLowerCase();
+
+    return this.categories.filter(category => category.name.toLowerCase().includes(filterValue));
+  }
+
+  private _filterTypes(value: string): Type[] {
+    const filterValue = value.toLowerCase();
+
+    return this.types.filter(type => type.name.toLowerCase().includes(filterValue));
+  }
+
+  private _filterNotes(value: string): Note[] {
+    const filterValue = value.toLowerCase();
+
+    return this.notes.filter(note => note.name.toLowerCase().includes(filterValue));
+  }
+  
   
   fillProductFormValues() {
     this.productForm.patchValue({
       name: this.product.name,
       description: this.product.description,
       amount: this.product.amount,
-      categoryId: this.product.category.categoryId,
-      brandId: this.product.brand.brandId,
-      typeId: this.product.type.typeId,
+      category: this.product.category,
+      brand: this.product.brand,
+      type: this.product.type,
     });
 
     this.initialProductEditFormValue = this.productForm.value;
@@ -152,6 +209,10 @@ export class ProductFormDialogComponent implements OnInit{
     }
   }
 
+  displayFn(value: any): string {
+    return value.name;
+  }
+
   onSubmit() {
     const formData = new FormData();
     if (this.selectedFile) {
@@ -164,18 +225,9 @@ export class ProductFormDialogComponent implements OnInit{
         name: this.productForm.get('name')?.value,
         description: this.productForm.get('description')?.value,
         imageUrl: this.product.imageUrl,
-        brand: {
-          brandId: this.productForm.get('brandId')?.value,
-          name: null!
-        },
-        category: {
-          categoryId: this.productForm.get('categoryId')?.value,
-          name: null!
-        },
-        type: {
-          typeId: this.productForm.get('typeId')?.value,
-          name: null!
-        },
+        brand: this.productForm.get('brand')?.value,
+        category: this.productForm.get('category')?.value,
+        type: this.productForm.get('type')?.value,
         productId: this.product.productId,
         productNotes: this.productNotes,
         sizePrices: this.sizePrices,
@@ -193,18 +245,9 @@ export class ProductFormDialogComponent implements OnInit{
         name: this.productForm.get('name')?.value,
         description: this.productForm.get('description')?.value,
         imageUrl: null!,
-        brand: {
-          brandId: this.productForm.get('brandId')?.value,
-          name: null!
-        },
-        category: {
-          categoryId: this.productForm.get('categoryId')?.value,
-          name: null!
-        },
-        type: {
-          typeId: this.productForm.get('typeId')?.value,
-          name: null!
-        },
+        brand: this.productForm.get('brand')?.value,
+        category: this.productForm.get('category')?.value,
+        type: this.productForm.get('type')?.value,
         productId: null!,
         productNotes: this.productNotes,
         sizePrices: this.sizePrices,
@@ -234,18 +277,15 @@ export class ProductFormDialogComponent implements OnInit{
   }
 
   addProductNote() {
-    let noteId: number = this.productNoteForm.get('noteId')?.value;
+    let noteToAdd: Note = this.productNoteForm.get('note')?.value;
     let noteTypeId: number = this.productNoteForm.get('noteTypeId')?.value;
 
-    let noteName: string = this.notes.find(note => note.noteId === noteId)?.name ?? '';
+    //let noteName: string = this.notes.find(note => note.noteId === noteToAdd.noteId)?.name ?? '';
     let noteTypeName: string = this.noteTypes.find(type => type.noteTypeId === noteTypeId)?.name ?? '';
 
     let productNote: ProductNote = {
       productNoteId: null!,
-      note: {
-        noteId: noteId,
-        name: noteName
-      },
+      note: noteToAdd,
       noteType: {
         noteTypeId: noteTypeId,
         name: noteTypeName

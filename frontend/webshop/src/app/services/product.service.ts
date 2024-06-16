@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Product } from '../models/product';
@@ -12,8 +12,15 @@ export class ProductService {
 
   constructor(private http: HttpClient, private oauthService: OAuthService) {}
 
-  public getProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>(environment.baseUrl+'api/products');
+  public getProducts(brandId?: number, categoryId?: number, typeId?: number): Observable<Product[]> {
+    let params = new HttpParams();
+    if(brandId)
+      params = params.set('brandId', brandId);
+    if(categoryId)  
+      params = params.set('categoryId', categoryId);
+    if(typeId)
+      params = params.set('typeId', typeId);
+    return this.http.get<Product[]>(environment.baseUrl+'api/products', { params });
   }
 
   public getProductById(id: number): Observable<Product> {
