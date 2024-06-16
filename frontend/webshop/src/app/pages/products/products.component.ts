@@ -169,7 +169,7 @@ export class ProductsComponent implements OnInit {
     this.filterForm.get('type').setValue('');
     this.areProductsFiltered = false;
     this.router.navigateByUrl('/products');
-    //this.getProducts();
+    this.getProducts();
   }
 
   public openProductDetails(productId: number) {

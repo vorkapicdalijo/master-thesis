@@ -56,24 +56,32 @@
         </form>
     </div>
     <div class="row justify-content-center">
-        @for (product of products; track product) {
-            <mat-card 
-                class="product col m-2"
-                (click)="openProductDetails(product.productId)">
-                <img mat-card-image [src]="getImageUrl(product.imageUrl)" alt="Cover Image">
-                <mat-card-header class="h-100 w-100">
-                    <div class="d-flex flex-column h-100 w-100 justify-content-between mb-3">
-                        <div class="d-flex flex-column">
-                            <mat-card-subtitle>{{product.brand.name}}</mat-card-subtitle>
-                            <mat-card-title>{{product.name}}</mat-card-title>
-                            <mat-card-subtitle>{{product.type.name}}</mat-card-subtitle>
-                        </div>
-                        <div class="mb-3">
-                            <span class="price float-end">From {{getLowestSizePrice(product.sizePrices)}} €</span>
-                        </div>
-                    </div>
-                </mat-card-header>
-            </mat-card>
+        @if(!isLoaded) {
+          <img src="../../../assets/images/chat-loader.svg" class="mx-auto mx-md-0" style="max-width: 150px;" width="100%" alt="Loader">
+        }
+        @if(!products && isLoaded || products &&  products.length == 0 && isLoaded) {
+          <h1 class="text-center mt-5">No Fragrances listed.</h1>
+        }
+        @if (products &&  products.length > 0 && isLoaded) {
+          @for (product of products; track product) {
+              <mat-card 
+                  class="product col m-2"
+                  (click)="openProductDetails(product.productId)">
+                  <img mat-card-image [src]="getImageUrl(product.imageUrl)" alt="Cover Image">
+                  <mat-card-header class="h-100 w-100">
+                      <div class="d-flex flex-column h-100 w-100 justify-content-between mb-3">
+                          <div class="d-flex flex-column">
+                              <mat-card-subtitle>{{product.brand.name}}</mat-card-subtitle>
+                              <mat-card-title>{{product.name}}</mat-card-title>
+                              <mat-card-subtitle>{{product.type.name}}</mat-card-subtitle>
+                          </div>
+                          <div class="mb-3">
+                              <span class="price float-end">From {{getLowestSizePrice(product.sizePrices)}} €</span>
+                          </div>
+                      </div>
+                  </mat-card-header>
+              </mat-card>
+          }
         }
     </div>
 </div>
