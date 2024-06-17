@@ -38,6 +38,17 @@ public class ProductController {
         List<ProductResponse> productResponseList = productService.getProducts(brandId, categoryId, typeId);
 
         if(productResponseList.isEmpty()) {
+            {
+                "reviewId": {
+                "productId": 52,
+                        "userId": "93516232-2fae-4169-8425-2ef9fc3ce333"
+            },
+                "userName": "Dalijo",
+                    "rating": 5,
+                    "comment": "its awesome. i recommend it",
+                    "createdAt": "2024-05-14T17:30:30.436+00:00"
+            }
+
             return new ResponseEntity<>(new ArrayList<>(), HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(productResponseList, HttpStatus.OK);
