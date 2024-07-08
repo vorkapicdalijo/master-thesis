@@ -19,7 +19,7 @@ public interface InventoryClient {
     @PostMapping(path = "api/inventory/products-order")
     void updateProductsAmountOnOrder(@RequestBody List<InventoryItemRequest> inventoryItemRequestList);
 
-    @DeleteMapping(path = "/remove/{productId}")
+    @DeleteMapping(path = "api/inventory/remove/{productId}")
     void removeProductFromInventory(@PathVariable("productId") Long productId);
 
 }

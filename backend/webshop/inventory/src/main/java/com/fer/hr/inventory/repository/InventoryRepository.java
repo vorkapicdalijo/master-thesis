@@ -10,5 +10,5 @@ public interface InventoryRepository extends JpaRepository<InventoryItem, Intege
 
     @Modifying
     @Query("delete from InventoryItem ii where ii.productId = :productId")
-    void deleteInventoryItemByProductId(@Param("productId") Long productId);
+    void deleteInventoryItemByProductId(@Param("productId") Integer productId);
 }

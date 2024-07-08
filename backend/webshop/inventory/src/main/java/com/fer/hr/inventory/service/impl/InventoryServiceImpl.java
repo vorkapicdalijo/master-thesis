@@ -61,7 +61,8 @@ public class InventoryServiceImpl implements InventoryService {
 
     @Override
     public void removeProductFromInventory(Long productId) {
-        inventoryRepository.deleteInventoryItemByProductId(productId);
+        Integer id = (int) (long) productId;
+        inventoryRepository.deleteById(id);
 
 
     }
