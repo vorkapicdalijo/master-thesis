@@ -5,7 +5,7 @@ spring:
     name: webshop-assistant
   ai:
     openai:
-      api-key: sk-proj-0pf0s7Is2VHK8aqSNyiTT3BlbkFJFp9RZhDqb4lrIlVxzuwc
+      api-key: ${openai_api_key}
       chat:
         options:
           model: gpt-3.5-turbo
